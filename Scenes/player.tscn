@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=8 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
@@ -10,13 +10,21 @@ friction = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_42clv"]
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uq72v"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eg4u0"]
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "HitBox", "HurtBox", "AttackDuration", "AttackCoolDown")]
 mass = 10.0
 physics_material_override = SubResource("PhysicsMaterial_2wmr8")
 lock_rotation = true
 script = ExtResource("1_64cvm")
 GroundCheck = NodePath("GroundCheck")
 maxMoveSpeed = 300.0
+HitBox = NodePath("HitBox")
+HurtBox = NodePath("HurtBox")
+AttackDuration = NodePath("HitBox/AttackDuration")
+AttackCoolDown = NodePath("HitBox/AttackCoolDown")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.16, 0.24)
@@ -30,3 +38,34 @@ position = Vector2(0, 7)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundCheck"]
 shape = SubResource("CircleShape2D_42clv")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_uq72v")
+
+[node name="Sprite2D" type="Sprite2D" parent="HitBox/CollisionShape2D"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_tr633")
+
+[node name="AttackDuration" type="Timer" parent="HitBox"]
+wait_time = 0.1
+one_shot = true
+
+[node name="AttackCoolDown" type="Timer" parent="HitBox"]
+wait_time = 0.1
+one_shot = true
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CapsuleShape2D_eg4u0")
+
+[node name="KnockBackTimer" type="Timer" parent="HurtBox"]
