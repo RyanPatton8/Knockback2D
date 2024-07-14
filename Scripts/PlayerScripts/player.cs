@@ -1,8 +1,9 @@
 using Godot;
 using System;
 
-public partial class player : RigidBody2D
+public partial class Player : RigidBody2D
 {
+    [Export] public int playerIndex {get; set;}
 	[Export] public Area2D GroundCheck { get; private set; }
 	[Export] public float maxMoveSpeed { get; private set; }
 	//[Export] public Sprite2D HitSprite { get; private set; }
@@ -19,15 +20,15 @@ public partial class player : RigidBody2D
 	{
 		//Aim();
 
-		if (!Input.IsActionPressed("jump") && isGrounded)
+		if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
 		{
 			PhysicsMaterialOverride.Friction = 0.6f;
 		}
-		else if (Input.IsActionPressed("jump") && isGrounded){
+		else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded){
 			ApplyImpulse(new Vector2(0, -2500));
 		}
 
-		float direction = Input.GetAxis("moveLeft", "moveRight");
+		float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
 
 		if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1)
 		{
