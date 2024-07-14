@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://duyhsvlnmlums"]
+
+[ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/player.cs" id="1_vfnlu"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
+friction = 0.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yh4tg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_42clv"]
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck")]
+mass = 10.0
+physics_material_override = SubResource("PhysicsMaterial_2wmr8")
+lock_rotation = true
+script = ExtResource("1_vfnlu")
+GroundCheck = NodePath("GroundCheck")
+maxMoveSpeed = 300.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.16, 0.24)
+texture = ExtResource("1_tr633")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_yh4tg")
+
+[node name="GroundCheck" type="Area2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundCheck"]
+shape = SubResource("CircleShape2D_42clv")
