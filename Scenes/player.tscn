@@ -1,12 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=9 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerStates/PlayerStateMachine.cs" id="4_7l5rd"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerStates/IdleState.cs" id="5_vt0ce"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerStates/MoveState.cs" id="6_pva78"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerStates/KnockedState.cs" id="7_aoum8"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
 friction = 0.0
@@ -19,12 +15,11 @@ friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eg4u0"]
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("playerStateMachine", "GroundCheck", "HitBox", "HurtBox", "KnockBackDuration", "AttackDuration", "AttackCoolDown")]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "HitBox", "HurtBox", "KnockBackDuration", "AttackDuration", "AttackCoolDown")]
 mass = 10.0
 physics_material_override = SubResource("PhysicsMaterial_2wmr8")
 lock_rotation = true
 script = ExtResource("1_64cvm")
-playerStateMachine = NodePath("StateMachine")
 GroundCheck = NodePath("GroundCheck")
 maxMoveSpeed = 300.0
 HitBox = NodePath("HitBox")
@@ -81,17 +76,3 @@ shape = SubResource("CapsuleShape2D_eg4u0")
 [node name="KnockBackTimer" type="Timer" parent="HurtBox"]
 wait_time = 0.5
 one_shot = true
-
-[node name="StateMachine" type="Node" parent="."]
-script = ExtResource("4_7l5rd")
-
-[node name="States" type="Node" parent="StateMachine"]
-
-[node name="Idle" type="Node" parent="StateMachine/States"]
-script = ExtResource("5_vt0ce")
-
-[node name="Move" type="Node" parent="StateMachine/States"]
-script = ExtResource("6_pva78")
-
-[node name="Knocked" type="Node" parent="StateMachine/States"]
-script = ExtResource("7_aoum8")

@@ -4,8 +4,6 @@ using System;
 public partial class Player : RigidBody2D
 {
     [Export] public int playerIndex {get; set;}
-
-    [Export] public PlayerStateMachine playerStateMachine {get; private set;}
 	[Export] public Area2D GroundCheck { get; private set; }
 	[Export] public float maxMoveSpeed { get; private set; }
     [Export] public Area2D HitBox { get; private set; }
@@ -14,15 +12,12 @@ public partial class Player : RigidBody2D
 
     [Export] public Timer AttackDuration {get; private set;}
     [Export] public Timer AttackCoolDown {get; private set;}
-    [Export] public KnockedState knockedState {get; private set;}
 
-    protected float offsetAmount = 23;
-	public bool isGrounded = false;
-    protected bool canAttack = true;
+    private float offsetAmount = 23;
+	private bool isGrounded = false;
+    private bool canAttack = true;
 
     private bool knockedBack = false;
-
-    public float direction = 0;
 
 	public override void _Ready()
 	{
@@ -31,30 +26,46 @@ public partial class Player : RigidBody2D
         HurtBox.AreaEntered += RecieveHit;
         AttackDuration.Timeout += StopAttacking;
         AttackCoolDown.Timeout += ResetAttack;
+        KnockBackDuration.Timeout += AllowMovement;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-        direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
-        Jump();
+        Move();
 		Aim();
 	}
 
-    private void Jump()
-	{
-		if(Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
-		{
-			ApplyImpulse(new Vector2(0, -2500));
-		}
-	}
+    private void Move()
+    {
+        if (!knockedBack){
+            if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
+            {
+                PhysicsMaterialOverride.Friction = 0.6f;
+            }
+            else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded){
+                ApplyImpulse(new Vector2(0, -2500));
+            }
+
+            float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
+
+            if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1)
+            {
+                LinearVelocity = new Vector2(0, LinearVelocity.Y);
+            }
+
+            if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
+            {
+                ApplyForce(new Vector2(15000 * direction, 0));
+            }  
+        }
+        
+    }
 
 	private void Grounded(Node body)
 	{
 		if (body.IsInGroup("Environment")){
 			isGrounded = true;
-            if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A))
-                PhysicsMaterialOverride.Friction = 0.6f;
-        }
+		}
 	}
 
 	private void UnGrounded(Node2D body)
@@ -81,7 +92,7 @@ public partial class Player : RigidBody2D
 
             // Rotate the HurtBox around the player
             HitBox.GlobalPosition = newPosition;
-            HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
+            //HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
         }
 
         if(Input.IsJoyButtonPressed(playerIndex, JoyButton.RightShoulder))
@@ -103,11 +114,24 @@ public partial class Player : RigidBody2D
 
     private void RecieveHit(Area2D area)
     {
-        GD.Print("ouch");
-        playerStateMachine.ChangeState("KnockedState", playerIndex, null);
-    
-        // Get the instance of the current state and call KnockedBack
-        knockedState.KnockedBack(area);
+	Vector2 info = Vector2.Zero;
+         // Cast the area to HitBox to access the GiveInfo method
+        if (area is HitBox hitBox)
+        {
+            info = hitBox.GiveInfo();
+        }
+
+        knockedBack = true;
+        PhysicsMaterialOverride.Friction = 0;
+        KnockBackDuration.WaitTime = 0.5;
+        ApplyImpulse(new Vector2(info.X * -1, info.Y * -2) * -150);
+        GD.Print("Ouch");
+        KnockBackDuration.Start();
+    }
+
+    private void AllowMovement()
+    {
+        knockedBack = false;
     }
 
     private void StopAttacking()
@@ -115,7 +139,6 @@ public partial class Player : RigidBody2D
         HitBox.Monitoring = false;
         HitBox.Monitorable = false;
         AttackCoolDown.Start();
-        GD.Print("AttackOver");
     }
 
     private void ResetAttack()
