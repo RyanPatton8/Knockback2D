@@ -12,10 +12,10 @@ public partial class Player : RigidBody2D
 
     [Export] public Timer AttackDuration {get; private set;}
     [Export] public Timer AttackCoolDown {get; private set;}
-
+    [Export] public WeaponHolder WeaponHolder {get; private set;}
     private float offsetAmount = 23;
 	private bool isGrounded = false;
-    private bool canAttack = true;
+    public bool canAttack = true;
 
     private bool knockedBack = false;
 
@@ -58,6 +58,11 @@ public partial class Player : RigidBody2D
                 ApplyForce(new Vector2(15000 * direction, 0));
             }  
         }
+
+        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y))
+        {
+            WeaponHolder.ChangeWeapon();
+        }
         
     }
 
@@ -94,23 +99,7 @@ public partial class Player : RigidBody2D
             HitBox.GlobalPosition = newPosition;
             //HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
         }
-
-        if(Input.IsJoyButtonPressed(playerIndex, JoyButton.RightShoulder))
-        {
-            Attack();
-        }
 	}
-
-    private void Attack()
-    {
-        if(canAttack){
-            GD.Print("Attacked");
-            canAttack = false;
-            HitBox.Monitoring = true;
-            HitBox.Monitorable = true;
-            AttackDuration.Start();
-        }
-    }
 
     private void RecieveHit(Area2D area)
     {

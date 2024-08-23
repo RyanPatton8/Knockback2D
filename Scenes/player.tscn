@@ -1,8 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=12 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
+[ext_resource type="Script" path="res://Scenes/Melee.cs" id="5_k4pk5"]
+[ext_resource type="Script" path="res://Scenes/Range.cs" id="6_703d2"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
 friction = 0.0
@@ -15,7 +18,7 @@ friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eg4u0"]
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "HitBox", "HurtBox", "KnockBackDuration", "AttackDuration", "AttackCoolDown")]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "HitBox", "HurtBox", "KnockBackDuration", "AttackDuration", "AttackCoolDown", "WeaponHolder")]
 mass = 10.0
 physics_material_override = SubResource("PhysicsMaterial_2wmr8")
 lock_rotation = true
@@ -27,6 +30,7 @@ HurtBox = NodePath("HurtBox")
 KnockBackDuration = NodePath("HurtBox/KnockBackTimer")
 AttackDuration = NodePath("HitBox/AttackDuration")
 AttackCoolDown = NodePath("HitBox/AttackCoolDown")
+WeaponHolder = NodePath("WeaponHolder")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.16, 0.24)
@@ -76,3 +80,13 @@ shape = SubResource("CapsuleShape2D_eg4u0")
 [node name="KnockBackTimer" type="Timer" parent="HurtBox"]
 wait_time = 0.5
 one_shot = true
+
+[node name="WeaponHolder" type="Node" parent="." node_paths=PackedStringArray("weapons")]
+script = ExtResource("4_e3b1r")
+weapons = [NodePath("Melee"), NodePath("Range")]
+
+[node name="Melee" type="Node" parent="WeaponHolder"]
+script = ExtResource("5_k4pk5")
+
+[node name="Range" type="Node" parent="WeaponHolder"]
+script = ExtResource("6_703d2")
