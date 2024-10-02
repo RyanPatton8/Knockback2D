@@ -1,6 +1,5 @@
 using Godot;
-using System;
-
+using System; 
 public partial class Melee : Node
 {
 	private Player playerNode;
@@ -19,7 +18,6 @@ public partial class Melee : Node
 	private void Attack()
     {
         if(playerNode.canAttack){
-            GD.Print("Melee");
             playerNode.canAttack = false;
             playerNode.HitBox.Monitoring = true;
             playerNode.HitBox.Monitorable = true;
