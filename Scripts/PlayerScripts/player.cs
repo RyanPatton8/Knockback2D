@@ -1,6 +1,13 @@
+/*
+    -Change Damage to increase similar to smashbros
+    -Change Knockback duration to follow suit
+    -Add Bow
+    -Add Fishing Rod mechanic
+    -Rename Knockback and Dash variables to be Stun and Jump related
+    -Add Respawning and lives
+*/
 using Godot;
 using System;
-using System.Reflection.Metadata.Ecma335;
 
 public partial class Player : RigidBody2D
 {
@@ -17,6 +24,7 @@ public partial class Player : RigidBody2D
     private float offsetAmount = 23;
     private float comboCount = 1;
     private int dashCount = 2;
+    private int jumpCount = 3;
     public bool canAttack = true;
 	private bool isGrounded = false;
     private bool knockedBack = false;
@@ -36,55 +44,49 @@ public partial class Player : RigidBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-        Move(delta);
-		Aim();
+        if (!knockedBack){
+            Move(delta);
+            Aim();
+        }
 	}
 
     private void Move(double delta)
     {
-        // Ensure Player Isn't Knocked Back
-        if (!knockedBack){
-            // Handle Jumps and Dash
-            if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
-            {
-                PhysicsMaterialOverride.Friction = 0.6f;
-            }
-            else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded){
-                ApplyImpulse(new Vector2(0, -2500));
-                canDash = false;
-                DashCoolDown.WaitTime = .15;
-                DashCoolDown.Start();
-            }
-            else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && !isGrounded && canDash && dashCount > 0){
-                Vector2 dashDirection = (HitBox.GlobalPosition - GlobalPosition).Normalized();
-                DashCoolDown.WaitTime = .35;
-                LinearVelocity = new Vector2(LinearVelocity.X, 0);
-                ApplyImpulse(new Vector2(dashDirection.X * 3000, dashDirection.Y * 6000));
-                canDash = false;
-                DashCoolDown.Start();
-                dashCount--;
-            }
-            
-            // Handle Movement in and out of air
-            float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
-
-            if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1)
-            {
-                LinearVelocity = new Vector2(0, LinearVelocity.Y);
-            }
-
-            if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
-            {
-                ApplyForce(new Vector2(10000 * direction, 0));
-            }  
-        }
-
-        // allow weapon change
-        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y))
+        // Handle Jumps and Dash
+        if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
         {
-            WeaponHolder.ChangeWeapon();
+            PhysicsMaterialOverride.Friction = 0.6f;
         }
+        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canDash){//previously just checked if grounded and didnt adjust linear velocity or jumpCount
+            LinearVelocity = new Vector2(LinearVelocity.X, 0);
+            ApplyImpulse(new Vector2(0, -4500)); //previously 2500
+            jumpCount--;
+            canDash = false;
+            DashCoolDown.WaitTime = .25;
+            DashCoolDown.Start();
+        }
+        // else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && !isGrounded && canDash && dashCount > 0){
+        //     Vector2 dashDirection = (HitBox.GlobalPosition - GlobalPosition).Normalized();
+        //     DashCoolDown.WaitTime = .35;
+        //     LinearVelocity = new Vector2(LinearVelocity.X, 0);
+        //     ApplyImpulse(new Vector2(dashDirection.X * 2000, dashDirection.Y * 5000));
+        //     canDash = false;
+        //     DashCoolDown.Start();
+        //     dashCount--;
+        // }
         
+        // Handle Movement in and out of air
+        float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
+
+        if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1)
+        {
+            LinearVelocity = new Vector2(0, LinearVelocity.Y);
+        }
+
+        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
+        {
+            ApplyForce(new Vector2(10000 * direction, 0));
+        }  
     }
 
 	private void Aim()
@@ -112,7 +114,15 @@ public partial class Player : RigidBody2D
 
             // Rotate the HurtBox around the player
             HitBox.GlobalPosition = newPosition;
+
+            // if wanted to physically rotate hitbox
             //HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
+        }
+
+        // allow weapon change
+        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y))
+        {
+            WeaponHolder.ChangeWeapon();
         }
 	}
 
@@ -124,24 +134,30 @@ public partial class Player : RigidBody2D
         {
             info = hitBox.GiveInfo();
         }
+        // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
+        //  which ill write about more in depth later because I'm still adding them 
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
-        PhysicsMaterialOverride.Bounce = 100;
+        PhysicsMaterialOverride.Bounce = 1;
         KnockBackDuration.WaitTime = 0.5;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        ApplyImpulse(hitDirection * comboCount * 5000);
+        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * 5000 : 5000));    
         comboCount ++;
         KnockBackDuration.Start();
+        GD.Print(comboCount);
+        // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
+        GroundCheck.Monitoring = false;
     }
 
     // States
     private void Grounded(Node body)
 	{
-		if (body.IsInGroup("Environment") && LinearVelocity.Y >= -1){
+		if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10){
 			isGrounded = true;
-            comboCount = 1;
+            comboCount = 0;
             canDash = true;
             dashCount = 2;
+            jumpCount = 3;
 		}
 	}
 
@@ -149,13 +165,14 @@ public partial class Player : RigidBody2D
 	{
 		if (body.IsInGroup("Environment")){
 			isGrounded = false;
-			PhysicsMaterialOverride.Friction = 0;
+			// PhysicsMaterialOverride.Friction = 0;
 		}
 	}
     private void AllowMovement()
     {
         knockedBack = false;
         PhysicsMaterialOverride.Bounce = 0;
+        GroundCheck.Monitoring = true;
     }
 
     private void AllowDash()

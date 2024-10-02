@@ -19,7 +19,7 @@ playerIndex = 1
 [node name="Environment" type="Node" parent="."]
 
 [node name="Platform" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(395, 29)
+position = Vector2(393, 108)
 rotation = 0.00323447
 scale = Vector2(0.72, 1)
 
@@ -36,7 +36,7 @@ position = Vector2(-914, -80)
 scale = Vector2(0.142819, 0.973148)
 
 [node name="Platform5" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(-23, -53)
+position = Vector2(-23, 8)
 scale = Vector2(0.0571148, 8.18469)
 
 [node name="OneWayPlatform" parent="Environment" instance=ExtResource("3_8tbqo")]
@@ -58,3 +58,7 @@ scale = Vector2(0.118398, 1)
 [node name="OneWayPlatform5" parent="Environment" instance=ExtResource("3_8tbqo")]
 position = Vector2(908, -409)
 scale = Vector2(0.118398, 1)
+
+[node name="Platform6" parent="Environment" instance=ExtResource("1_b54ux")]
+position = Vector2(-19, 393)
+scale = Vector2(0.118399, 1)
