@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=13 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
 [ext_resource type="Script" path="res://Scenes/Melee.cs" id="5_k4pk5"]
 [ext_resource type="Script" path="res://Scenes/Range.cs" id="6_703d2"]
+[ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Arrow.tscn" id="7_f35k5"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
 friction = 0.0
@@ -76,7 +77,7 @@ one_shot = true
 wait_time = 0.35
 one_shot = true
 
-[node name="HurtBox" type="Area2D" parent="."]
+[node name="HurtBox" type="Area2D" parent="." groups=["HurtBox"]]
 collision_layer = 0
 collision_mask = 2
 
@@ -96,3 +97,4 @@ script = ExtResource("5_k4pk5")
 
 [node name="Range" type="Node" parent="WeaponHolder"]
 script = ExtResource("6_703d2")
+arrow = ExtResource("7_f35k5")

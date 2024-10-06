@@ -1,6 +1,6 @@
 /*
-    -Change Damage to increase similar to smashbros
-    -Change Knockback duration to follow suit
+    -Change Damage to increase similar to smashbros ~
+    -Change Knockback duration to follow suit ~
     -Add Bow
     -Add Fishing Rod mechanic
     -Rename Knockback and Dash variables to be Stun and Jump related
@@ -30,6 +30,8 @@ public partial class Player : RigidBody2D
     private bool knockedBack = false;
     private bool isJumping = false;
     public bool canDash = true;
+    public float damageTaken = 1500;
+    
 
 	public override void _Ready()
 	{
@@ -49,7 +51,6 @@ public partial class Player : RigidBody2D
             Aim();
         }
 	}
-
     private void Move(double delta)
     {
         // Handle Jumps and Dash
@@ -85,7 +86,7 @@ public partial class Player : RigidBody2D
 
         if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
         {
-            ApplyForce(new Vector2(10000 * direction, 0));
+            ApplyForce(new Vector2(15000 * direction, 0));
         }  
     }
 
@@ -120,7 +121,7 @@ public partial class Player : RigidBody2D
         }
 
         // allow weapon change
-        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y))
+        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !WeaponHolder.changingWeapon)
         {
             WeaponHolder.ChangeWeapon();
         }
@@ -128,21 +129,48 @@ public partial class Player : RigidBody2D
 
     private void RecieveHit(Area2D area)
     {
-	Vector2 info = Vector2.Zero;
-         // Cast the area to HitBox to access the GiveInfo method
+        Vector2 info = Vector2.Zero;
+        // Cast the area to HitBox to access the GiveInfo method
         if (area is HitBox hitBox)
         {
             info = hitBox.GiveInfo();
+            DamageFromMelee(info);
         }
+        if (area is ArrowHitBox arrowHitBox && arrowHitBox.GiveIndexInfo() != playerIndex)
+        {
+            info = GlobalPosition - arrowHitBox.GiveInfo();
+            DamageFromArrow(info, arrowHitBox.forceApplied);
+        }
+    }
+    private void DamageFromMelee(Vector2 info)
+    {
         // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
         //  which ill write about more in depth later because I'm still adding them 
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
-        KnockBackDuration.WaitTime = 0.5;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * 5000 : 5000));    
-        comboCount ++;
+        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
+        comboCount += 2;
+        damageTaken += 1000;
+        KnockBackDuration.WaitTime = damageTaken / 10000;
+        KnockBackDuration.Start();
+        GD.Print(comboCount);
+        // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
+        GroundCheck.Monitoring = false;
+    }
+    private void DamageFromArrow(Vector2 info, double forceApplied)
+    {
+        // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
+        //  which ill write about more in depth later because I'm still adding them 
+        knockedBack = true;
+        PhysicsMaterialOverride.Friction = 0;
+        PhysicsMaterialOverride.Bounce = 1;
+        Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
+        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
+        comboCount++;
+        damageTaken += 500;
+        KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
         // make it so the ground check cant ground player temporarily so that it doesnt reset combo count

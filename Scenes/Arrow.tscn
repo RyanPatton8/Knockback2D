@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://1ncy12c8ef2i"]
+
+[ext_resource type="Script" path="res://Scenes/Arrow.cs" id="1_44v55"]
+[ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="2_y5q48"]
+[ext_resource type="Script" path="res://Scenes/ArrowHitBox.cs" id="3_jofm0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6m410"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4sa1u"]
+
+[node name="RigidBody2D" type="RigidBody2D"]
+collision_layer = 0
+script = ExtResource("1_44v55")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_y5q48")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.55, 0.55)
+shape = SubResource("CircleShape2D_6m410")
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(0.75, 0.75)
+collision_layer = 2
+script = ExtResource("3_jofm0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_4sa1u")

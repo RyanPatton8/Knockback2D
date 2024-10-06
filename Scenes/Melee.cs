@@ -3,6 +3,7 @@ using System;
 public partial class Melee : Node
 {
 	private Player playerNode;
+    double attackStrength = 1;
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
     {
@@ -12,7 +13,7 @@ public partial class Melee : Node
 	{
 		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f)
         {
-           Attack();
+            Attack();
         }
 	}
 	private void Attack()
