@@ -11,46 +11,47 @@ using System;
 
 public partial class Player : RigidBody2D
 {
-    [Export] public int playerIndex {get; set;}
-	[Export] public Area2D GroundCheck { get; private set; }
-	[Export] public float maxMoveSpeed { get; private set; }
+    [Export] public int playerIndex { get; set; }
+    [Export] public Area2D GroundCheck { get; private set; }
+    [Export] public float maxMoveSpeed { get; private set; }
     [Export] public Area2D HitBox { get; private set; }
-	[Export] public Area2D HurtBox { get; private set; }
-    [Export] public Timer KnockBackDuration {get; private set;}
-    [Export] public Timer AttackDuration {get; private set;}
-    [Export] public Timer AttackCoolDown {get; private set;}
-    [Export] public WeaponHolder WeaponHolder {get; private set;}
-    [Export] public Timer DashCoolDown {get; private set;}
+    [Export] public Area2D HurtBox { get; private set; }
+    [Export] public Timer KnockBackDuration { get; private set; }
+    [Export] public Timer AttackDuration { get; private set; }
+    [Export] public Timer AttackCoolDown { get; private set; }
+    [Export] public WeaponHolder WeaponHolder { get; private set; }
+    [Export] public Timer DashCoolDown { get; private set; }
     private float offsetAmount = 23;
     private float comboCount = 1;
     private int dashCount = 2;
     private int jumpCount = 3;
     public bool canAttack = true;
-	private bool isGrounded = false;
+    private bool isGrounded = false;
     private bool knockedBack = false;
     private bool isJumping = false;
     public bool canDash = true;
     public float damageTaken = 1500;
-    
-
-	public override void _Ready()
-	{
-		GroundCheck.BodyEntered += Grounded;
-		GroundCheck.BodyExited += UnGrounded;
+    PlayerManager playerManager;
+    public override void _Ready()
+    {
+        GroundCheck.BodyEntered += Grounded;
+        GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveHit;
         AttackDuration.Timeout += StopAttacking;
         AttackCoolDown.Timeout += ResetAttack;
         KnockBackDuration.Timeout += AllowMovement;
         DashCoolDown.Timeout += AllowDash;
-	}
+        playerManager = PlayerManager.Instance;
+    }
 
-	public override void _PhysicsProcess(double delta)
-	{
-        if (!knockedBack){
+    public override void _PhysicsProcess(double delta)
+    {
+        if (!knockedBack)
+        {
             Move(delta);
             Aim();
         }
-	}
+    }
     private void Move(double delta)
     {
         // Handle Jumps and Dash
@@ -58,7 +59,8 @@ public partial class Player : RigidBody2D
         {
             PhysicsMaterialOverride.Friction = 0.6f;
         }
-        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canDash){//previously just checked if grounded and didnt adjust linear velocity or jumpCount
+        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canDash)
+        {//previously just checked if grounded and didnt adjust linear velocity or jumpCount
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
             ApplyImpulse(new Vector2(0, -4500)); //previously 2500
             jumpCount--;
@@ -75,7 +77,7 @@ public partial class Player : RigidBody2D
         //     DashCoolDown.Start();
         //     dashCount--;
         // }
-        
+
         // Handle Movement in and out of air
         float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
 
@@ -87,26 +89,29 @@ public partial class Player : RigidBody2D
         if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
         {
             ApplyForce(new Vector2(15000 * direction, 0));
-        }  
+        }
     }
 
-	private void Aim()
-	{
+    private void Aim()
+    {
         float aimX;
         float aimY;
         // Check if player is using right thumbstick otherwise use left
-        if(Input.GetJoyAxis(playerIndex, JoyAxis.RightX) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightX) <= -0.5
-          || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) <= -0.5){
+        if (Input.GetJoyAxis(playerIndex, JoyAxis.RightX) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightX) <= -0.5
+          || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) <= -0.5)
+        {
             aimX = Input.GetJoyAxis(playerIndex, JoyAxis.RightX);
-		    aimY = Input.GetJoyAxis(playerIndex, JoyAxis.RightY);
-        } else {
-            aimX = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
-		    aimY = Input.GetJoyAxis(playerIndex, JoyAxis.LeftY);
+            aimY = Input.GetJoyAxis(playerIndex, JoyAxis.RightY);
         }
-		
-		Vector2 aimDirection = new Vector2(aimX, aimY);
+        else
+        {
+            aimX = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
+            aimY = Input.GetJoyAxis(playerIndex, JoyAxis.LeftY);
+        }
 
-		 if (aimDirection.Length() > 0.3)
+        Vector2 aimDirection = new Vector2(aimX, aimY);
+
+        if (aimDirection.Length() > 0.3)
         {
             aimDirection = aimDirection.Normalized();
 
@@ -125,7 +130,7 @@ public partial class Player : RigidBody2D
         {
             WeaponHolder.ChangeWeapon();
         }
-	}
+    }
 
     private void RecieveHit(Area2D area)
     {
@@ -150,12 +155,13 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
-        comboCount += 2;
+        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount + 1 * damageTaken : damageTaken));
+        comboCount++;
         damageTaken += 1000;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
+        GD.Print("Player " + (playerIndex + 1) + ":" + damageTaken);
         // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
         GroundCheck.Monitoring = false;
     }
@@ -179,23 +185,25 @@ public partial class Player : RigidBody2D
 
     // States
     private void Grounded(Node body)
-	{
-		if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10){
-			isGrounded = true;
+    {
+        if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10)
+        {
+            isGrounded = true;
             comboCount = 0;
             canDash = true;
             dashCount = 2;
             jumpCount = 3;
-		}
-	}
+        }
+    }
 
-	private void UnGrounded(Node2D body)
-	{
-		if (body.IsInGroup("Environment")){
-			isGrounded = false;
-			// PhysicsMaterialOverride.Friction = 0;
-		}
-	}
+    private void UnGrounded(Node2D body)
+    {
+        if (body.IsInGroup("Environment"))
+        {
+            isGrounded = false;
+            // PhysicsMaterialOverride.Friction = 0;
+        }
+    }
     private void AllowMovement()
     {
         knockedBack = false;

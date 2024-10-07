@@ -1,64 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpkbq4rd37qh5"]
+[gd_scene load_steps=2 format=3 uid="uid://dpkbq4rd37qh5"]
 
-[ext_resource type="PackedScene" uid="uid://dg6dhg56ne65v" path="res://Scenes/platform.tscn" id="1_b54ux"]
-[ext_resource type="PackedScene" uid="uid://duyhsvlnmlums" path="res://Scenes/player.tscn" id="2_xnb1v"]
-[ext_resource type="PackedScene" uid="uid://d4molhkonh00g" path="res://Scenes/one_way_platform.tscn" id="3_8tbqo"]
+[ext_resource type="Script" path="res://Scenes/ReadyUp.cs" id="1_fo2u2"]
 
-[node name="main" type="Node2D"]
+[node name="Control" type="Control" node_paths=PackedStringArray("players")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fo2u2")
+players = [NodePath("HBoxContainer/Player1"), NodePath("HBoxContainer/Player2"), NodePath("HBoxContainer/Player3"), NodePath("HBoxContainer/Player4")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.8, 0.8)
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="Player" parent="." instance=ExtResource("2_xnb1v")]
-position = Vector2(-415, -180)
+[node name="Player1" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 0, 0, 0)
 
-[node name="Player2" parent="." instance=ExtResource("2_xnb1v")]
-position = Vector2(289, -81)
-playerIndex = 1
+[node name="Player2" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0, 0, 1, 0)
 
-[node name="Environment" type="Node" parent="."]
+[node name="Player3" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 0.784314, 0, 0)
 
-[node name="Platform" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(393, 108)
-rotation = 0.00323447
-scale = Vector2(0.72, 1)
-
-[node name="Platform2" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(-450, 305)
-scale = Vector2(0.2784, 1)
-
-[node name="Platform3" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(-544, -106)
-scale = Vector2(0.320656, 0.986482)
-
-[node name="Platform4" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(-914, -80)
-scale = Vector2(0.142819, 0.973148)
-
-[node name="Platform5" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(13, 53)
-scale = Vector2(0.128587, 2.94137)
-
-[node name="OneWayPlatform" parent="Environment" instance=ExtResource("3_8tbqo")]
-position = Vector2(-544, -346)
-scale = Vector2(0.320656, 0.986482)
-
-[node name="OneWayPlatform2" parent="Environment" instance=ExtResource("3_8tbqo")]
-position = Vector2(356, -204)
-scale = Vector2(0.118398, 1)
-
-[node name="OneWayPlatform3" parent="Environment" instance=ExtResource("3_8tbqo")]
-position = Vector2(908, -285)
-scale = Vector2(0.118398, 1)
-
-[node name="OneWayPlatform4" parent="Environment" instance=ExtResource("3_8tbqo")]
-position = Vector2(908, -164)
-scale = Vector2(0.118398, 1)
-
-[node name="OneWayPlatform5" parent="Environment" instance=ExtResource("3_8tbqo")]
-position = Vector2(908, -409)
-scale = Vector2(0.118398, 1)
-
-[node name="Platform6" parent="Environment" instance=ExtResource("1_b54ux")]
-position = Vector2(-19, 393)
-scale = Vector2(0.118399, 1)
+[node name="Player4" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0, 1, 0, 0)

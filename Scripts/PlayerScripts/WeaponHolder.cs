@@ -10,24 +10,26 @@ public partial class WeaponHolder : Node
 	[Export] private Node[] weapons;
 
 	public override void _Ready()
-    {
-		foreach(Node weapon in weapons)
+	{
+		foreach (Node weapon in weapons)
 		{
 			weapon.SetProcess(false);
 		}
 		weapons[weaponIndex].SetProcess(true);
-    }
-    public override void _PhysicsProcess(double delta)
-    {
-        if(changingWeapon){
+	}
+	public override void _PhysicsProcess(double delta)
+	{
+		if (changingWeapon)
+		{
 			weaponChangeTime -= delta;
-			if(weaponChangeTime <= Mathf.Epsilon){
+			if (weaponChangeTime <= Mathf.Epsilon)
+			{
 				weaponChangeTime = .5;
 				changingWeapon = false;
 			}
 		}
-    }
-    public void ChangeWeapon()
+	}
+	public void ChangeWeapon()
 	{
 		changingWeapon = true;
 		// disable current weapons physics process

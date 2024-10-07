@@ -48,7 +48,6 @@ public partial class Range : Node
             instance.playerIndex = playerNode.playerIndex;
             instance.forceApplied = throwForce;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
-            GD.Print(throwForce);
         }
     }
 }

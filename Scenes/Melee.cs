@@ -1,8 +1,8 @@
 using Godot;
-using System; 
+using System;
 public partial class Melee : Node
 {
-	private Player playerNode;
+    private Player playerNode;
     double attackStrength = 1;
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
@@ -10,15 +10,16 @@ public partial class Melee : Node
         playerNode = GetOwner<Player>();
     }
     public override void _Process(double delta)
-	{
-		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f)
+    {
+        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f)
         {
             Attack();
         }
-	}
-	private void Attack()
+    }
+    private void Attack()
     {
-        if(playerNode.canAttack){
+        if (playerNode.canAttack)
+        {
             playerNode.canAttack = false;
             playerNode.HitBox.Monitoring = true;
             playerNode.HitBox.Monitorable = true;

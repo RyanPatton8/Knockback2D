@@ -1,0 +1,21 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+
+public partial class Level : Node2D
+{
+	PlayerManager playerManager;
+	[Export] public Marker2D[] spawns { get; private set; }
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		Random rnd = new Random();
+		playerManager = PlayerManager.Instance;
+
+		foreach (KeyValuePair<int, int> kvp in playerManager.playerLives)
+		{
+			Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Length)].GlobalPosition;
+			playerManager.SpawnPlayer(kvp.Key, spawnPoint);
+		}
+	}
+}
