@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnxewib7nuo0f"]
+[gd_scene load_steps=5 format=3 uid="uid://dnxewib7nuo0f"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/Level.cs" id="1_brfdy"]
 [ext_resource type="PackedScene" uid="uid://dg6dhg56ne65v" path="res://Scenes/platform.tscn" id="2_buc1k"]
 [ext_resource type="PackedScene" uid="uid://d4molhkonh00g" path="res://Scenes/one_way_platform.tscn" id="3_uawu6"]
+[ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/Levels/world_border.tscn" id="4_nhmpn"]
 
 [node name="Level_01" type="Node2D" node_paths=PackedStringArray("spawns")]
 script = ExtResource("1_brfdy")
@@ -71,3 +72,6 @@ position = Vector2(359, -274)
 
 [node name="Marker2D4" type="Marker2D" parent="PlayerSpawner"]
 position = Vector2(-430, -201)
+
+[node name="WorldBorder" parent="." instance=ExtResource("4_nhmpn")]
+scale = Vector2(141.969, -72.0863)

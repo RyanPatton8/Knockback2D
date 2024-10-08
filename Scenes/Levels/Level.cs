@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class Level : Node2D
 {
@@ -11,6 +12,7 @@ public partial class Level : Node2D
 	{
 		Random rnd = new Random();
 		playerManager = PlayerManager.Instance;
+		playerManager.spawnPoints = spawns.ToList<Marker2D>();
 
 		foreach (KeyValuePair<int, int> kvp in playerManager.playerLives)
 		{

@@ -13,7 +13,7 @@ public partial class Player : RigidBody2D
 {
     [Export] public int playerIndex { get; set; }
     [Export] public Area2D GroundCheck { get; private set; }
-    [Export] public float maxMoveSpeed { get; private set; }
+    [Export] public float maxMoveSpeed { get; set; }
     [Export] public Area2D HitBox { get; private set; }
     [Export] public Area2D HurtBox { get; private set; }
     [Export] public Timer KnockBackDuration { get; private set; }
@@ -86,8 +86,14 @@ public partial class Player : RigidBody2D
             LinearVelocity = new Vector2(0, LinearVelocity.Y);
         }
 
-        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
+        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1 && WeaponHolder.currentWeapon == 0)
         {
+            maxMoveSpeed = 450;
+            ApplyForce(new Vector2(15000 * direction, 0));
+        }
+        else if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
+        {
+            maxMoveSpeed = 300;
             ApplyForce(new Vector2(15000 * direction, 0));
         }
     }
@@ -155,9 +161,9 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
+        damageTaken += 1500;
         ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount + 1 * damageTaken : damageTaken));
         comboCount++;
-        damageTaken += 1000;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
@@ -175,7 +181,7 @@ public partial class Player : RigidBody2D
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
         comboCount++;
-        damageTaken += 500;
+        damageTaken += 750;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);

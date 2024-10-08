@@ -10,6 +10,14 @@ public partial class ReadyUp : Control
 	{
 		playerManager = PlayerManager.Instance;
 		GD.Print("Ready");
+		foreach (Node child in GetTree().Root.GetChildren())
+		{
+			if (child is Player player)
+			{
+				playerManager.RemovePlayer(player.playerIndex);
+				player.QueueFree();
+			}
+		}
 	}
     public override void _Process(double delta)
 	{
@@ -33,7 +41,7 @@ public partial class ReadyUp : Control
 			RemovePlayer(3);
 		}
 
-		if(Input.IsJoyButtonPressed(0, JoyButton.Start)){
+		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerLives.Count > 1){
 			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_01.tscn");
 			GD.Print(playerManager);
 		}

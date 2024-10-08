@@ -8,6 +8,7 @@ public partial class WeaponHolder : Node
 	private double weaponChangeTime = .5;
 	public bool changingWeapon = false;
 	[Export] private Node[] weapons;
+	public int currentWeapon;
 
 	public override void _Ready()
 	{
@@ -16,6 +17,7 @@ public partial class WeaponHolder : Node
 			weapon.SetProcess(false);
 		}
 		weapons[weaponIndex].SetProcess(true);
+		currentWeapon = 0;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -36,9 +38,12 @@ public partial class WeaponHolder : Node
 		weapons[weaponIndex].SetProcess(false);
 		// change the weapon
 		weaponIndex++;
+		currentWeapon++;
+		
 		if (weaponIndex > weapons.Length - 1)
 		{
 			weaponIndex = 0;
+			currentWeapon = 0;
 		}
 		// enable the current weapon
 		weapons[weaponIndex].SetProcess(true);

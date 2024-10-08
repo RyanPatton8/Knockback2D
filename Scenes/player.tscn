@@ -19,7 +19,7 @@ friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eg4u0"]
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "HitBox", "HurtBox", "KnockBackDuration", "AttackDuration", "AttackCoolDown", "WeaponHolder", "DashCoolDown")]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "HitBox", "HurtBox", "KnockBackDuration", "AttackDuration", "AttackCoolDown", "WeaponHolder", "DashCoolDown") groups=["player"]]
 mass = 10.0
 physics_material_override = SubResource("PhysicsMaterial_2wmr8")
 lock_rotation = true
@@ -85,8 +85,9 @@ collision_mask = 2
 shape = SubResource("CapsuleShape2D_eg4u0")
 
 [node name="KnockBackTimer" type="Timer" parent="HurtBox"]
-wait_time = 2.0
+wait_time = 0.01
 one_shot = true
+autostart = true
 
 [node name="WeaponHolder" type="Node" parent="." node_paths=PackedStringArray("weapons")]
 script = ExtResource("4_e3b1r")
