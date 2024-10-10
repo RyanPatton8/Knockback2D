@@ -23,13 +23,12 @@ public partial class Player : RigidBody2D
     [Export] public Timer DashCoolDown { get; private set; }
     private float offsetAmount = 23;
     private float comboCount = 1;
-    private int dashCount = 2;
-    private int jumpCount = 3;
-    public bool canAttack = true;
+    private int jumpCount = 3;  
     private bool isGrounded = false;
     private bool knockedBack = false;
     private bool isJumping = false;
-    public bool canDash = true;
+    public bool canJump = true;
+    public bool changingWeapon = false;
     public float damageTaken = 1500;
     PlayerManager playerManager;
     public override void _Ready()
@@ -37,10 +36,7 @@ public partial class Player : RigidBody2D
         GroundCheck.BodyEntered += Grounded;
         GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveHit;
-        AttackDuration.Timeout += StopAttacking;
-        AttackCoolDown.Timeout += ResetAttack;
         KnockBackDuration.Timeout += AllowMovement;
-        DashCoolDown.Timeout += AllowDash;
         playerManager = PlayerManager.Instance;
     }
 
@@ -51,6 +47,16 @@ public partial class Player : RigidBody2D
             Move(delta);
             Aim();
         }
+        // allow weapon change
+        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !changingWeapon)
+        {
+            changingWeapon = true;
+            WeaponHolder.ChangeWeapon();
+        }
+        else if(!Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && changingWeapon)
+        {
+            changingWeapon = false;
+        }
     }
     private void Move(double delta)
     {
@@ -59,24 +65,22 @@ public partial class Player : RigidBody2D
         {
             PhysicsMaterialOverride.Friction = 0.6f;
         }
-        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canDash)
+        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount >= 0 && canJump)
         {//previously just checked if grounded and didnt adjust linear velocity or jumpCount
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
             ApplyImpulse(new Vector2(0, -4500)); //previously 2500
             jumpCount--;
-            canDash = false;
-            DashCoolDown.WaitTime = .25;
-            DashCoolDown.Start();
+            canJump = false;
+            PhysicsMaterialOverride.Friction = 0f;
         }
-        // else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && !isGrounded && canDash && dashCount > 0){
-        //     Vector2 dashDirection = (HitBox.GlobalPosition - GlobalPosition).Normalized();
-        //     DashCoolDown.WaitTime = .35;
-        //     LinearVelocity = new Vector2(LinearVelocity.X, 0);
-        //     ApplyImpulse(new Vector2(dashDirection.X * 2000, dashDirection.Y * 5000));
-        //     canDash = false;
-        //     DashCoolDown.Start();
-        //     dashCount--;
-        // }
+        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount >= 0 && !canJump)
+        {
+            canJump = true;
+            PhysicsMaterialOverride.Friction = 0.6f;
+        }
+        else if (isGrounded && !canJump){
+            canJump = true;
+        }
 
         // Handle Movement in and out of air
         float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
@@ -129,12 +133,6 @@ public partial class Player : RigidBody2D
 
             // if wanted to physically rotate hitbox
             //HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
-        }
-
-        // allow weapon change
-        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !WeaponHolder.changingWeapon)
-        {
-            WeaponHolder.ChangeWeapon();
         }
     }
 
@@ -195,9 +193,8 @@ public partial class Player : RigidBody2D
         if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10)
         {
             isGrounded = true;
-            comboCount = 0;
-            canDash = true;
-            dashCount = 2;
+            comboCount = 1;
+            canJump = true;
             jumpCount = 3;
         }
     }
@@ -214,22 +211,7 @@ public partial class Player : RigidBody2D
     {
         knockedBack = false;
         PhysicsMaterialOverride.Bounce = 0;
+        PhysicsMaterialOverride.Friction = 0.6f;
         GroundCheck.Monitoring = true;
-    }
-
-    private void AllowDash()
-    {
-        canDash = true;
-    }
-    private void StopAttacking()
-    {
-        HitBox.Monitoring = false;
-        HitBox.Monitorable = false;
-        AttackCoolDown.Start();
-    }
-
-    private void ResetAttack()
-    {
-        canAttack = true;
     }
 }

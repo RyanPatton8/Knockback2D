@@ -29,8 +29,8 @@ maxMoveSpeed = 300.0
 HitBox = NodePath("HitBox")
 HurtBox = NodePath("HurtBox")
 KnockBackDuration = NodePath("HurtBox/KnockBackTimer")
-AttackDuration = NodePath("HitBox/AttackDuration")
-AttackCoolDown = NodePath("HitBox/AttackCoolDown")
+AttackDuration = NodePath("")
+AttackCoolDown = NodePath("")
 WeaponHolder = NodePath("WeaponHolder")
 DashCoolDown = NodePath("HitBox/DashCoolDown")
 
@@ -64,14 +64,6 @@ one_way_collision_margin = 68.0
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/CollisionShape2D"]
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_tr633")
-
-[node name="AttackDuration" type="Timer" parent="HitBox"]
-wait_time = 0.035
-one_shot = true
-
-[node name="AttackCoolDown" type="Timer" parent="HitBox"]
-wait_time = 0.5
-one_shot = true
 
 [node name="DashCoolDown" type="Timer" parent="HitBox"]
 wait_time = 0.35

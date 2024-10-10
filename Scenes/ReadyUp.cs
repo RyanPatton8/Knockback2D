@@ -41,7 +41,7 @@ public partial class ReadyUp : Control
 			RemovePlayer(3);
 		}
 
-		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerLives.Count > 1){
+		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerLives.Count > 0){
 			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_01.tscn");
 			GD.Print(playerManager);
 		}

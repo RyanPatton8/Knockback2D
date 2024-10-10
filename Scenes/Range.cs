@@ -25,6 +25,7 @@ public partial class Range : Node
         else if (charged)
         {
             Attack();
+            canAttack = false;
             charged = false;
             throwForce = 20;
         }
@@ -39,7 +40,7 @@ public partial class Range : Node
 	}
 	private void Attack()
     {
-        if(playerNode.canAttack){
+        if(canAttack){
             canAttack = false;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             Arrow instance = (Arrow)arrow.Instantiate();

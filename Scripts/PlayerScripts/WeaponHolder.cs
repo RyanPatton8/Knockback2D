@@ -5,8 +5,6 @@ using System.Linq;
 public partial class WeaponHolder : Node
 {
 	private int weaponIndex = 0;
-	private double weaponChangeTime = .5;
-	public bool changingWeapon = false;
 	[Export] private Node[] weapons;
 	public int currentWeapon;
 
@@ -19,21 +17,9 @@ public partial class WeaponHolder : Node
 		weapons[weaponIndex].SetProcess(true);
 		currentWeapon = 0;
 	}
-	public override void _PhysicsProcess(double delta)
-	{
-		if (changingWeapon)
-		{
-			weaponChangeTime -= delta;
-			if (weaponChangeTime <= Mathf.Epsilon)
-			{
-				weaponChangeTime = .5;
-				changingWeapon = false;
-			}
-		}
-	}
+	
 	public void ChangeWeapon()
 	{
-		changingWeapon = true;
 		// disable current weapons physics process
 		weapons[weaponIndex].SetProcess(false);
 		// change the weapon
