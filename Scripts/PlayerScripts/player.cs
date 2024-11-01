@@ -1,41 +1,43 @@
 /*
-    -Change Damage to increase similar to smashbros ~
-    -Change Knockback duration to follow suit ~
-    -Add Bow
-    -Add Fishing Rod mechanic
-    -Rename Knockback and Dash variables to be Stun and Jump related
-    -Add Respawning and lives
+    -Clean up codebase
+    -changebow to apply damage before knockback
+    -change bow damage to be increased depending on arrow velocity
+    -add shield
+    -make it so you cant punch yourself
 */
 using Godot;
 using System;
 
 public partial class Player : RigidBody2D
 {
+    // Exported Fields
     [Export] public int playerIndex { get; set; }
     [Export] public Area2D GroundCheck { get; private set; }
     [Export] public float maxMoveSpeed { get; set; }
-    [Export] public Area2D HitBox { get; private set; }
-    [Export] public Area2D HurtBox { get; private set; }
     [Export] public Timer KnockBackDuration { get; private set; }
-    [Export] public Timer AttackDuration { get; private set; }
-    [Export] public Timer AttackCoolDown { get; private set; }
+    [Export] public Area2D HurtBox { get; private set; }
+    [Export] public Area2D HitBox { get; private set; }
     [Export] public WeaponHolder WeaponHolder { get; private set; }
-    [Export] public Timer DashCoolDown { get; private set; }
+    // How far from player should hitbox rotate
     private float offsetAmount = 23;
-    private float comboCount = 1;
-    private int jumpCount = 3;  
+    // Movement Variables
     private bool isGrounded = false;
-    private bool knockedBack = false;
     private bool isJumping = false;
     public bool canJump = true;
-    public bool changingWeapon = false;
+    private int jumpCount = 2;
+    // Combat Variables 
+    private float comboCount = 1;
+    private bool knockedBack = false;
     public float damageTaken = 1500;
+    public bool changingWeapon = false;
+    // Reference to player manager singleton
     PlayerManager playerManager;
     public override void _Ready()
     {
         GroundCheck.BodyEntered += Grounded;
         GroundCheck.BodyExited += UnGrounded;
-        HurtBox.AreaEntered += RecieveHit;
+        HurtBox.AreaEntered += RecieveMeleeHit;
+        HurtBox.BodyEntered += RecieveRangedHit;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
     }
@@ -45,19 +47,11 @@ public partial class Player : RigidBody2D
         if (!knockedBack)
         {
             Move(delta);
-            Aim();
         }
-        // allow weapon change
-        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !changingWeapon)
-        {
-            changingWeapon = true;
-            WeaponHolder.ChangeWeapon();
-        }
-        else if(!Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && changingWeapon)
-        {
-            changingWeapon = false;
-        }
+        Aim();
+        ChangeWeapon();
     }
+
     private void Move(double delta)
     {
         // Handle Jumps and Dash
@@ -65,7 +59,7 @@ public partial class Player : RigidBody2D
         {
             PhysicsMaterialOverride.Friction = 0.6f;
         }
-        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount >= 0 && canJump)
+        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canJump)
         {//previously just checked if grounded and didnt adjust linear velocity or jumpCount
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
             ApplyImpulse(new Vector2(0, -4500)); //previously 2500
@@ -73,12 +67,13 @@ public partial class Player : RigidBody2D
             canJump = false;
             PhysicsMaterialOverride.Friction = 0f;
         }
-        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount >= 0 && !canJump)
+        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && !canJump)
         {
             canJump = true;
             PhysicsMaterialOverride.Friction = 0.6f;
         }
-        else if (isGrounded && !canJump){
+        else if (isGrounded && !canJump)
+        {
             canJump = true;
         }
 
@@ -131,12 +126,25 @@ public partial class Player : RigidBody2D
             // Rotate the HurtBox around the player
             HitBox.GlobalPosition = newPosition;
 
-            // if wanted to physically rotate hitbox
-            //HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
+            // change rotation of hitbox so hitbox is always facing outwards
+            HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
         }
     }
 
-    private void RecieveHit(Area2D area)
+    private void ChangeWeapon()
+    {
+        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !changingWeapon)
+        {
+            changingWeapon = true;
+            WeaponHolder.ChangeWeapon();
+        }
+        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.Y))
+        {
+            changingWeapon = false;
+        }
+    }
+
+    private void RecieveMeleeHit(Area2D area)
     {
         Vector2 info = Vector2.Zero;
         // Cast the area to HitBox to access the GiveInfo method
@@ -145,12 +153,24 @@ public partial class Player : RigidBody2D
             info = hitBox.GiveInfo();
             DamageFromMelee(info);
         }
-        if (area is ArrowHitBox arrowHitBox && arrowHitBox.GiveIndexInfo() != playerIndex)
+    }
+
+    private void RecieveRangedHit(Node2D body)
+    {
+        Vector2 info = Vector2.Zero;
+
+        if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex)
         {
-            info = GlobalPosition - arrowHitBox.GiveInfo();
-            DamageFromArrow(info, arrowHitBox.forceApplied);
+            info = arrow.GiveInfo();
+            DamageFromArrow(info, arrow.forceApplied);
+        }
+        if (body is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
+        {
+            info = hookHitBox.GiveInfo() - GlobalPosition;
+            DamageFromHook(info);
         }
     }
+
     private void DamageFromMelee(Vector2 info)
     {
         // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
@@ -159,7 +179,7 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        damageTaken += 1500;
+        damageTaken += 1000;
         ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount + 1 * damageTaken : damageTaken));
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
@@ -177,14 +197,48 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
+        // Vector2 hitDirection;
+        // if(info.X > info.Y){
+        //     hitDirection = new Vector2(info.X, 0).Normalized();
+        // }else {
+        //     hitDirection = new Vector2(0, info.Y).Normalized();
+        // }
+        damageTaken += 1000;
+        LinearVelocity = new Vector2(0, 0);
         ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
         comboCount++;
-        damageTaken += 750;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
         // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
         GroundCheck.Monitoring = false;
+    }
+
+    private void DamageFromHook(Vector2 info)
+    {
+        // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
+        //  which ill write about more in depth later because I'm still adding them 
+        knockedBack = true;
+        PhysicsMaterialOverride.Friction = 0;
+        PhysicsMaterialOverride.Bounce = 1;
+        Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
+        LinearVelocity = new Vector2(LinearVelocity.X, 0);
+        ApplyImpulse(hitDirection * 10000);
+        comboCount += 3;
+        KnockBackDuration.WaitTime = damageTaken / 10000;
+        KnockBackDuration.Start();
+        GD.Print(comboCount);
+        // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
+        GroundCheck.Monitoring = false;
+    }
+
+    public void Grapple(Vector2 info)
+    {
+        KnockBackDuration.WaitTime = 0.01f;
+        AllowMovement();
+        Vector2 hitDirection = new Vector2(info.X, info.Y * 2).Normalized();
+        LinearVelocity = new Vector2(0, 0);
+        ApplyImpulse(hitDirection * 8000);
     }
 
     // States
@@ -204,7 +258,6 @@ public partial class Player : RigidBody2D
         if (body.IsInGroup("Environment"))
         {
             isGrounded = false;
-            // PhysicsMaterialOverride.Friction = 0;
         }
     }
     private void AllowMovement()

@@ -10,7 +10,7 @@ script = ExtResource("1_brfdy")
 spawns = [NodePath("PlayerSpawner/Marker2D"), NodePath("PlayerSpawner/Marker2D2"), NodePath("PlayerSpawner/Marker2D3"), NodePath("PlayerSpawner/Marker2D4")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.8, 0.8)
+zoom = Vector2(0.6, 0.6)
 
 [node name="Environment" type="Node" parent="."]
 
@@ -74,4 +74,4 @@ position = Vector2(359, -274)
 position = Vector2(-430, -201)
 
 [node name="WorldBorder" parent="." instance=ExtResource("4_nhmpn")]
-scale = Vector2(141.969, -72.0863)
+scale = Vector2(158.209, -90.1263)

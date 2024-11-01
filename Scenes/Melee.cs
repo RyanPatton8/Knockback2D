@@ -28,7 +28,6 @@ public partial class Melee : Node
             attacking = true;
             playerNode.HitBox.Monitoring = true;
             playerNode.HitBox.Monitorable = true;
-            playerNode.AttackDuration.Start();
         }
     }
     

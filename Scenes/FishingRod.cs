@@ -1,20 +1,14 @@
 using Godot;
 using System;
 
-public partial class Range : Node
+public partial class FishingRod : Node
 {
-    [Export] public PackedScene arrow {get; private set;}
+	[Export] public PackedScene hook {get; private set;}
 	private Player playerNode;
-    private double startingThrowForce = 30;
-    private double throwForce = 30;
-    private double maxThrowForce = 60;
-    private int chargeSpeed = 40;
+    private double throwForce = 35;
     private bool charged = false;
     private bool canAttack = true;
-    private double attackCoolDown = .5;
-
-    public int arrowCount = 5;
-    public int maxArrows = 5;
+    private double attackCoolDown = 1;
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
     {
@@ -22,25 +16,22 @@ public partial class Range : Node
     }
     public override void _Process(double delta)
 	{
-		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f && canAttack && arrowCount > 0)
+		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.5f && canAttack)
         {
             charged = true;
-            throwForce += delta * chargeSpeed;
-            if (throwForce > maxThrowForce) {throwForce = maxThrowForce;}
         } 
         else if (charged)
         {
             Attack();
             canAttack = false;
             charged = false;
-            throwForce = startingThrowForce;
         }
         else if (!canAttack)
         {
             attackCoolDown -= delta;
             if(attackCoolDown <= Mathf.Epsilon){
                 canAttack = true;
-                attackCoolDown = .5;
+                attackCoolDown = 1;
             }
         }
 	}
@@ -48,13 +39,10 @@ public partial class Range : Node
     {
         if(canAttack){
             canAttack = false;
-            arrowCount--;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
-            Arrow instance = (Arrow)arrow.Instantiate();
-            GetTree().Root.AddChild(instance);
+            Hook instance = (Hook)hook.Instantiate();
+            playerNode.AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
-            instance.playerIndex = playerNode.playerIndex;
-            instance.forceApplied = throwForce;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
         }
     }
