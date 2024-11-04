@@ -74,6 +74,7 @@ public partial class Melee : Node
             instance.Scale = instance.Scale * chargeLevel;
             instance.playerIndex = playerNode.playerIndex;
             instance.player = playerNode;
+            instance.chargeLevel = chargeLevel;
             float attackMultiplier;
             switch(chargeLevel){
                 case 3:

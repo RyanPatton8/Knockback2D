@@ -6,8 +6,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvbo4"]
 
 [node name="Slash" type="Area2D"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_8b25p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
