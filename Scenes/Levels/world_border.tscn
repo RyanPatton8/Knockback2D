@@ -5,6 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l46mj"]
 
 [node name="WorldBorder" type="Area2D"]
+collision_mask = 3
 script = ExtResource("1_8iuqp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

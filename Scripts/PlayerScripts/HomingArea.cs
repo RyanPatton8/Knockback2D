@@ -17,25 +17,28 @@ public partial class HomingArea : Area2D
 		BodyExited += LockOff;
 	}
 
-    private void LockOn(Node2D body)
-    {
-        if(body is Player player && this.player == null && player.playerIndex != playerIndex){
+	private void LockOn(Node2D body)
+	{
+		if (body is Player player && this.player == null && player.playerIndex != playerIndex)
+		{
 			this.player = player;
 			GD.Print("LockOn");
 		}
-    }
+	}
 
 	private void LockOff(Node2D body)
-    {
-        if(body is Player && player != null){
+	{
+		if (body is Player && player != null)
+		{
 			player = null;
 		}
-    }
+	}
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
 	{
-		if(player != null){
+		if (player != null)
+		{
 			homingDir = player.GlobalPosition - parent.GlobalPosition;
 			homingDir = homingDir.Normalized();
 

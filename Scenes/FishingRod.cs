@@ -8,6 +8,7 @@ public partial class FishingRod : Node
     private double throwForce = 35;
     private bool charged = false;
     private bool canAttack = true;
+    public bool hookOut = false;
     private double attackCoolDown = 1;
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
@@ -24,14 +25,15 @@ public partial class FishingRod : Node
         {
             Attack();
             canAttack = false;
+            hookOut = true;
             charged = false;
         }
-        else if (!canAttack)
+        else if (!canAttack && !hookOut)
         {
             attackCoolDown -= delta;
             if(attackCoolDown <= Mathf.Epsilon){
                 canAttack = true;
-                attackCoolDown = 1;
+                attackCoolDown = .5;
             }
         }
 	}
@@ -41,7 +43,7 @@ public partial class FishingRod : Node
             canAttack = false;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             Hook instance = (Hook)hook.Instantiate();
-            playerNode.AddChild(instance);
+            AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
         }

@@ -16,6 +16,9 @@ public partial class WorldBorder : Area2D
         if(body is Player player){
 			playerManager.LoseALife(player.playerIndex);
 		}
+		else if(body is Hook hook){
+			hook.GetParent<FishingRod>().hookOut = false;
+		}
 		body.CallDeferred("queue_free");
     }
 

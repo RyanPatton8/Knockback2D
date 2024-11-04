@@ -51,7 +51,7 @@ public partial class Range : Node
             arrowCount--;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             Arrow instance = (Arrow)arrow.Instantiate();
-            GetTree().Root.AddChild(instance);
+            AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
             instance.forceApplied = throwForce;

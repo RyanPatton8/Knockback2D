@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=17 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scenes/Melee.cs" id="5_k4pk5"]
 [ext_resource type="Script" path="res://Scenes/Range.cs" id="6_703d2"]
 [ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Arrow.tscn" id="7_f35k5"]
+[ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/slash.tscn" id="7_vokl2"]
 [ext_resource type="Script" path="res://Scenes/FishingRod.cs" id="9_rdm57"]
 [ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/hook.tscn" id="10_vnxqg"]
 
@@ -89,6 +90,7 @@ hitBoxSprite = NodePath("../HitBox/CollisionShape2D/Sprite2D")
 
 [node name="Melee" type="Node" parent="WeaponHolder"]
 script = ExtResource("5_k4pk5")
+slash = ExtResource("7_vokl2")
 
 [node name="Range" type="Node" parent="WeaponHolder"]
 script = ExtResource("6_703d2")

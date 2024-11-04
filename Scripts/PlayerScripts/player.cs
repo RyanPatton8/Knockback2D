@@ -1,10 +1,3 @@
-/*
-    -Clean up codebase
-    -changebow to apply damage before knockback
-    -change bow damage to be increased depending on arrow velocity
-    -add shield
-    -make it so you cant punch yourself
-*/
 using Godot;
 using System;
 
@@ -54,15 +47,15 @@ public partial class Player : RigidBody2D
 
     private void Move(double delta)
     {
-        // Handle Jumps and Dash
+        // Handle Jumps
         if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
         {
             PhysicsMaterialOverride.Friction = 0.6f;
         }
         else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canJump)
-        {//previously just checked if grounded and didnt adjust linear velocity or jumpCount
+        {
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
-            ApplyImpulse(new Vector2(0, -4500)); //previously 2500
+            ApplyImpulse(new Vector2(0, -4500));
             jumpCount--;
             canJump = false;
             PhysicsMaterialOverride.Friction = 0f;
@@ -77,14 +70,13 @@ public partial class Player : RigidBody2D
             canJump = true;
         }
 
-        // Handle Movement in and out of air
+        // Handle Horizontal Movement
         float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
 
         if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1)
         {
             LinearVelocity = new Vector2(0, LinearVelocity.Y);
         }
-
         if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1 && WeaponHolder.currentWeapon == 0)
         {
             maxMoveSpeed = 450;
@@ -146,12 +138,18 @@ public partial class Player : RigidBody2D
 
     private void RecieveMeleeHit(Area2D area)
     {
-        Vector2 info = Vector2.Zero;
-        // Cast the area to HitBox to access the GiveInfo method
-        if (area is HitBox hitBox)
+        Vector2 info;
+        float attackStrength;
+
+        if (area is Slash slash)
         {
-            info = hitBox.GiveInfo();
-            DamageFromMelee(info);
+            (info, attackStrength) = slash.GiveInfo();
+            DamageFromMelee(info, attackStrength);
+        }
+        else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
+        {
+            info = hookHitBox.GiveInfo() - GlobalPosition;
+            DamageFromHook(info);
         }
     }
 
@@ -164,23 +162,17 @@ public partial class Player : RigidBody2D
             info = arrow.GiveInfo();
             DamageFromArrow(info, arrow.forceApplied);
         }
-        if (body is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
-        {
-            info = hookHitBox.GiveInfo() - GlobalPosition;
-            DamageFromHook(info);
-        }
     }
 
-    private void DamageFromMelee(Vector2 info)
+    private void DamageFromMelee(Vector2 info, float attackStrength)
     {
-        // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
-        //  which ill write about more in depth later because I'm still adding them 
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        damageTaken += 1000;
-        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount + 1 * damageTaken : damageTaken));
+        LinearVelocity = new Vector2(0, 0);
+        damageTaken += 750 * attackStrength;
+        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount + attackStrength * damageTaken : damageTaken));
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();

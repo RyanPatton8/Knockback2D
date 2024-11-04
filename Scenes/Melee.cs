@@ -2,33 +2,92 @@ using Godot;
 using System;
 public partial class Melee : Node
 {
+    [Export] public PackedScene slash {get; private set;}
     private Player playerNode;
-    public bool attacking = false;
-    double maxAttackDuration = .04;
     double currentAttackDuration = .04; 
-    double attackStrength = 1;
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    double attackStrength = .35;
+    double minAttackStrength = .35;
+    double maxAttackStrength = 1;
+    private int chargeSpeed = 1;
+    private bool charged = false;
+    private bool canAttack = true;
+    private double attackCoolDown = .2;
+
+    float distanceFromPlayer = 0;
+    int chargeLevel = 1;
     public override void _Ready()
     {
         playerNode = GetOwner<Player>();
     }
     public override void _Process(double delta)
     {
-        if(attacking)
+        
+
+        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f && canAttack)
         {
-            currentAttackDuration -= delta;
-            playerNode.HitBox.Monitoring = false;
-            playerNode.HitBox.Monitorable = false;
-            if(currentAttackDuration <= Mathf.Epsilon && Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) < 0.5f){
-                attacking = false;
+            charged = true;
+            attackStrength += delta * chargeSpeed;
+            if (attackStrength >= maxAttackStrength)
+            {
+                attackStrength = maxAttackStrength;
+                chargeLevel = 3;
             }
-        }
-        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f && !attacking)
+            else if(attackStrength >= (maxAttackStrength / 3) * 2)
+            {
+                distanceFromPlayer = .5f;
+                chargeLevel = 2;
+            }
+            else
+            {
+                distanceFromPlayer = 0;
+                chargeLevel = 1;
+            }    
+        } 
+        else if (charged)
         {
-            attacking = true;
-            playerNode.HitBox.Monitoring = true;
-            playerNode.HitBox.Monitorable = true;
+            Attack(distanceFromPlayer, chargeLevel);
+            canAttack = false;
+            charged = false;
+            attackStrength = minAttackStrength;
+            distanceFromPlayer = 0;
+            chargeLevel = 1;
+        }
+        else if (!canAttack)
+        {
+            attackCoolDown -= delta;
+            if(attackCoolDown <= Mathf.Epsilon){
+                canAttack = true;
+                attackCoolDown = .3;
+            }
         }
     }
     
+    private void Attack(float distanceFromPlayer, int chargeLevel)
+    {
+        if(canAttack){
+            canAttack = false;
+            Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
+            Slash instance = (Slash)slash.Instantiate();
+            playerNode.AddChild(instance);
+            instance.GlobalPosition = playerNode.HitBox.GlobalPosition + aimDirection * distanceFromPlayer;
+            instance.Rotation = playerNode.HitBox.Rotation;
+            instance.Scale = instance.Scale * chargeLevel;
+            instance.playerIndex = playerNode.playerIndex;
+            instance.player = playerNode;
+            float attackMultiplier;
+            switch(chargeLevel){
+                case 3:
+                    attackMultiplier = 1.5f;
+                    break;
+                case 2:
+                    attackMultiplier = 1;
+                    break;
+                default:
+                    attackMultiplier = .2f;
+                    break;
+            }
+            instance.attackStrength = attackMultiplier;
+            GD.Print(chargeLevel);
+        }
+    }
 }

@@ -5,12 +5,14 @@ public partial class HookHitbox : Area2D
 {
 	private Hook hookNode;
 	private Player playerNode;
+    private FishingRod fishingRod;
     public double forceApplied;
 	
 	public override void _Ready()
     {
         hookNode = GetOwner<Hook>();
-		playerNode = GetNode<Player>("../.."); 
+		playerNode = GetNode<Player>("../../../.."); 
+		fishingRod = GetNode<FishingRod>("../.."); 
 		BodyEntered += CallDespawn;
     }
 
@@ -24,6 +26,7 @@ public partial class HookHitbox : Area2D
         {
 			playerNode.Grapple(GlobalPosition - playerNode.GlobalPosition);
         }
+        fishingRod.hookOut = false;
         hookNode.QueueFree();
     }
     public Vector2 GiveInfo(){
