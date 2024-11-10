@@ -22,16 +22,9 @@ public partial class Arrow : RigidBody2D
             hittingPlayer = true;
         }
         
-        if(hittingPlayer){
-            QueueFree();
-        }else{
-            CallDeferred(nameof(AllowCollection));
-        }
+        QueueFree();
     }
-    public void AllowCollection(){
-        collArea.Monitoring = true;
-        Freeze = true;
-    }
+    
     public Vector2 GiveInfo(){
 		return LinearVelocity;
 	}

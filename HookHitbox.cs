@@ -15,7 +15,6 @@ public partial class HookHitbox : Area2D
 		fishingRod = GetNode<FishingRod>("../.."); 
 		BodyEntered += CallDespawn;
     }
-
     private void CallDespawn(Node2D body)
     {
         if(body is Player player && player.playerIndex == playerNode.playerIndex)
@@ -30,6 +29,8 @@ public partial class HookHitbox : Area2D
         hookNode.QueueFree();
     }
     public Vector2 GiveInfo(){
+        playerNode.KnockBackDuration.WaitTime = 0.01f;
+        playerNode.AllowMovement();
 		return playerNode.GlobalPosition;
 	}
     public int GiveIndexInfo(){

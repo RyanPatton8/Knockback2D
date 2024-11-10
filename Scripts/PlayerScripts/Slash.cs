@@ -5,9 +5,9 @@ public partial class Slash : Area2D
 {
 	public int playerIndex;
 	public Player player;
-	double attackDuration = .25;
+	double attackDuration = .3;
 	public int chargeLevel;
-	public float attackStrength = 0;
+	public float attackStrength;
 
     public override void _Ready()
     {
@@ -22,7 +22,6 @@ public partial class Slash : Area2D
 
 	public void Reflect(Node2D body)
 	{
-		GD.Print("Reflecting");
 		if (body is RigidBody2D rb && (body is Arrow || body is Hook) && chargeLevel == 3)
 		{
 			rb.LinearVelocity = rb.LinearVelocity * -1;

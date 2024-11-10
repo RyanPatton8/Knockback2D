@@ -12,17 +12,17 @@ public partial class Range : Node
     private bool charged = false;
     private bool canAttack = true;
     private double attackCoolDown = .5;
-
-    public int arrowCount = 5;
-    public int maxArrows = 5;
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
     {
         playerNode = GetOwner<Player>();
     }
     public override void _Process(double delta)
 	{
-		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f && canAttack && arrowCount > 0)
+		AttackInput(delta);
+	}
+    private void AttackInput(double delta)
+    {
+        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f && canAttack && playerNode.arrowCount > 0)
         {
             charged = true;
             throwForce += delta * chargeSpeed;
@@ -43,12 +43,13 @@ public partial class Range : Node
                 attackCoolDown = .5;
             }
         }
-	}
-	private void Attack()
+    }
+    private void Attack()
     {
+        GD.Print("Arrows Left: " + playerNode.arrowCount);
         if(canAttack){
             canAttack = false;
-            arrowCount--;
+            playerNode.arrowCount--;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             Arrow instance = (Arrow)arrow.Instantiate();
             AddChild(instance);

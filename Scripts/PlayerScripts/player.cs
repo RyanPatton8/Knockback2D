@@ -17,12 +17,18 @@ public partial class Player : RigidBody2D
     private bool isGrounded = false;
     private bool isJumping = false;
     public bool canJump = true;
-    private int jumpCount = 2;
+    private int jumpCount = 1;
     // Combat Variables 
     private float comboCount = 1;
     private bool knockedBack = false;
     public float damageTaken = 1500;
     public bool changingWeapon = false;
+    // Arrow Regen and Ammo
+    public int arrowCount = 5;
+    public int maxArrows = 5;
+    private double regenTime = 4;
+    private double maxRegenTime = 4;
+    private bool regenerating = false;
     // Reference to player manager singleton
     PlayerManager playerManager;
     public override void _Ready()
@@ -37,53 +43,52 @@ public partial class Player : RigidBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (!knockedBack)
-        {
+        if (!knockedBack){
             Move(delta);
         }
         Aim();
         ChangeWeapon();
+        if(arrowCount < maxArrows && regenerating){
+            RegenerateArrows(delta);
+        }
+        else if(arrowCount < maxArrows && !regenerating){
+            regenTime = maxRegenTime;
+            RegenerateArrows(delta);
+        }
     }
 
     private void Move(double delta)
     {
         // Handle Jumps
-        if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded)
-        {
+        if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded){
             PhysicsMaterialOverride.Friction = 0.6f;
         }
-        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canJump)
-        {
+        else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canJump){
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
             ApplyImpulse(new Vector2(0, -4500));
             jumpCount--;
             canJump = false;
             PhysicsMaterialOverride.Friction = 0f;
         }
-        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && !canJump)
-        {
+        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && !canJump){
             canJump = true;
             PhysicsMaterialOverride.Friction = 0.6f;
         }
-        else if (isGrounded && !canJump)
-        {
+        else if (isGrounded && !canJump){
             canJump = true;
         }
 
         // Handle Horizontal Movement
         float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
 
-        if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1)
-        {
+        if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1){
             LinearVelocity = new Vector2(0, LinearVelocity.Y);
         }
-        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1 && WeaponHolder.currentWeapon == 0)
-        {
+        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1 && WeaponHolder.currentWeapon == 0){
             maxMoveSpeed = 450;
             ApplyForce(new Vector2(15000 * direction, 0));
         }
-        else if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1)
-        {
+        else if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1){
             maxMoveSpeed = 300;
             ApplyForce(new Vector2(15000 * direction, 0));
         }
@@ -94,22 +99,21 @@ public partial class Player : RigidBody2D
         float aimX;
         float aimY;
         // Check if player is using right thumbstick otherwise use left
-        if (Input.GetJoyAxis(playerIndex, JoyAxis.RightX) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightX) <= -0.5
-          || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) <= -0.5)
-        {
+        bool movingRThumbX = Input.GetJoyAxis(playerIndex, JoyAxis.RightX) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightX) <= -0.5;
+        bool movingRThumbY = Input.GetJoyAxis(playerIndex, JoyAxis.RightY) >= 0.5 || Input.GetJoyAxis(playerIndex, JoyAxis.RightY) <= -0.5;
+        bool movingRThumb = movingRThumbX || movingRThumbY;
+        if (movingRThumb){
             aimX = Input.GetJoyAxis(playerIndex, JoyAxis.RightX);
             aimY = Input.GetJoyAxis(playerIndex, JoyAxis.RightY);
         }
-        else
-        {
+        else{
             aimX = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
             aimY = Input.GetJoyAxis(playerIndex, JoyAxis.LeftY);
         }
 
         Vector2 aimDirection = new Vector2(aimX, aimY);
 
-        if (aimDirection.Length() > 0.3)
-        {
+        if (aimDirection.Length() > 0.3){
             aimDirection = aimDirection.Normalized();
 
             // Apply the offset to the aimDirection
@@ -125,14 +129,24 @@ public partial class Player : RigidBody2D
 
     private void ChangeWeapon()
     {
-        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !changingWeapon)
-        {
+        if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !changingWeapon){
             changingWeapon = true;
             WeaponHolder.ChangeWeapon();
         }
-        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.Y))
-        {
+        else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.Y)){
             changingWeapon = false;
+        }
+    }
+
+    private void RegenerateArrows(double delta)
+    {
+        regenTime -= delta;
+        regenerating = true;
+        if(regenTime <= Mathf.Epsilon){
+            arrowCount++;
+            regenerating = false;
+            GD.Print(arrowCount);
+            return;
         }
     }
 
@@ -141,13 +155,11 @@ public partial class Player : RigidBody2D
         Vector2 info;
         float attackStrength;
 
-        if (area is Slash slash)
-        {
+        if (area is Slash slash){
             (info, attackStrength) = slash.GiveInfo();
             DamageFromMelee(info, attackStrength);
         }
-        else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
-        {
+        else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
             info = hookHitBox.GiveInfo() - GlobalPosition;
             DamageFromHook(info);
         }
@@ -155,15 +167,22 @@ public partial class Player : RigidBody2D
 
     private void RecieveRangedHit(Node2D body)
     {
-        Vector2 info = Vector2.Zero;
-
-        if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex)
-        {
-            info = arrow.GiveInfo();
+        if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
+            Vector2 info = arrow.GiveInfo();
             DamageFromArrow(info, arrow.forceApplied);
         }
     }
 
+    /*
+        When recieving damage lock the player movement and make them able to slide and bounce.
+
+        Afterwards, take the direction that the player should be launched and normalize it, reset the player velocity apply appropriate damage and launch the player
+
+        The impulse strength checks if the combo count is more than 1 and multiplies damage taken which then multiplies the hitdirection variable
+        the damage to the player is unchanged but the force applied is
+
+        then increase combo count, start a timer for when the player is no longer bouncey and stunned and make it so the players ground check is not monitoring
+    */
     private void DamageFromMelee(Vector2 info, float attackStrength)
     {
         knockedBack = true;
@@ -172,29 +191,20 @@ public partial class Player : RigidBody2D
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         LinearVelocity = new Vector2(0, 0);
         damageTaken += 750 * attackStrength;
-        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount + attackStrength * damageTaken : damageTaken));
+        ApplyImpulse(hitDirection * (comboCount > 1 ? comboCount + attackStrength * damageTaken : damageTaken));
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
         GD.Print("Player " + (playerIndex + 1) + ":" + damageTaken);
-        // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
         GroundCheck.Monitoring = false;
     }
     private void DamageFromArrow(Vector2 info, double forceApplied)
     {
-        // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
-        //  which ill write about more in depth later because I'm still adding them 
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        // Vector2 hitDirection;
-        // if(info.X > info.Y){
-        //     hitDirection = new Vector2(info.X, 0).Normalized();
-        // }else {
-        //     hitDirection = new Vector2(0, info.Y).Normalized();
-        // }
         damageTaken += 1000;
         LinearVelocity = new Vector2(0, 0);
         ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
@@ -202,28 +212,26 @@ public partial class Player : RigidBody2D
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
-        // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
         GroundCheck.Monitoring = false;
     }
 
+    // functionally about the same but not applying damage having a fixed impulse strength and increasing combo count by 3
     private void DamageFromHook(Vector2 info)
     {
-        // Make it so youre slidey, bounce, cant move and toss you're character in a direction based on several factors
-        //  which ill write about more in depth later because I'm still adding them 
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        LinearVelocity = new Vector2(LinearVelocity.X, 0);
+        LinearVelocity = new Vector2(0, 0);
         ApplyImpulse(hitDirection * 10000);
         comboCount += 3;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GD.Print(comboCount);
-        // make it so the ground check cant ground player temporarily so that it doesnt reset combo count
         GroundCheck.Monitoring = false;
     }
 
+    // turns off player stun recieved from hit and applies impulse to self in desired direction
     public void Grapple(Vector2 info)
     {
         KnockBackDuration.WaitTime = 0.01f;
@@ -236,6 +244,7 @@ public partial class Player : RigidBody2D
     // States
     private void Grounded(Node body)
     {
+        //checking the y linear velocity to not allow passing through one way platform as grounding
         if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10)
         {
             isGrounded = true;
@@ -244,7 +253,6 @@ public partial class Player : RigidBody2D
             jumpCount = 3;
         }
     }
-
     private void UnGrounded(Node2D body)
     {
         if (body.IsInGroup("Environment"))
@@ -252,7 +260,7 @@ public partial class Player : RigidBody2D
             isGrounded = false;
         }
     }
-    private void AllowMovement()
+    public void AllowMovement()
     {
         knockedBack = false;
         PhysicsMaterialOverride.Bounce = 0;

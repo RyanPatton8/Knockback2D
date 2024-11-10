@@ -74,4 +74,4 @@ position = Vector2(359, -274)
 position = Vector2(-430, -201)
 
 [node name="WorldBorder" parent="." instance=ExtResource("4_nhmpn")]
-scale = Vector2(87.771, -50)
+scale = Vector2(125, -71.208)
