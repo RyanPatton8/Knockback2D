@@ -37,6 +37,8 @@ public partial class Player : RigidBody2D
         GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveMeleeHit;
         HurtBox.BodyEntered += RecieveRangedHit;
+        BodyEntered += PlayerBump;
+        BodyEntered += StopBump;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
     }
@@ -173,6 +175,23 @@ public partial class Player : RigidBody2D
         }
     }
 
+    private void PlayerBump(Node body)
+    {
+        if(body is Player && !knockedBack){
+            LinearVelocity = new Vector2(0, 0);
+            Mass = 1000;
+            GD.Print(Mass);
+        }
+    }
+
+    private void StopBump(Node body)
+    {
+        if(body is Player && !knockedBack){
+            LinearVelocity = new Vector2(0, 0);
+            Mass = 10;
+            GD.Print(Mass);
+        }
+    }
     /*
         When recieving damage lock the player movement and make them able to slide and bounce.
 
@@ -219,11 +238,11 @@ public partial class Player : RigidBody2D
     private void DamageFromHook(Vector2 info)
     {
         knockedBack = true;
-        PhysicsMaterialOverride.Friction = 0;
+        PhysicsMaterialOverride.Friction = 0.3f;
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         LinearVelocity = new Vector2(0, 0);
-        ApplyImpulse(hitDirection * 10000);
+        ApplyImpulse(new Vector2(hitDirection.X * 7000, hitDirection.Y * 10000));
         comboCount += 3;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();

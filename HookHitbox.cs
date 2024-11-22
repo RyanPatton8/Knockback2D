@@ -25,6 +25,7 @@ public partial class HookHitbox : Area2D
         {
 			playerNode.Grapple(GlobalPosition - playerNode.GlobalPosition);
         }
+        
         fishingRod.hookOut = false;
         hookNode.QueueFree();
     }

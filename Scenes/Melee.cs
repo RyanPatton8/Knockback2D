@@ -79,9 +79,11 @@ public partial class Melee : Node
             switch(chargeLevel){
                 case 3:
                     attackMultiplier = 1.5f;
+                    playerNode.ApplyImpulse(new Vector2(instance.GlobalPosition.X - playerNode.GlobalPosition.X, instance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 100);
                     break;
                 case 2:
                     attackMultiplier = 1;
+                    playerNode.ApplyImpulse(new Vector2(instance.GlobalPosition.X - playerNode.GlobalPosition.X, instance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 50);
                     break;
                 default:
                     attackMultiplier = .2f;

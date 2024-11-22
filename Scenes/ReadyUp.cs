@@ -41,24 +41,31 @@ public partial class ReadyUp : Control
 			RemovePlayer(3);
 		}
 
-		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerLives.Count > 0){
+		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerList.Count > 0){
 			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_01.tscn");
 			GD.Print(playerManager);
 		}
 	}
 	private void AddPlayer(int playerIndex)
 	{
+		if (playerManager.playerList.ContainsKey(playerIndex))
+            return;
 		Color currentColor = players[playerIndex].Color;
 		currentColor.A = 255;
 		players[playerIndex].Color = currentColor;
+		playerManager.playersAlive++;
 		playerManager.AddPlayer(playerIndex);
 	}
 
 	private void RemovePlayer(int playerIndex)
 	{
+		if (!playerManager.playerList.ContainsKey(playerIndex))
+            return;
+		playerManager.playersAlive--;
 		Color currentColor = players[playerIndex].Color;
 		currentColor.A = 0;
 		players[playerIndex].Color = currentColor;
+		playerManager.playersAlive++;
 		playerManager.RemovePlayer(playerIndex);
 	}
 }

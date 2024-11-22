@@ -5,7 +5,7 @@ public partial class Slash : Area2D
 {
 	public int playerIndex;
 	public Player player;
-	double attackDuration = .3;
+	double attackDuration = .2;
 	public int chargeLevel;
 	public float attackStrength;
 
@@ -33,6 +33,7 @@ public partial class Slash : Area2D
 	}
 	public (Vector2, float) GiveInfo()
 	{
+		attackDuration = 0.1f;
 		return (GlobalPosition - player.GlobalPosition, attackStrength);
 	}
 }
