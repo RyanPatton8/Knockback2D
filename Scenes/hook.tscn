@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://btsk4ci5bevrv"]
+
+[ext_resource type="Script" path="res://Hook.cs" id="1_brk3s"]
+[ext_resource type="Texture2D" uid="uid://bv4jq88iktnpl" path="res://Sprites/FishingHook.svg" id="2_8pgd3"]
+[ext_resource type="Script" path="res://HookHitbox.cs" id="3_uer0q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6m410"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ngpsn"]
+
+[node name="RigidBody2D" type="RigidBody2D"]
+collision_layer = 2
+script = ExtResource("1_brk3s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8pgd3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.1, 0.1)
+shape = SubResource("CircleShape2D_6m410")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+script = ExtResource("3_uer0q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(1.3, 1.3)
+shape = SubResource("CircleShape2D_ngpsn")

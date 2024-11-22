@@ -1,0 +1,79 @@
+# Godot 4+ specific ignores
+.godot/
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+*.translated
+*.import
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+mono_crash.*
+GodotSharp/
+
+# Godot specific files
+.import/
+.export/
+export.cfg
+export_presets.cfg
+
+# Rider-specific (in case any team members use Rider)
+.idea/
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.so
+*.dylib
+*.class
+*.jar
+*.nupkg
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# Nuget packages
+*.nupkg
+packages/
+
+# User-specific files
+*.userprefs
+*.csproj.user
+*.suo
+
+# VSCode specific files
+.vscode/
+*.code-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.tmp
+*.swp
+*~
+
+# Logs
+*.log
+
+# Lock files
+*.lock
