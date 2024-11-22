@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class PlayerManager : Node
 {
-    PackedScene player = (PackedScene)ResourceLoader.Load("res://Scenes/player.tscn");
+    PackedScene player = (PackedScene)ResourceLoader.Load("res://Scenes/Player/player.tscn");
     private static PlayerManager _instance;
 
     public Dictionary<int, PlayerInfo> playerList = new Dictionary<int, PlayerInfo>();
@@ -63,13 +63,13 @@ public partial class PlayerManager : Node
         if (playersAlive <= 1)
         {
             CallDeferred(nameof(ChangeScene));
-            GD.Print("Changing Scene");
+            playerList.Clear();
         }
     }
     private void ChangeScene()
     {
         // Ensure the scene change is handled safely after deferring
-        GetTree().ChangeSceneToFile("res://Scenes/main.tscn");
+        GetTree().ChangeSceneToFile("res://Scenes/Levels/main.tscn");
     }
 
     //instantiate the player at a specified spawn

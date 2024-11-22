@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dpkbq4rd37qh5"]
 
-[ext_resource type="Script" path="res://Scenes/ReadyUp.cs" id="1_fo2u2"]
+[ext_resource type="Script" path="res://Scripts/LevelScripts/ReadyUp.cs" id="1_fo2u2"]
 
 [node name="Control" type="Control" node_paths=PackedStringArray("players")]
 layout_mode = 3

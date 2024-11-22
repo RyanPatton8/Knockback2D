@@ -5,12 +5,12 @@
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
 [ext_resource type="Texture2D" uid="uid://c4orj6glxdgwe" path="res://Sprites/MeleeAim.svg" id="4_soam1"]
-[ext_resource type="Script" path="res://Scenes/Melee.cs" id="5_k4pk5"]
-[ext_resource type="Script" path="res://Scenes/Range.cs" id="6_703d2"]
-[ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Arrow.tscn" id="7_f35k5"]
-[ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/slash.tscn" id="7_vokl2"]
-[ext_resource type="Script" path="res://Scenes/FishingRod.cs" id="9_rdm57"]
-[ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/hook.tscn" id="10_vnxqg"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/Melee.cs" id="5_k4pk5"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/Range.cs" id="6_703d2"]
+[ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Player/Arrow.tscn" id="7_f35k5"]
+[ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/Player/slash.tscn" id="7_vokl2"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
+[ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Levels/hook.tscn" id="10_vnxqg"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
 friction = 0.0

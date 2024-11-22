@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnxewib7nuo0f"]
 
-[ext_resource type="Script" path="res://Scenes/Levels/Level.cs" id="1_brfdy"]
-[ext_resource type="PackedScene" uid="uid://dg6dhg56ne65v" path="res://Scenes/platform.tscn" id="2_buc1k"]
-[ext_resource type="PackedScene" uid="uid://d4molhkonh00g" path="res://Scenes/one_way_platform.tscn" id="3_uawu6"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/Level.cs" id="1_brfdy"]
+[ext_resource type="PackedScene" path="res://Scenes/Levels/platform.tscn" id="2_buc1k"]
+[ext_resource type="PackedScene" path="res://Scenes/Levels/one_way_platform.tscn" id="3_uawu6"]
 [ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/Levels/world_border.tscn" id="4_nhmpn"]
 
 [node name="Level_01" type="Node2D" node_paths=PackedStringArray("spawns")]
