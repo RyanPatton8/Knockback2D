@@ -50,6 +50,7 @@ public partial class PlayerManager : Node
     public void AddPlayer(int playerIndex)
     {
         playerList.Add(playerIndex, new PlayerInfo());
+        GD.Print(playerList);
     }
 
     public void RemovePlayer(int playerIndex)
@@ -63,13 +64,18 @@ public partial class PlayerManager : Node
         if (playersAlive <= 1)
         {
             CallDeferred(nameof(ChangeScene));
-            playerList.Clear();
+            CallDeferred(nameof(ClearPlayerList));
         }
     }
     private void ChangeScene()
     {
         // Ensure the scene change is handled safely after deferring
         GetTree().ChangeSceneToFile("res://Scenes/Levels/main.tscn");
+    }
+
+    private void ClearPlayerList()
+    {
+        playerList.Clear();
     }
 
     //instantiate the player at a specified spawn
