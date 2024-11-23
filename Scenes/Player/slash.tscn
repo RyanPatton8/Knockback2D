@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://htbr7noopagf"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Slash.cs" id="1_8b25p"]
-[ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="2_p2y7f"]
+[ext_resource type="Texture2D" uid="uid://jqmyoorr1pee" path="res://Sprites/TempSlash.svg" id="2_sjdox"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvbo4"]
 size = Vector2(70, 20)
@@ -12,9 +12,9 @@ collision_mask = 3
 script = ExtResource("1_8b25p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(8.63835, 0)
-scale = Vector2(0.193151, 0.12)
-texture = ExtResource("2_p2y7f")
+position = Vector2(10, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_sjdox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8.75, 0)

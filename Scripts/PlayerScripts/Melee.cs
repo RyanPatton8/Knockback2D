@@ -49,7 +49,6 @@ public partial class Melee : Node
             attackMultiplier = 1.5f;
             playerNode.ApplyImpulse(new Vector2((instance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, instance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 150);
             instance.attackStrength = attackMultiplier;
-            GD.Print(chargeLevel);
         }
     }
 }

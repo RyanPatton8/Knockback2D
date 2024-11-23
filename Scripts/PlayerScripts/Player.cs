@@ -33,7 +33,7 @@ public partial class Player : RigidBody2D
     private double maxRegenTime = 4;
     private bool regenerating = false;
     public bool isAttacking = false;
-    private double endLagTime = 0.5f;
+    public double endLagTime = 0.5f;
     private double maxEndLagTime = 0.5f;
     public Color playerColor;
     // Reference to player manager singleton
@@ -66,11 +66,11 @@ public partial class Player : RigidBody2D
                 RegenerateArrows(delta);
             }
             Aim();
-            ChangeWeapon();
         }
         else{
             AttackEndLag(delta);
         }
+        ChangeWeapon();
     }
     private void Move(double delta)
     {
@@ -202,16 +202,12 @@ public partial class Player : RigidBody2D
     {
         if(body is Player && !knockedBack){
             LinearVelocity = new Vector2(0, 0);
-            //Mass = 1000;
-            GD.Print(Mass);
         }
     }
     private void StopBump(Node body)
     {
         if(body is Player && !knockedBack){
             LinearVelocity = new Vector2(0, 0);
-            //Mass = 10;
-            GD.Print(Mass);
         }
     }
     /*
@@ -236,8 +232,6 @@ public partial class Player : RigidBody2D
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
-        GD.Print(comboCount);
-        GD.Print("Player " + (playerIndex + 1) + ":" + damageTaken);
         GroundCheck.Monitoring = false;
     }
     private void DamageFromArrow(Vector2 info, double forceApplied)
@@ -252,7 +246,6 @@ public partial class Player : RigidBody2D
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
-        GD.Print(comboCount);
         GroundCheck.Monitoring = false;
     }
 
@@ -268,7 +261,6 @@ public partial class Player : RigidBody2D
         comboCount += 3;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
-        GD.Print(comboCount);
         GroundCheck.Monitoring = false;
     }
     // Called to remove stun from knockback

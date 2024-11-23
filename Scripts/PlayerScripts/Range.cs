@@ -46,7 +46,6 @@ public partial class Range : Node
     }
     private void Attack()
     {
-        GD.Print("Arrows Left: " + playerNode.arrowCount);
         if(canAttack){
             canAttack = false;
             playerNode.arrowCount--;
