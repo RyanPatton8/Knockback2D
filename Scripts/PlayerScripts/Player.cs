@@ -11,6 +11,7 @@ public partial class Player : RigidBody2D
     [Export] public Area2D HurtBox { get; private set; }
     [Export] public Area2D HitBox { get; private set; }
     [Export] public WeaponHolder WeaponHolder { get; private set; }
+    [Export] public Sprite2D PlayerSprite {get; private set;}
     // How far from player should hitbox rotate
     private float offsetAmount = 23;
     // Movement Variables
@@ -29,6 +30,8 @@ public partial class Player : RigidBody2D
     private double regenTime = 4;
     private double maxRegenTime = 4;
     private bool regenerating = false;
+
+    public Color playerColor;
     // Reference to player manager singleton
     PlayerManager playerManager;
     public override void _Ready()
@@ -41,6 +44,7 @@ public partial class Player : RigidBody2D
         BodyEntered += StopBump;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
+        PlayerSprite.Modulate = playerColor;
     }
 
     public override void _PhysicsProcess(double delta)

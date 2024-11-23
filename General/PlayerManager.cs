@@ -14,13 +14,27 @@ public partial class PlayerManager : Node
     //Class to store all sorts of player info in future will be used for storing player color, kills/death stats and more
     public class PlayerInfo
     {
-        private int lives = 2;
+        private int lives;
+        public Color playerColor = new Color();
         public PlayerInfo() {}
+
+        public PlayerInfo(int lives, Color playerColor){
+            this.lives = lives;
+            this.playerColor = playerColor;
+        }
         public int getLives(){
             return lives;
         }
         public void setLives(int liveLost){
             lives += liveLost;
+        }
+
+        public Color GetColor(){
+            return playerColor;
+        }
+
+        public void setColor(Color newColor){
+            playerColor = newColor;
         }
     }
     //allows any script to reference PlayerManager
@@ -49,8 +63,23 @@ public partial class PlayerManager : Node
     //adds and remove players to and from dictionary indexed by player index
     public void AddPlayer(int playerIndex)
     {
-        playerList.Add(playerIndex, new PlayerInfo());
-        GD.Print(playerList);
+        switch(playerIndex){
+            case 0:
+                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(.5f,0,0)));
+                 break;
+            case 1:
+                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(0,0,.5f)));
+                 break;
+            case 2:
+                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(.5f,.5f,0)));
+                 break;
+            case 3:
+                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(0,.5f,0)));
+                 break;
+            default:
+                GD.Print("Player index not found in PlayerManager AddPlayer()");
+                break;
+        }
     }
 
     public void RemovePlayer(int playerIndex)
@@ -84,6 +113,7 @@ public partial class PlayerManager : Node
         // Defer the instantiation and adding to the scene tree
         Player instance = (Player)player.Instantiate();
         GetTree().Root.CallDeferred("add_child", instance);
+        instance.playerColor = playerList[playerIndex].GetColor();
         instance.GlobalPosition = spawnPoint;
         instance.playerIndex = playerIndex;
     }

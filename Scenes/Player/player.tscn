@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
-[ext_resource type="Texture2D" uid="uid://bu22auvjg30hf" path="res://icon.svg" id="1_tr633"]
+[ext_resource type="Texture2D" uid="uid://btfrdielphf7w" path="res://Sprites/TempPlayer.svg" id="2_cygnj"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
 [ext_resource type="Texture2D" uid="uid://c4orj6glxdgwe" path="res://Sprites/MeleeAim.svg" id="4_soam1"]
@@ -23,7 +23,7 @@ friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eg4u0"]
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder") groups=["player"]]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite") groups=["player"]]
 mass = 10.0
 physics_material_override = SubResource("PhysicsMaterial_2wmr8")
 lock_rotation = true
@@ -36,10 +36,10 @@ KnockBackDuration = NodePath("HurtBox/KnockBackTimer")
 HurtBox = NodePath("HurtBox")
 HitBox = NodePath("HitBox")
 WeaponHolder = NodePath("WeaponHolder")
+PlayerSprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.16, 0.24)
-texture = ExtResource("1_tr633")
+texture = ExtResource("2_cygnj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_yh4tg")
