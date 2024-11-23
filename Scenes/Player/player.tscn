@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Player/Arrow.tscn" id="7_f35k5"]
 [ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/Player/slash.tscn" id="7_vokl2"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
-[ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Levels/hook.tscn" id="10_vnxqg"]
+[ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Player/hook.tscn" id="10_vnxqg"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
 friction = 0.0
@@ -39,6 +39,7 @@ WeaponHolder = NodePath("WeaponHolder")
 PlayerSprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_cygnj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

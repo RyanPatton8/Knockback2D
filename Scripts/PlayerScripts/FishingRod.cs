@@ -10,6 +10,7 @@ public partial class FishingRod : Node
     private bool canAttack = true;
     public bool hookOut = false;
     private double attackCoolDown = 1;
+    Hook instance;
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
     {
@@ -17,32 +18,36 @@ public partial class FishingRod : Node
     }
     public override void _Process(double delta)
 	{
-		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.5f && canAttack)
-        {
-            charged = true;
-        } 
-        else if (charged)
+		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.5f && canAttack && !hookOut)
         {
             Attack();
             canAttack = false;
             hookOut = true;
-            charged = false;
-        }
-        else if (!canAttack && !hookOut)
+        } 
+        else if (!canAttack)
         {
             attackCoolDown -= delta;
             if(attackCoolDown <= Mathf.Epsilon){
                 canAttack = true;
-                attackCoolDown = .5;
+                attackCoolDown = .6;
             }
         }
+        // Cancelable Hook
+        // if (hookOut && canAttack && Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.5f)
+        // {
+        //     instance.CallDeferred("queue_free");
+        //     canAttack = true;
+        //     attackCoolDown = .6;
+        //     hookOut = false;
+        //     GD.Print("Destroying");
+        // } 
 	}
 	private void Attack()
     {
         if(canAttack){
             canAttack = false;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
-            Hook instance = (Hook)hook.Instantiate();
+            instance = (Hook)hook.Instantiate();
             AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);

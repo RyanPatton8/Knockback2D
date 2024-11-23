@@ -3,7 +3,6 @@ using System;
 
 public partial class Arrow : RigidBody2D
 {
-    [Export] public Area2D collArea {get; set;}
     public int playerIndex;
     public double forceApplied;
     private bool hittingPlayer;

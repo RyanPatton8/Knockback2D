@@ -19,6 +19,8 @@ public partial class Player : RigidBody2D
     private bool isJumping = false;
     public bool canJump = true;
     private int jumpCount = 1;
+
+    private int maxJumpCount = 1;
     // Combat Variables 
     private float comboCount = 1;
     private bool knockedBack = false;
@@ -30,7 +32,9 @@ public partial class Player : RigidBody2D
     private double regenTime = 4;
     private double maxRegenTime = 4;
     private bool regenerating = false;
-
+    public bool isAttacking = false;
+    private double endLagTime = 0.5f;
+    private double maxEndLagTime = 0.5f;
     public Color playerColor;
     // Reference to player manager singleton
     PlayerManager playerManager;
@@ -45,24 +49,29 @@ public partial class Player : RigidBody2D
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
         PlayerSprite.Modulate = playerColor;
+        HitBox.GlobalPosition = GlobalPosition + new Vector2(1,0) * offsetAmount;
     }
-
     public override void _PhysicsProcess(double delta)
     {
-        if (!knockedBack){
-            Move(delta);
+        if(!isAttacking){   //Ensure the player isn't attacking and currently expiriencing the end lag from that attack
+            if (!knockedBack){// Only allow them to move if they also aren't stunned from being hit
+                Move(delta);
+            }
+            //Always regenerate arrows if less than max arrows but reset max regen time after every arrow generated
+            if(arrowCount < maxArrows && regenerating){
+                RegenerateArrows(delta);
+            }
+            else if(arrowCount < maxArrows && !regenerating){
+                regenTime = maxRegenTime;
+                RegenerateArrows(delta);
+            }
+            Aim();
+            ChangeWeapon();
         }
-        Aim();
-        ChangeWeapon();
-        if(arrowCount < maxArrows && regenerating){
-            RegenerateArrows(delta);
-        }
-        else if(arrowCount < maxArrows && !regenerating){
-            regenTime = maxRegenTime;
-            RegenerateArrows(delta);
+        else{
+            AttackEndLag(delta);
         }
     }
-
     private void Move(double delta)
     {
         // Handle Jumps
@@ -99,7 +108,6 @@ public partial class Player : RigidBody2D
             ApplyForce(new Vector2(15000 * direction, 0));
         }
     }
-
     private void Aim()
     {
         float aimX;
@@ -132,7 +140,6 @@ public partial class Player : RigidBody2D
             HitBox.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(newPosition));
         }
     }
-
     private void ChangeWeapon()
     {
         if (Input.IsJoyButtonPressed(playerIndex, JoyButton.Y) && !changingWeapon){
@@ -143,7 +150,6 @@ public partial class Player : RigidBody2D
             changingWeapon = false;
         }
     }
-
     private void RegenerateArrows(double delta)
     {
         regenTime -= delta;
@@ -151,19 +157,28 @@ public partial class Player : RigidBody2D
         if(regenTime <= Mathf.Epsilon){
             arrowCount++;
             regenerating = false;
-            GD.Print(arrowCount);
             return;
         }
     }
-
+    public void AttackEndLag(double delta){
+        endLagTime -= delta;
+        if(endLagTime <= Mathf.Epsilon){
+            isAttacking = false;
+            endLagTime = maxEndLagTime;
+        }
+    }
+    // Handle all kinds of attacks and pass info to methods to do stuff
     private void RecieveMeleeHit(Area2D area)
     {
         Vector2 info;
         float attackStrength;
+        int attackOwner;
 
         if (area is Slash slash){
-            (info, attackStrength) = slash.GiveInfo();
-            DamageFromMelee(info, attackStrength);
+            (info, attackStrength, attackOwner) = slash.GiveInfo();
+            if(attackOwner != playerIndex){
+                DamageFromMelee(info, attackStrength);
+            }
         }
         else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
             info = hookHitBox.GiveInfo() - GlobalPosition;
@@ -178,21 +193,24 @@ public partial class Player : RigidBody2D
             DamageFromArrow(info, arrow.forceApplied);
         }
     }
+    /*
+        When you bump into another player reset velocity to prevent killing yourself off bouncing your opponent
 
+        Before this it was kind of a Poe Belly Bump Kungfu Panda Scenario  
+    */
     private void PlayerBump(Node body)
     {
         if(body is Player && !knockedBack){
             LinearVelocity = new Vector2(0, 0);
-            Mass = 1000;
+            //Mass = 1000;
             GD.Print(Mass);
         }
     }
-
     private void StopBump(Node body)
     {
         if(body is Player && !knockedBack){
             LinearVelocity = new Vector2(0, 0);
-            Mass = 10;
+            //Mass = 10;
             GD.Print(Mass);
         }
     }
@@ -253,7 +271,14 @@ public partial class Player : RigidBody2D
         GD.Print(comboCount);
         GroundCheck.Monitoring = false;
     }
-
+    // Called to remove stun from knockback
+    public void AllowMovement()
+    {
+        knockedBack = false;
+        PhysicsMaterialOverride.Bounce = 0;
+        PhysicsMaterialOverride.Friction = 0.6f;
+        GroundCheck.Monitoring = true;
+    }
     // turns off player stun recieved from hit and applies impulse to self in desired direction
     public void Grapple(Vector2 info)
     {
@@ -273,7 +298,7 @@ public partial class Player : RigidBody2D
             isGrounded = true;
             comboCount = 1;
             canJump = true;
-            jumpCount = 3;
+            jumpCount = maxJumpCount;
         }
     }
     private void UnGrounded(Node2D body)
@@ -282,12 +307,5 @@ public partial class Player : RigidBody2D
         {
             isGrounded = false;
         }
-    }
-    public void AllowMovement()
-    {
-        knockedBack = false;
-        PhysicsMaterialOverride.Bounce = 0;
-        PhysicsMaterialOverride.Friction = 0.6f;
-        GroundCheck.Monitoring = true;
     }
 }
