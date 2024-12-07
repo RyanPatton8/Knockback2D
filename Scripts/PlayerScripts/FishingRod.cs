@@ -5,7 +5,7 @@ public partial class FishingRod : Node
 {
 	[Export] public PackedScene hook {get; private set;}
 	private Player playerNode;
-    private double throwForce = 35;
+    private double throwForce = 45;
     private bool charged = false;
     private bool canAttack = true;
     public bool hookOut = false;
@@ -18,7 +18,7 @@ public partial class FishingRod : Node
     }
     public override void _Process(double delta)
 	{
-		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.5f && canAttack && !hookOut)
+		if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.7f && canAttack && !hookOut && playerNode.hookCount > 0)
         {
             Attack();
             canAttack = false;
@@ -46,6 +46,7 @@ public partial class FishingRod : Node
     {
         if(canAttack){
             canAttack = false;
+            playerNode.hookCount--;
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             instance = (Hook)hook.Instantiate();
             AddChild(instance);

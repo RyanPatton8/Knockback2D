@@ -6,7 +6,7 @@ public partial class Range : Node
     [Export] public PackedScene arrow {get; private set;}
 	private Player playerNode;
     private double startingThrowForce = 30;
-    private double throwForce = 30;
+    private double throwForce = 35;
     private double maxThrowForce = 60;
     private int chargeSpeed = 40;
     private bool charged = false;
@@ -18,14 +18,15 @@ public partial class Range : Node
     }
     public override void _Process(double delta)
 	{
-		AttackInput(delta);
+        if(!playerNode.knockedBack){
+		    AttackInput(delta);
+        }
 	}
     private void AttackInput(double delta)
     {
-        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.5f && canAttack && playerNode.arrowCount > 0)
+        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) < 0.7f && canAttack && playerNode.arrowCount > 0)
         {
             charged = true;
-            throwForce += delta * chargeSpeed;
             if (throwForce > maxThrowForce) {throwForce = maxThrowForce;}
         } 
         else if (charged)
@@ -33,7 +34,6 @@ public partial class Range : Node
             Attack();
             canAttack = false;
             charged = false;
-            throwForce = startingThrowForce;
         }
         else if (!canAttack)
         {
@@ -55,6 +55,7 @@ public partial class Range : Node
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
             instance.forceApplied = throwForce;
+            instance.arrowSprite.Modulate = playerNode.playerColor;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
         }
     }

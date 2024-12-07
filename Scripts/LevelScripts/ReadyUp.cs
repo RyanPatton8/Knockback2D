@@ -42,8 +42,7 @@ public partial class ReadyUp : Control
 		}
 
 		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerList.Count > 0){
-			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_01.tscn");
-			GD.Print(playerManager);
+			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_02.tscn");
 		}
 	}
 	private void AddPlayer(int playerIndex)

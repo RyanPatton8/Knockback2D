@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnxewib7nuo0f"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Level.cs" id="1_brfdy"]
-[ext_resource type="PackedScene" path="res://Scenes/Levels/platform.tscn" id="2_buc1k"]
-[ext_resource type="PackedScene" path="res://Scenes/Levels/one_way_platform.tscn" id="3_uawu6"]
+[ext_resource type="Script" path="res://Scripts/LevelScripts/Level.cs" id="1_brfdy"]
+[ext_resource type="PackedScene" uid="uid://dg6dhg56ne65v" path="res://Scenes/Levels/platform.tscn" id="2_buc1k"]
+[ext_resource type="PackedScene" uid="uid://d4molhkonh00g" path="res://Scenes/Levels/one_way_platform.tscn" id="3_uawu6"]
 [ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/Levels/world_border.tscn" id="4_nhmpn"]
 
-[node name="Level_01" type="Node2D" node_paths=PackedStringArray("spawns")]
+[node name="Level_01" type="Node2D" node_paths=PackedStringArray("PlayerSpawn")]
 script = ExtResource("1_brfdy")
-spawns = [NodePath("PlayerSpawner/Marker2D"), NodePath("PlayerSpawner/Marker2D2"), NodePath("PlayerSpawner/Marker2D3"), NodePath("PlayerSpawner/Marker2D4")]
+PlayerSpawn = NodePath("PlayerSpawner")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.6, 0.6)
@@ -72,6 +72,18 @@ position = Vector2(359, -274)
 
 [node name="Marker2D4" type="Marker2D" parent="PlayerSpawner"]
 position = Vector2(-430, -201)
+
+[node name="Marker2D5" type="Marker2D" parent="PlayerSpawner"]
+position = Vector2(14, -127)
+
+[node name="Marker2D6" type="Marker2D" parent="PlayerSpawner"]
+position = Vector2(-14, 309)
+
+[node name="Marker2D7" type="Marker2D" parent="PlayerSpawner"]
+position = Vector2(-555, -448)
+
+[node name="Marker2D8" type="Marker2D" parent="PlayerSpawner"]
+position = Vector2(906, -468)
 
 [node name="WorldBorder" parent="." instance=ExtResource("4_nhmpn")]
 scale = Vector2(125, -71.208)

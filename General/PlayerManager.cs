@@ -15,26 +15,66 @@ public partial class PlayerManager : Node
     public class PlayerInfo
     {
         private int lives;
-        public Color playerColor = new Color();
-        public PlayerInfo() {}
+        private int kills;
+        private Color playerColor = new Color();
+        private int arrowCount;
+        private int hookCount;
+        private float damageTaken = 0;
+        private float damageGiven = 0;
+        private int comboCount = 1;
 
-        public PlayerInfo(int lives, Color playerColor){
+        public PlayerInfo() {}
+        public PlayerInfo(int lives, Color playerColor, int arrowCount, int hookCount){
             this.lives = lives;
             this.playerColor = playerColor;
         }
-        public int getLives(){
+        public int GetLives(){
             return lives;
         }
-        public void setLives(int liveLost){
+        public void SetLives(int liveLost){
             lives += liveLost;
         }
-
+        public int GetKills(){
+            return kills;
+        }
+        public void SetKills(int newKill){
+            kills += newKill;
+        }
         public Color GetColor(){
             return playerColor;
         }
-
-        public void setColor(Color newColor){
+        public void SetColor(Color newColor){
             playerColor = newColor;
+        }
+        public int GetArrowCount(){
+            return arrowCount;
+        }
+        public void SetArrowCount(int arrowCount){
+            this.arrowCount = arrowCount;
+        }
+        public int GetHookCount(){
+            return hookCount;
+        }
+        public void SetHookCount(int hookCount){
+            this.hookCount = hookCount;
+        }
+        public float GetDamageTaken(){
+            return damageTaken;
+        }
+        public void SetDamageTaken(float damage){
+            damageTaken += damage;
+        }
+        public float GetDamageGiven(){
+            return damageGiven;
+        }
+        public void SetDamageGiven(float damage){
+            damageGiven += damage;
+        }
+        public int GetComboCount(){
+            return comboCount;
+        }
+        public void SetComboCount(int newComboCount){
+            comboCount = newComboCount;
         }
     }
     //allows any script to reference PlayerManager
@@ -65,16 +105,16 @@ public partial class PlayerManager : Node
     {
         switch(playerIndex){
             case 0:
-                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(.5f,0,0)));
+                 playerList.Add(playerIndex, new PlayerInfo(3, new Color(.5f,0,0), 4, 4));
                  break;
             case 1:
-                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(0,0,.5f)));
+                 playerList.Add(playerIndex, new PlayerInfo(3, new Color(0,0,.5f), 4, 4));
                  break;
             case 2:
-                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(.5f,.5f,0)));
+                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(.5f,.5f,0), 4, 4));
                  break;
             case 3:
-                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(0,.5f,0)));
+                 playerList.Add(playerIndex, new PlayerInfo(3,new Color(0,.5f,0), 4, 4));
                  break;
             default:
                 GD.Print("Player index not found in PlayerManager AddPlayer()");
@@ -93,13 +133,15 @@ public partial class PlayerManager : Node
         if (playersAlive <= 1)
         {
             CallDeferred(nameof(ChangeScene));
-            CallDeferred(nameof(ClearPlayerList));
+           
         }
     }
     private void ChangeScene()
     {
         // Ensure the scene change is handled safely after deferring
         GetTree().ChangeSceneToFile("res://Scenes/Levels/main.tscn");
+         CallDeferred(nameof(ClearPlayerList));
+         playersAlive = 0;
     }
 
     private void ClearPlayerList()
@@ -121,9 +163,9 @@ public partial class PlayerManager : Node
     //decrement player life if they are not at 0 respawn otherwise check for game over
     public void LoseALife(int playerIndex)
     {
-        playerList[playerIndex].setLives(-1);
+        playerList[playerIndex].SetLives(-1);
 
-        if (playerList[playerIndex].getLives() > 0){
+        if (playerList[playerIndex].GetLives() > 0){
             // Respawn player after losing a life
             Random rnd = new Random();
             Vector2 spawnPoint = spawnPoints[rnd.Next(0, spawnPoints.Count)].GlobalPosition;

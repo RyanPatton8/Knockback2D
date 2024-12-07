@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://be436skp13tha"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerCard.cs" id="1_1wihs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0gwmf"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_s0lg3"]
+
+[node name="PlayerCard" type="MarginContainer" node_paths=PackedStringArray("ArrowCount", "HookCount", "LivesCount", "Health", "ComboCount")]
+custom_minimum_size = Vector2(200, 180)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_vertical = 3
+script = ExtResource("1_1wihs")
+ArrowCount = NodePath("Content/UpperContent/VBoxContainer/Label")
+HookCount = NodePath("Content/UpperContent/VBoxContainer/Label2")
+LivesCount = NodePath("Content/UpperContent/VBoxContainer2/Label")
+Health = NodePath("Content/InnerBackdrop/Label")
+ComboCount = NodePath("Content/InnerBackdrop/Label2")
+
+[node name="OuterBackdrop" type="Panel" parent="."]
+clip_contents = true
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="UpperContent" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/UpperContent"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Label" type="Label" parent="Content/UpperContent/VBoxContainer"]
+layout_mode = 2
+text = "Arrows: 0"
+
+[node name="Label2" type="Label" parent="Content/UpperContent/VBoxContainer"]
+layout_mode = 2
+text = "hooks:   0"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Content/UpperContent"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="Content/UpperContent/VBoxContainer2"]
+layout_mode = 2
+text = "Lives: 0"
+
+[node name="InnerBackdrop" type="Panel" parent="Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Content/InnerBackdrop"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_right = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "0%"
+label_settings = SubResource("LabelSettings_0gwmf")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Content/InnerBackdrop"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 104.0
+offset_top = 45.0
+offset_right = -26.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "x2"
+label_settings = SubResource("LabelSettings_s0lg3")
+horizontal_alignment = 1
+vertical_alignment = 1

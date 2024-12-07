@@ -13,28 +13,33 @@ public partial class Player : RigidBody2D
     [Export] public WeaponHolder WeaponHolder { get; private set; }
     [Export] public Sprite2D PlayerSprite {get; private set;}
     // How far from player should hitbox rotate
-    private float offsetAmount = 23;
+    private float offsetAmount = 27;
     // Movement Variables
     private bool isGrounded = false;
     private bool isJumping = false;
     public bool canJump = true;
     private int jumpCount = 1;
-
     private int maxJumpCount = 1;
     // Combat Variables 
     private float comboCount = 1;
-    private bool knockedBack = false;
+    public bool knockedBack = false;
     public float damageTaken = 1500;
     public bool changingWeapon = false;
     // Arrow Regen and Ammo
-    public int arrowCount = 5;
-    public int maxArrows = 5;
-    private double regenTime = 4;
+    public int arrowCount = 4;
+    public int maxArrows = 4;
+    public int hookCount = 4;
+    public int maxHooks = 4;
+    private double arrowRegenTime = 4;
+    private double hookRegenTime = 4;
     private double maxRegenTime = 4;
-    private bool regenerating = false;
+    private bool regeneratingArrow = false;
+    private bool regeneratingHook = false;
     public bool isAttacking = false;
+    public bool isClashing = false;
     public double endLagTime = 0.5f;
     private double maxEndLagTime = 0.5f;
+    private int attacker;
     public Color playerColor;
     // Reference to player manager singleton
     PlayerManager playerManager;
@@ -42,8 +47,7 @@ public partial class Player : RigidBody2D
     {
         GroundCheck.BodyEntered += Grounded;
         GroundCheck.BodyExited += UnGrounded;
-        HurtBox.AreaEntered += RecieveMeleeHit;
-        HurtBox.BodyEntered += RecieveRangedHit;
+        HurtBox.AreaEntered += RecieveHit;
         BodyEntered += PlayerBump;
         BodyEntered += StopBump;
         KnockBackDuration.Timeout += AllowMovement;
@@ -58,12 +62,20 @@ public partial class Player : RigidBody2D
                 Move(delta);
             }
             //Always regenerate arrows if less than max arrows but reset max regen time after every arrow generated
-            if(arrowCount < maxArrows && regenerating){
+            if(arrowCount < maxArrows && regeneratingArrow){
                 RegenerateArrows(delta);
             }
-            else if(arrowCount < maxArrows && !regenerating){
-                regenTime = maxRegenTime;
+            else if(arrowCount < maxArrows && !regeneratingArrow){
+                arrowRegenTime = maxRegenTime;
                 RegenerateArrows(delta);
+            }
+            //Same logic for hooks
+            if(hookCount < maxHooks && regeneratingHook){
+                RegenerateHooks(delta);
+            }
+            else if(hookCount < maxHooks && !regeneratingHook){
+                hookRegenTime = maxRegenTime;
+                RegenerateHooks(delta);
             }
             Aim();
         }
@@ -152,11 +164,21 @@ public partial class Player : RigidBody2D
     }
     private void RegenerateArrows(double delta)
     {
-        regenTime -= delta;
-        regenerating = true;
-        if(regenTime <= Mathf.Epsilon){
+        arrowRegenTime -= delta;
+        regeneratingArrow = true;
+        if(arrowRegenTime <= Mathf.Epsilon){
             arrowCount++;
-            regenerating = false;
+            regeneratingArrow = false;
+            return;
+        }
+    }
+    private void RegenerateHooks(double delta)
+    {
+        hookRegenTime -= delta;
+        regeneratingHook = true;
+        if(hookRegenTime <= Mathf.Epsilon){
+            hookCount++;
+            regeneratingHook = false;
             return;
         }
     }
@@ -165,32 +187,6 @@ public partial class Player : RigidBody2D
         if(endLagTime <= Mathf.Epsilon){
             isAttacking = false;
             endLagTime = maxEndLagTime;
-        }
-    }
-    // Handle all kinds of attacks and pass info to methods to do stuff
-    private void RecieveMeleeHit(Area2D area)
-    {
-        Vector2 info;
-        float attackStrength;
-        int attackOwner;
-
-        if (area is Slash slash){
-            (info, attackStrength, attackOwner) = slash.GiveInfo();
-            if(attackOwner != playerIndex){
-                DamageFromMelee(info, attackStrength);
-            }
-        }
-        else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
-            info = hookHitBox.GiveInfo() - GlobalPosition;
-            DamageFromHook(info);
-        }
-    }
-
-    private void RecieveRangedHit(Node2D body)
-    {
-        if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
-            Vector2 info = arrow.GiveInfo();
-            DamageFromArrow(info, arrow.forceApplied);
         }
     }
     /*
@@ -210,6 +206,48 @@ public partial class Player : RigidBody2D
             LinearVelocity = new Vector2(0, 0);
         }
     }
+        // Handle all kinds of attacks and pass info to methods to do stuff
+    private void RecieveHit(Area2D area)
+    {
+        Vector2 info;
+        float attackStrength;
+        int attackOwner;
+
+        if (area is Slash slash){
+            (info, attackStrength, attackOwner) = slash.GiveInfo();
+            if(attackOwner != playerIndex){
+                DamageFromMelee(info, attackStrength);
+            }
+        }
+        else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
+            info = hookHitBox.GiveInfo() - GlobalPosition;
+            DamageFromHook(info);
+        }
+        else if (area is Explosion explosion ){
+            Vector2 explosionPos = explosion.GiveInfo();
+            info = GlobalPosition - explosionPos;
+            float explosiveForce;
+            double distanceToCenter = Math.Sqrt(Math.Pow(explosionPos.X - GlobalPosition.X, 2) + Math.Pow(explosionPos.Y - GlobalPosition.Y, 2));
+            if(distanceToCenter <= 20){
+                explosiveForce = 1.5f;
+            }
+            else{
+                explosiveForce = 1.25f;
+            }
+            GD.Print(distanceToCenter);
+            DamageFromExplosion(info, explosiveForce);
+        }
+    }
+    private void RecieveRangedHit(Node2D body)
+    {
+        if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
+            DamageFromArrow(2000f);
+        }
+    }
+    public void Clashed(Vector2 redirect){
+        Vector2 clashDir = redirect.Normalized() * 3000;
+        ApplyImpulse(clashDir);
+    }
     /*
         When recieving damage lock the player movement and make them able to slide and bounce.
 
@@ -227,29 +265,41 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         LinearVelocity = new Vector2(0, 0);
-        damageTaken += 750 * attackStrength;
+        damageTaken += 1250;
         ApplyImpulse(hitDirection * (comboCount > 1 ? comboCount + attackStrength * damageTaken : damageTaken));
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
     }
-    private void DamageFromArrow(Vector2 info, double forceApplied)
+    private void DamageFromArrow(float damage)
     {
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
         PhysicsMaterialOverride.Bounce = 1;
-        Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        damageTaken += 1000;
-        LinearVelocity = new Vector2(0, 0);
-        ApplyImpulse(hitDirection * (comboCount > 0 ? comboCount * damageTaken : damageTaken));
+        damageTaken += damage;
         comboCount++;
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
     }
 
-    // functionally about the same but not applying damage having a fixed impulse strength and increasing combo count by 3
+    private void DamageFromExplosion(Vector2 info, float forceApplied)
+    {
+        knockedBack = true;
+        PhysicsMaterialOverride.Friction = 0;
+        PhysicsMaterialOverride.Bounce = 1;
+        Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
+        LinearVelocity = new Vector2(0, 0);
+        float knockBackMultiplier = (comboCount > 0 ? comboCount * damageTaken : damageTaken) * forceApplied;
+        ApplyImpulse(hitDirection * knockBackMultiplier);
+        comboCount++;
+        KnockBackDuration.WaitTime = damageTaken / 10000;
+        KnockBackDuration.Start();
+        GroundCheck.Monitoring = false;
+    }
+
+    // functionally about the same but not applying damage having a fixed impulse strength
     private void DamageFromHook(Vector2 info)
     {
         knockedBack = true;
@@ -258,8 +308,8 @@ public partial class Player : RigidBody2D
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         LinearVelocity = new Vector2(0, 0);
         ApplyImpulse(new Vector2(hitDirection.X * 7000, hitDirection.Y * 10000));
-        comboCount += 3;
-        KnockBackDuration.WaitTime = damageTaken / 10000;
+        comboCount ++;
+        KnockBackDuration.WaitTime = .5;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
     }
@@ -291,6 +341,7 @@ public partial class Player : RigidBody2D
             comboCount = 1;
             canJump = true;
             jumpCount = maxJumpCount;
+            attacker = playerIndex;
         }
     }
     private void UnGrounded(Node2D body)
