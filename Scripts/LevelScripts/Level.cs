@@ -7,6 +7,7 @@ public partial class Level : Node2D
 {
 	PlayerManager playerManager;
 	[Export] public Node PlayerSpawn { get; private set;}
+	[Export] public Camera2D camera {get; private set;}
 	public List<Marker2D> spawns = new List<Marker2D>();
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

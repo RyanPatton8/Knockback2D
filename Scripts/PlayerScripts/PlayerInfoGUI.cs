@@ -1,15 +1,38 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-public partial class PlayerInfoGUI : Control
+public partial class PlayerInfoGUI : CanvasLayer
 {
-	// Called when the node enters the scene tree for the first time.
+	PlayerManager playerManager;
+	[Export] public PackedScene playerCard {get; private set;}
+	[Export] public HBoxContainer hBox {get; private set;}
+	public Dictionary<int, PlayerCard> playerCards = new Dictionary<int, PlayerCard>();
 	public override void _Ready()
 	{
+		playerManager = PlayerManager.Instance;
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+	public void AddCard(int playerIndex){
+		PlayerCard currentPlayer = (PlayerCard) playerCard.Instantiate();
+		hBox.AddChild(currentPlayer);
+		hBox.MoveChild(currentPlayer, playerIndex);
+		playerCards.Add(playerIndex, currentPlayer);
+		playerCards[playerIndex].SetAll(
+                playerManager.playerList[playerIndex].GetArrowCount().ToString(),
+                playerManager.playerList[playerIndex].GetHookCount().ToString(),
+                playerManager.playerList[playerIndex].GetLives().ToString(),
+                playerManager.playerList[playerIndex].GetDamageTaken().ToString(),
+                playerManager.playerList[playerIndex].GetComboCount().ToString()
+            );
+	}
+	public void RemoveCard(int playerIndex){
+		hBox.RemoveChild(playerCards[playerIndex]);
+		playerCards.Remove(playerIndex);
+	}
+	public void RemoveAll(){
+		foreach(KeyValuePair<int,PlayerCard> p in playerCards){
+			hBox.RemoveChild(playerCards[p.Key]);
+			playerCards.Remove(p.Key);
+		}
 	}
 }

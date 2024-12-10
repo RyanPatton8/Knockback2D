@@ -49,12 +49,14 @@ public partial class Player : RigidBody2D
         GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveHit;
         BodyEntered += PlayerBump;
-        BodyEntered += StopBump;
+        BodyExited += StopBump;
+        BodyEntered += RecieveRangedHit;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
         PlayerSprite.Modulate = playerColor;
         HitBox.GlobalPosition = GlobalPosition + new Vector2(1,0) * offsetAmount;
     }
+
     public override void _PhysicsProcess(double delta)
     {
         if(!isAttacking){   //Ensure the player isn't attacking and currently expiriencing the end lag from that attack
@@ -168,6 +170,7 @@ public partial class Player : RigidBody2D
         regeneratingArrow = true;
         if(arrowRegenTime <= Mathf.Epsilon){
             arrowCount++;
+            playerManager.playerList[playerIndex].SetArrowCount(arrowCount);
             regeneratingArrow = false;
             return;
         }
@@ -178,6 +181,7 @@ public partial class Player : RigidBody2D
         regeneratingHook = true;
         if(hookRegenTime <= Mathf.Epsilon){
             hookCount++;
+            playerManager.playerList[playerIndex].SetHookCount(hookCount);
             regeneratingHook = false;
             return;
         }
@@ -229,19 +233,20 @@ public partial class Player : RigidBody2D
             float explosiveForce;
             double distanceToCenter = Math.Sqrt(Math.Pow(explosionPos.X - GlobalPosition.X, 2) + Math.Pow(explosionPos.Y - GlobalPosition.Y, 2));
             if(distanceToCenter <= 20){
-                explosiveForce = 1.5f;
+                explosiveForce = 1.1f;
             }
             else{
-                explosiveForce = 1.25f;
+                explosiveForce = 1.025f;
             }
             GD.Print(distanceToCenter);
             DamageFromExplosion(info, explosiveForce);
         }
     }
-    private void RecieveRangedHit(Node2D body)
+    private void RecieveRangedHit(Node body)
     {
         if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
             DamageFromArrow(2000f);
+            GD.Print("Ouch");
         }
     }
     public void Clashed(Vector2 redirect){
@@ -268,6 +273,8 @@ public partial class Player : RigidBody2D
         damageTaken += 1250;
         ApplyImpulse(hitDirection * (comboCount > 1 ? comboCount + attackStrength * damageTaken : damageTaken));
         comboCount++;
+        playerManager.playerList[playerIndex].SetComboCount(comboCount);
+        playerManager.playerList[playerIndex].SetDamageTaken((damageTaken / 100) - 15);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
@@ -279,6 +286,8 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Bounce = 1;
         damageTaken += damage;
         comboCount++;
+        playerManager.playerList[playerIndex].SetComboCount(comboCount);
+        playerManager.playerList[playerIndex].SetDamageTaken((damageTaken / 100) - 15);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
@@ -291,9 +300,10 @@ public partial class Player : RigidBody2D
         PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         LinearVelocity = new Vector2(0, 0);
-        float knockBackMultiplier = (comboCount > 0 ? comboCount * damageTaken : damageTaken) * forceApplied;
+        float knockBackMultiplier = comboCount > 0 ? comboCount * damageTaken : damageTaken;
         ApplyImpulse(hitDirection * knockBackMultiplier);
-        comboCount++;
+        // comboCount++;
+        // playerManager.playerList[playerIndex].SetComboCount(comboCount);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
@@ -309,6 +319,7 @@ public partial class Player : RigidBody2D
         LinearVelocity = new Vector2(0, 0);
         ApplyImpulse(new Vector2(hitDirection.X * 7000, hitDirection.Y * 10000));
         comboCount ++;
+        playerManager.playerList[playerIndex].SetComboCount(comboCount);
         KnockBackDuration.WaitTime = .5;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
@@ -339,6 +350,7 @@ public partial class Player : RigidBody2D
         {
             isGrounded = true;
             comboCount = 1;
+            playerManager.playerList[playerIndex].SetComboCount(comboCount);
             canJump = true;
             jumpCount = maxJumpCount;
             attacker = playerIndex;

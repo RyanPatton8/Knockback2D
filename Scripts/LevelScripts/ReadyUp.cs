@@ -9,12 +9,11 @@ public partial class ReadyUp : Control
     public override void _Ready()
 	{
 		playerManager = PlayerManager.Instance;
-		GD.Print("Ready");
 		foreach (Node child in GetTree().Root.GetChildren())
 		{
 			if (child is Player player)
 			{
-				playerManager.RemovePlayer(player.playerIndex);
+				playerManager.playerList.Remove(player.playerIndex);
 				player.QueueFree();
 			}
 		}
@@ -42,6 +41,7 @@ public partial class ReadyUp : Control
 		}
 
 		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerList.Count > 0){
+			playerManager.playerGUIHolder.Visible = true;
 			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_02.tscn");
 		}
 	}

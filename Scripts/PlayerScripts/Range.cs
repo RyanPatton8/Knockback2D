@@ -12,9 +12,11 @@ public partial class Range : Node
     private bool charged = false;
     private bool canAttack = true;
     private double attackCoolDown = .5;
+    PlayerManager playerManager;
     public override void _Ready()
     {
         playerNode = GetOwner<Player>();
+        playerManager = PlayerManager.Instance;
     }
     public override void _Process(double delta)
 	{
@@ -49,6 +51,7 @@ public partial class Range : Node
         if(canAttack){
             canAttack = false;
             playerNode.arrowCount--;
+            playerManager.playerList[playerNode.playerIndex].SetArrowCount(playerNode.arrowCount);
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             Arrow instance = (Arrow)arrow.Instantiate();
             AddChild(instance);

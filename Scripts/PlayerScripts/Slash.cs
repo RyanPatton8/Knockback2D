@@ -9,7 +9,6 @@ public partial class Slash : Area2D
 	double attackDuration = .35;
 	public int chargeLevel;
 	public float attackStrength;
-
     public override void _Ready()
     {
 		BodyEntered += Reflect;
@@ -25,7 +24,6 @@ public partial class Slash : Area2D
 			QueueFree();
 		}
 	}
-
 	public void Reflect(Node2D body)
 	{
 		if (body is RigidBody2D rb && (body is Arrow || body is Hook) && chargeLevel == 3)
@@ -45,7 +43,6 @@ public partial class Slash : Area2D
 		attackDuration = 0.1f;
 		return (GlobalPosition - player.GlobalPosition, attackStrength, playerIndex);
 	}
-
 	private void Clash(Area2D area){
 		if(area is Slash slash){
 			player.isClashing = true;

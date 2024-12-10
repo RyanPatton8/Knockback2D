@@ -10,13 +10,10 @@ public partial class Explosion : Area2D
         CallDeferred(nameof(Explode));
         AnimExplosionNode.AnimationFinished += StopExploding;
     }
-
     private void StopExploding(StringName animName)
     {
         CallDeferred("queue_free");
     }
-
-
     private void Explode(){
         AnimExplosionNode.Play("GrowingExplosion");
     }
