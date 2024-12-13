@@ -49,7 +49,6 @@ public partial class Player : RigidBody2D
         GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveHit;
         BodyEntered += PlayerBump;
-        BodyExited += StopBump;
         BodyEntered += RecieveRangedHit;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
@@ -199,12 +198,6 @@ public partial class Player : RigidBody2D
         Before this it was kind of a Poe Belly Bump Kungfu Panda Scenario  
     */
     private void PlayerBump(Node body)
-    {
-        if(body is Player && !knockedBack){
-            LinearVelocity = new Vector2(0, 0);
-        }
-    }
-    private void StopBump(Node body)
     {
         if(body is Player && !knockedBack){
             LinearVelocity = new Vector2(0, 0);

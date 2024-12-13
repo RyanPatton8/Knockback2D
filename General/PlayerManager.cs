@@ -114,8 +114,8 @@ public partial class PlayerManager : Node
             CallDeferred(nameof(SpawnPlayer), playerIndex, spawnPoint);
         }
         else{
+            playerGUIHolder.playerCards[playerIndex].MakeBlank();
             playersAlive--;
-            playerGUIHolder.playerCards[playerIndex].SetAll("","","","","");
             CheckForGameOver();
         }
     }

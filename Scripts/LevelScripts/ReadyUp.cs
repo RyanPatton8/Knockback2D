@@ -54,7 +54,6 @@ public partial class ReadyUp : Control
 		players[playerIndex].Color = currentColor;
 		playerManager.playersAlive++;
 		playerManager.AddPlayer(playerIndex);
-		GD.Print(playerIndex);
 	}
 
 	private void RemovePlayer(int playerIndex)
@@ -65,7 +64,6 @@ public partial class ReadyUp : Control
 		Color currentColor = players[playerIndex].Color;
 		currentColor.A = 0;
 		players[playerIndex].Color = currentColor;
-		playerManager.playersAlive++;
 		playerManager.RemovePlayer(playerIndex);
 	}
 }

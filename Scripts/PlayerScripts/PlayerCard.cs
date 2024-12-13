@@ -4,18 +4,20 @@ using System.Dynamic;
 
 public partial class PlayerCard : MarginContainer
 {
+	[Export] public Panel OuterBackground {get; private set;}
 	[Export] public Label ArrowCount {get; private set;}
 	[Export] public Label HookCount {get; private set;}
 	[Export] public Label LivesCount {get; private set;}
 	[Export] public Label Health {get; private set;}
 	[Export] public Label ComboCount {get; private set;}
 
-	public void SetAll(string arrows, string hooks, string lives, string health, string comboCount){
+	public void SetAll(string arrows, string hooks, string lives, string health, string comboCount, Color backgroundColor){
 		SetArrowCount(arrows);
 		SetHookCount(hooks);
 		SetLivesCount(lives);
 		SetHealth(health);
 		SetComboCount(comboCount);
+		SetBackgroundColor(backgroundColor * 2);
 	}
 	public void SetArrowCount(string change){
 		ArrowCount.Text = "Arrows: " + change;
@@ -36,5 +38,15 @@ public partial class PlayerCard : MarginContainer
 		else{
 			ComboCount.Text = "x" + change;
 		}
+	}
+	private void SetBackgroundColor(Color backgroundColor){
+		OuterBackground.Modulate = backgroundColor;
+	}
+	public void MakeBlank(){
+		ArrowCount.Text = "";
+		HookCount.Text = "";
+		LivesCount.Text = "";
+		Health.Text = "";
+		ComboCount.Text = "";
 	}
 }
