@@ -5,7 +5,7 @@ public partial class Range : Node
 {
     [Export] public PackedScene arrow {get; private set;}
 	private Player playerNode;
-    private double startingThrowForce = 30;
+    private double startingThrowForce = 45;
     private double throwForce = 35;
     private double maxThrowForce = 60;
     private int chargeSpeed = 40;
