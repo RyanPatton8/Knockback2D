@@ -329,6 +329,8 @@ public partial class Player : RigidBody2D
     public void Grapple(Vector2 info)
     {
         KnockBackDuration.WaitTime = 0.01f;
+        if(jumpCount < maxJumpCount)
+            jumpCount = maxJumpCount;
         AllowMovement();
         Vector2 hitDirection = new Vector2(info.X, info.Y * 2).Normalized();
         LinearVelocity = new Vector2(0, 0);

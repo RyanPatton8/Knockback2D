@@ -42,7 +42,7 @@ public partial class ReadyUp : Control
 
 		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerList.Count > 0){
 			playerManager.playerGUIHolder.Visible = true;
-			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_02.tscn");
+			GetTree().ChangeSceneToFile("res://Scenes/Levels/level_03.tscn");
 		}
 	}
 	private void AddPlayer(int playerIndex)

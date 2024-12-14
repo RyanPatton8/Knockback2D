@@ -20,7 +20,7 @@ public partial class PlayerCard : MarginContainer
 		SetBackgroundColor(backgroundColor * 2);
 	}
 	public void SetArrowCount(string change){
-		ArrowCount.Text = "Arrows: " + change;
+		ArrowCount.Text = "Bullets: " + change;
 	}
 	public void SetHookCount(string change){
 		HookCount.Text = "Hooks: " + change;
