@@ -17,7 +17,7 @@ public partial class PlayerCard : MarginContainer
 		SetLivesCount(lives);
 		SetHealth(health);
 		SetComboCount(comboCount);
-		SetBackgroundColor(backgroundColor * 2);
+		SetBackgroundColor(new Color(backgroundColor.R * 2, backgroundColor.G * 2 , backgroundColor.B * 2, 0.85f));
 	}
 	public void SetArrowCount(string change){
 		ArrowCount.Text = "Bullets: " + change;

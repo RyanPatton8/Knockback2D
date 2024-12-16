@@ -35,6 +35,10 @@ public partial class Player : RigidBody2D
     private double maxRegenTime = 4;
     private bool regeneratingArrow = false;
     private bool regeneratingHook = false;
+    //Health Regen
+    private double healthRegenTime = 5;
+    private double maxHealthRegenTime = 5;
+    private bool healthRegenerating = false;
     public bool isAttacking = false;
     public bool isClashing = false;
     public double endLagTime = 0.5f;
@@ -82,6 +86,14 @@ public partial class Player : RigidBody2D
         }
         else{
             AttackEndLag(delta);
+        }
+        //Always allow changing weapon and Health regen
+        if(damageTaken > 1500 && healthRegenerating){
+            RegenerateHealth(delta);
+        }
+        else if(damageTaken > 1500 && !healthRegenerating){
+            healthRegenTime = maxHealthRegenTime;
+            RegenerateHealth(delta);
         }
         ChangeWeapon();
     }
@@ -185,6 +197,19 @@ public partial class Player : RigidBody2D
             return;
         }
     }
+    private void RegenerateHealth(double delta){
+        healthRegenTime -= delta;
+        healthRegenerating = true;
+        if(healthRegenTime <= Mathf.Epsilon){
+            damageTaken -= 1000;
+            healthRegenerating = false;
+            if(damageTaken < 1500){
+                damageTaken = 1500;
+            }
+            playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
+            return;
+        }
+    }
     public void AttackEndLag(double delta){
         endLagTime -= delta;
         if(endLagTime <= Mathf.Epsilon){
@@ -267,7 +292,7 @@ public partial class Player : RigidBody2D
         ApplyImpulse(hitDirection * (comboCount > 1 ? comboCount + attackStrength * damageTaken : damageTaken));
         comboCount++;
         playerManager.playerList[playerIndex].SetComboCount(comboCount);
-        playerManager.playerList[playerIndex].SetDamageTaken((damageTaken / 100) - 15);
+        playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;
@@ -280,7 +305,7 @@ public partial class Player : RigidBody2D
         damageTaken += damage;
         comboCount++;
         playerManager.playerList[playerIndex].SetComboCount(comboCount);
-        playerManager.playerList[playerIndex].SetDamageTaken((damageTaken / 100) - 15);
+        playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
         GroundCheck.Monitoring = false;

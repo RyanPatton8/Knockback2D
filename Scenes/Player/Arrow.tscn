@@ -2,13 +2,14 @@
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Arrow.cs" id="1_44v55"]
 [ext_resource type="PackedScene" uid="uid://beyckrt4nh0f7" path="res://Scenes/Player/Explosion.tscn" id="2_bq8he"]
-[ext_resource type="Texture2D" uid="uid://ci384aaikk4xe" path="res://Sprites/CanonBall.svg" id="2_q04jg"]
+[ext_resource type="Texture2D" uid="uid://cgri3hp1he3ge" path="res://Sprites/Bomb.svg" id="3_5l8r0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6m410"]
 
 [node name="RigidBody2D" type="RigidBody2D" node_paths=PackedStringArray("collision", "arrowSprite")]
 collision_layer = 3
 collision_mask = 3
+continuous_cd = 2
 contact_monitor = true
 max_contacts_reported = 5
 script = ExtResource("1_44v55")
@@ -18,7 +19,7 @@ arrowSprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_q04jg")
+texture = ExtResource("3_5l8r0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3

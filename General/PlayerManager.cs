@@ -175,7 +175,7 @@ public partial class PlayerManager : Node
             return damageTaken;
         }
         public void SetDamageTaken(float damage){
-            damageTaken = damage;
+            damageTaken = (damage / 100) - 15;
             playerManager.playerGUIHolder.playerCards[playerIndex].SetHealth(damageTaken.ToString());
         }
         public float GetDamageGiven(){
