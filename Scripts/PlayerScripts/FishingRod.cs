@@ -34,15 +34,6 @@ public partial class FishingRod : Node
                 attackCoolDown = .6;
             }
         }
-        // Cancelable Hook
-        // if (hookOut && canAttack && Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerLeft) > 0.5f)
-        // {
-        //     instance.CallDeferred("queue_free");
-        //     canAttack = true;
-        //     attackCoolDown = .6;
-        //     hookOut = false;
-        //     GD.Print("Destroying");
-        // } 
 	}
 	private void Attack()
     {

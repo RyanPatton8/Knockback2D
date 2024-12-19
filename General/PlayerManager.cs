@@ -22,7 +22,6 @@ public partial class PlayerManager : Node
     //ensures PlayerManager is always in every scene
     public override void _EnterTree()
     {
-        GD.Print("Entered");
         if (_instance == null)
         {
             _instance = this;
@@ -175,7 +174,12 @@ public partial class PlayerManager : Node
             return damageTaken;
         }
         public void SetDamageTaken(float damage){
-            damageTaken = (damage / 100) - 15;
+            if(damage <= 1500){
+                damageTaken = 0;
+            }
+            else{
+                damageTaken = (damage / 100) - 15;
+            }
             playerManager.playerGUIHolder.playerCards[playerIndex].SetHealth(damageTaken.ToString());
         }
         public float GetDamageGiven(){

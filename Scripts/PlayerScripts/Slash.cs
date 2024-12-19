@@ -31,6 +31,8 @@ public partial class Slash : Area2D
 			rb.LinearVelocity = Vector2.Zero;
 			Vector2 reflectDir = (player.HitBox.GlobalPosition - player.GlobalPosition).Normalized();
 			rb.ApplyImpulse(reflectDir * 2000);
+			player.isAttacking = false;
+			CallDeferred("queue_free");
 			//player.endLagTime = player.endLagTime / 2;
 			if(body is Arrow arrow)
 			{
