@@ -33,7 +33,6 @@ public partial class Slash : Area2D
 			rb.ApplyImpulse(reflectDir * 2000);
 			player.isAttacking = false;
 			CallDeferred("queue_free");
-			//player.endLagTime = player.endLagTime / 2;
 			if(body is Arrow arrow)
 			{
 				arrow.playerIndex = playerIndex;

@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 PlayerManager="*res://General/PlayerManager.cs"
 
+[display]
+
+window/size/mode=3
+
 [dotnet]
 
 project/assembly_name="Knockback2D"

@@ -53,7 +53,7 @@ public partial class Player : RigidBody2D
         GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveHit;
         BodyEntered += PlayerBump;
-        BodyEntered += RecieveRangedHit;
+        HurtBox.BodyEntered += RecieveRangedHit;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
         PlayerSprite.Modulate = playerColor;
@@ -256,7 +256,6 @@ public partial class Player : RigidBody2D
             else{
                 explosiveForce = 1.025f;
             }
-            GD.Print(distanceToCenter);
             DamageFromExplosion(info, explosiveForce);
         }
     }
@@ -264,7 +263,6 @@ public partial class Player : RigidBody2D
     {
         if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
             DamageFromArrow(2000f);
-            GD.Print("Ouch");
         }
     }
     public void Clashed(Vector2 redirect){

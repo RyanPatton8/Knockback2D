@@ -1,49 +1,44 @@
-[gd_scene load_steps=7 format=3 uid="uid://beyckrt4nh0f7"]
+[gd_scene load_steps=14 format=3 uid="uid://beyckrt4nh0f7"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Explosion.cs" id="1_0e581"]
-[ext_resource type="Texture2D" uid="uid://dmehdeachj7xk" path="res://Sprites/Explosion_1.svg" id="2_4n1jx"]
+[ext_resource type="Texture2D" uid="uid://yoa7wq8xt41v" path="res://Sprites/explosion-1-f/Sprites/explosion-f1.png" id="2_c8xvv"]
+[ext_resource type="Texture2D" uid="uid://btqg8p783u8mf" path="res://Sprites/explosion-1-f/Sprites/explosion-f2.png" id="3_rl2tv"]
+[ext_resource type="Texture2D" uid="uid://br3nsah4w8wia" path="res://Sprites/explosion-1-f/Sprites/explosion-f3.png" id="4_rwd77"]
+[ext_resource type="Texture2D" uid="uid://cn3aypnh1g0" path="res://Sprites/explosion-1-f/Sprites/explosion-f4.png" id="5_vpfbl"]
+[ext_resource type="Texture2D" uid="uid://c0xo8yjplrdjq" path="res://Sprites/explosion-1-f/Sprites/explosion-f5.png" id="6_rexnu"]
+[ext_resource type="Texture2D" uid="uid://bv3amekjoksje" path="res://Sprites/explosion-1-f/Sprites/explosion-f6.png" id="7_leo57"]
+[ext_resource type="Texture2D" uid="uid://dgbok1fsd3cfa" path="res://Sprites/explosion-1-f/Sprites/explosion-f7.png" id="8_4q3eo"]
+[ext_resource type="Texture2D" uid="uid://dgftb6mgnh0to" path="res://Sprites/explosion-1-f/Sprites/explosion-f8.png" id="9_k7n20"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bmpiy"]
 
 [sub_resource type="Animation" id="Animation_jxsqa"]
 resource_name = "GrowingExplosion"
-length = 0.3
-step = 0.01
+length = 0.320004
+step = 0.04
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.04),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0.01, 0.01), Vector2(0.15, 0.15)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(-0.02, 0.04),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0.1, 0.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.24, 0.28),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_c8xvv"), ExtResource("3_rl2tv"), ExtResource("4_rwd77"), ExtResource("5_vpfbl"), ExtResource("6_rexnu"), ExtResource("7_leo57"), ExtResource("8_4q3eo"), ExtResource("9_k7n20")]
 }
 
 [sub_resource type="Animation" id="Animation_gm6af"]
@@ -51,38 +46,26 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0.01, 0.01)]
+"values": [Vector2(0.1, 0.1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/path = NodePath("Sprite2D:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.1, 0.1)]
+"update": 1,
+"values": [ExtResource("2_c8xvv")]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3eevf"]
@@ -104,9 +87,8 @@ scale = Vector2(3, 3)
 shape = SubResource("CircleShape2D_bmpiy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.01, 0.01)
-texture = ExtResource("2_4n1jx")
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_c8xvv")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
