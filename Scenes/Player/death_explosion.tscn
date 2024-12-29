@@ -1,0 +1,65 @@
+[gd_scene load_steps=17 format=3 uid="uid://cmsir1424tdhe"]
+
+[ext_resource type="Texture2D" uid="uid://887dgojy7jqw" path="res://Sprites/explosion-1-d/Sprites/explosion-d1.png" id="1_g320r"]
+[ext_resource type="Script" path="res://Scripts/PlayerScripts/DeathExplosion.cs" id="2_3bwu2"]
+[ext_resource type="Texture2D" uid="uid://dw8h1rm5aia45" path="res://Sprites/explosion-1-d/Sprites/explosion-d2.png" id="2_clqd6"]
+[ext_resource type="Texture2D" uid="uid://dtesrvyypm1vn" path="res://Sprites/explosion-1-d/Sprites/explosion-d3.png" id="3_d3kqc"]
+[ext_resource type="Texture2D" uid="uid://co0y4lfiy7eqx" path="res://Sprites/explosion-1-d/Sprites/explosion-d4.png" id="4_46y3o"]
+[ext_resource type="Texture2D" uid="uid://dixihj5u034am" path="res://Sprites/explosion-1-d/Sprites/explosion-d5.png" id="5_ldv5e"]
+[ext_resource type="Texture2D" uid="uid://yf8tp8stfia5" path="res://Sprites/explosion-1-d/Sprites/explosion-d6.png" id="6_o6r5l"]
+[ext_resource type="Texture2D" uid="uid://c0rsmdgxce7eo" path="res://Sprites/explosion-1-d/Sprites/explosion-d7.png" id="7_57ici"]
+[ext_resource type="Texture2D" uid="uid://b2citj5owrwnn" path="res://Sprites/explosion-1-d/Sprites/explosion-d8.png" id="8_ir04e"]
+[ext_resource type="Texture2D" uid="uid://dskbgqgn636je" path="res://Sprites/explosion-1-d/Sprites/explosion-d9.png" id="9_4wrrv"]
+[ext_resource type="Texture2D" uid="uid://dbhbg2u4pt367" path="res://Sprites/explosion-1-d/Sprites/explosion-d10.png" id="10_d42ho"]
+[ext_resource type="Texture2D" uid="uid://qbu17n7lsing" path="res://Sprites/explosion-1-d/Sprites/explosion-d11.png" id="11_mccjv"]
+[ext_resource type="Texture2D" uid="uid://dj4sp1c1np7s7" path="res://Sprites/explosion-1-d/Sprites/explosion-d12.png" id="12_ckq3x"]
+
+[sub_resource type="Animation" id="Animation_gqmif"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_g320r")]
+}
+
+[sub_resource type="Animation" id="Animation_nyyyw"]
+resource_name = "Death"
+step = 0.0909091
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0909091, 0.181818, 0.272727, 0.363636, 0.454545, 0.545455, 0.636364, 0.727273, 0.818182, 0.909091, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_g320r"), ExtResource("2_clqd6"), ExtResource("3_d3kqc"), ExtResource("4_46y3o"), ExtResource("5_ldv5e"), ExtResource("6_o6r5l"), ExtResource("7_57ici"), ExtResource("8_ir04e"), ExtResource("9_4wrrv"), ExtResource("10_d42ho"), ExtResource("11_mccjv"), ExtResource("12_ckq3x")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4mp0y"]
+_data = {
+"Death": SubResource("Animation_nyyyw"),
+"RESET": SubResource("Animation_gqmif")
+}
+
+[node name="DeathExplosion" type="Sprite2D" node_paths=PackedStringArray("AnimExplosionNode")]
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_g320r")
+offset = Vector2(0, -40)
+script = ExtResource("2_3bwu2")
+AnimExplosionNode = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4mp0y")
+}
+autoplay = "Death"

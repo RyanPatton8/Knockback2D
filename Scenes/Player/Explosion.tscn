@@ -94,3 +94,4 @@ texture = ExtResource("2_c8xvv")
 libraries = {
 "": SubResource("AnimationLibrary_3eevf")
 }
+autoplay = "GrowingExplosion"
