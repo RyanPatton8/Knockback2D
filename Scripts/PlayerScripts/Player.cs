@@ -232,13 +232,12 @@ public partial class Player : RigidBody2D
     private void RecieveHit(Area2D area)
     {
         Vector2 info;
-        float attackStrength;
         int attackOwner;
 
         if (area is Slash slash){
-            (info, attackStrength, attackOwner) = slash.GiveInfo();
+            (info, attackOwner) = slash.GiveInfo();
             if(attackOwner != playerIndex){
-                DamageFromMelee(info, attackStrength);
+                DamageFromMelee(info);
             }
         }
         else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
@@ -248,15 +247,7 @@ public partial class Player : RigidBody2D
         else if (area is Explosion explosion ){
             Vector2 explosionPos = explosion.GiveInfo();
             info = GlobalPosition - explosionPos;
-            float explosiveForce;
-            double distanceToCenter = Math.Sqrt(Math.Pow(explosionPos.X - GlobalPosition.X, 2) + Math.Pow(explosionPos.Y - GlobalPosition.Y, 2));
-            if(distanceToCenter <= 20){
-                explosiveForce = 1.1f;
-            }
-            else{
-                explosiveForce = 1.025f;
-            }
-            DamageFromExplosion(info, explosiveForce);
+            DamageFromExplosion(info);
         }
     }
     private void RecieveRangedHit(Node body)
@@ -279,7 +270,7 @@ public partial class Player : RigidBody2D
 
         then increase combo count, start a timer for when the player is no longer bouncey and stunned and make it so the players ground check is not monitoring
     */
-    private void DamageFromMelee(Vector2 info, float attackStrength)
+    private void DamageFromMelee(Vector2 info)
     {
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;
@@ -287,7 +278,7 @@ public partial class Player : RigidBody2D
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
         LinearVelocity = new Vector2(0, 0);
         damageTaken += 1250;
-        ApplyImpulse(hitDirection * (comboCount > 1 ? comboCount + attackStrength * damageTaken : damageTaken));
+        ApplyImpulse(hitDirection * (comboCount > 1 ? comboCount * damageTaken : damageTaken));
         comboCount++;
         playerManager.playerList[playerIndex].SetComboCount(comboCount);
         playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
@@ -309,7 +300,7 @@ public partial class Player : RigidBody2D
         GroundCheck.Monitoring = false;
     }
 
-    private void DamageFromExplosion(Vector2 info, float forceApplied)
+    private void DamageFromExplosion(Vector2 info)
     {
         knockedBack = true;
         PhysicsMaterialOverride.Friction = 0;

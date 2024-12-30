@@ -7,8 +7,6 @@ public partial class Slash : Area2D
 	public int playerIndex;
 	public Player player;
 	double attackDuration = .35;
-	public int chargeLevel;
-	public float attackStrength;
     public override void _Ready()
     {
 		BodyEntered += Reflect;
@@ -26,11 +24,11 @@ public partial class Slash : Area2D
 	}
 	public void Reflect(Node2D body)
 	{
-		if (body is RigidBody2D rb && (body is Arrow || body is Hook) && chargeLevel == 3)
+		if (body is RigidBody2D rb && (body is Arrow || body is Hook))
 		{
 			rb.LinearVelocity = Vector2.Zero;
 			Vector2 reflectDir = (player.HitBox.GlobalPosition - player.GlobalPosition).Normalized();
-			rb.ApplyImpulse(reflectDir * 2000);
+			rb.ApplyImpulse(reflectDir * 1500);
 			player.isAttacking = false;
 			CallDeferred("queue_free");
 			if(body is Arrow arrow)
@@ -39,10 +37,10 @@ public partial class Slash : Area2D
 			}
 		}
 	}
-	public (Vector2, float, int) GiveInfo()
+	public (Vector2, int) GiveInfo()
 	{
 		attackDuration = 0.1f;
-		return (GlobalPosition - player.GlobalPosition, attackStrength, playerIndex);
+		return (GlobalPosition - player.GlobalPosition, playerIndex);
 	}
 	private void Clash(Area2D area){
 		if(area is Slash slash){

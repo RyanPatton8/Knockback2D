@@ -3,16 +3,17 @@ using System;
 
 public partial class FishingRod : Node
 {
+    //Access hook scene for instantiation and create a global reference for it to keep track of
 	[Export] public PackedScene hook {get; private set;}
+    public Hook instance;
+    //Access to player to check variables within it
 	private Player playerNode;
     private double throwForce = 45;
-    private bool charged = false;
     private bool canAttack = true;
     public bool hookOut = false;
-    private double attackCoolDown = 1;
-    Hook instance;
+    private double attackCoolDown = .6;
+    private double maxAttackCoolDown = .6;
     PlayerManager playerManager;
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
     {
         playerNode = GetOwner<Player>();
@@ -31,21 +32,21 @@ public partial class FishingRod : Node
             attackCoolDown -= delta;
             if(attackCoolDown <= Mathf.Epsilon){
                 canAttack = true;
-                attackCoolDown = .6;
+                attackCoolDown = maxAttackCoolDown;
             }
         }
 	}
 	private void Attack()
     {
-        if(canAttack){
-            canAttack = false;
-            playerNode.hookCount--;
-            playerManager.playerList[playerNode.playerIndex].SetHookCount(playerNode.hookCount);
-            Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
-            instance = (Hook)hook.Instantiate();
-            AddChild(instance);
-            instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
-		    instance.ApplyImpulse(aimDirection * (float)throwForce);
-        }
+        //Alter physical hook count and hook count UI in playermanager
+        playerNode.hookCount--;
+        playerManager.playerList[playerNode.playerIndex].SetHookCount(playerNode.hookCount);
+        //Set the aim direction based on current aim direction relative to player
+        Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
+        //Instantiate the hook at placement of hitbox with the set throwforce in the aim direction
+        instance = (Hook)hook.Instantiate();
+        AddChild(instance);
+        instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
+        instance.ApplyImpulse(aimDirection * (float)throwForce);
     }
 }

@@ -5,13 +5,11 @@ public partial class Range : Node
 {
     [Export] public PackedScene arrow {get; private set;}
 	private Player playerNode;
-    private double startingThrowForce = 45;
-    private double throwForce = 35;
-    private double maxThrowForce = 60;
-    private int chargeSpeed = 40;
-    private bool charged = false;
+    private double throwForce = 40;
     private bool canAttack = true;
+    private bool isTriggerDown = false;
     private double attackCoolDown = .5;
+    private double maxAttackCoolDown = .5;
     PlayerManager playerManager;
     public override void _Ready()
     {
@@ -21,31 +19,25 @@ public partial class Range : Node
     public override void _Process(double delta)
 	{
         if(!playerNode.knockedBack){
-		    AttackInput(delta);
-        }
-	}
-    private void AttackInput(double delta)
-    {
-        if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) < 0.7f && canAttack && playerNode.arrowCount > 0)
-        {
-            charged = true;
-            if (throwForce > maxThrowForce) {throwForce = maxThrowForce;}
-        } 
-        else if (charged)
-        {
-            Attack();
-            canAttack = false;
-            charged = false;
-        }
-        else if (!canAttack)
-        {
-            attackCoolDown -= delta;
-            if(attackCoolDown <= Mathf.Epsilon){
-                canAttack = true;
-                attackCoolDown = .5;
+            if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.7f && canAttack && playerNode.arrowCount > 0 && !isTriggerDown)
+            {
+                Attack();
+                canAttack = false;
+                isTriggerDown = true;
+            }
+            else if(isTriggerDown && Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) < 0.7f){
+                isTriggerDown = false;
+            } 
+            if (!canAttack)
+            {
+                attackCoolDown -= delta;
+                if(attackCoolDown <= Mathf.Epsilon){
+                    canAttack = true;
+                    attackCoolDown = maxAttackCoolDown;
+                }
             }
         }
-    }
+	}
     private void Attack()
     {
         if(canAttack){
