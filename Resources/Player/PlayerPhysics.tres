@@ -1,0 +1,5 @@
+[gd_resource type="PhysicsMaterial" format=3 uid="uid://v17tscx4dahc"]
+
+[resource]
+resource_local_to_scene = true
+friction = 0.0

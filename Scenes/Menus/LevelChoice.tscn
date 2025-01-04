@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://bsfsot0yn27p4"]
+[gd_scene load_steps=2 format=3 uid="uid://bsfsot0yn27p4"]
 
-[ext_resource type="Texture2D" uid="uid://dqig1i4d26ava" path="res://Sprites/Level_01.png" id="1_ndfxi"]
 [ext_resource type="Script" path="res://Scripts/MenuScripts/LevelChoice.cs" id="1_saxq3"]
 
 [node name="Button" type="Button"]
@@ -9,25 +8,6 @@ anchor_right = 0.174
 anchor_bottom = 0.21142
 offset_right = -0.448013
 offset_bottom = 8.0
+text = "Level: 1"
 script = ExtResource("1_saxq3")
 metadata/_edit_use_anchors_ = true
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-color = Color(0.113725, 0.109804, 0.113725, 0.647059)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
-custom_minimum_size = Vector2(200, 115)
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("1_ndfxi")
-expand_mode = 2
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Level: 1"
-horizontal_alignment = 1

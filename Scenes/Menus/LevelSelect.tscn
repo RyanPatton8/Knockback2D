@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://blw0ui48abkvp"]
+[gd_scene load_steps=4 format=3 uid="uid://blw0ui48abkvp"]
+
+[ext_resource type="PackedScene" uid="uid://bsfsot0yn27p4" path="res://Scenes/Menus/LevelChoice.tscn" id="1_ul5m5"]
+[ext_resource type="PackedScene" uid="uid://dvbxbfm7w201b" path="res://Scenes/Levels/level_01.tscn" id="2_11aef"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jun4b"]
 font_size = 35
@@ -31,4 +34,14 @@ horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 6
+columns = 5
+
+[node name="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
+layout_mode = 2
+Level = ExtResource("2_11aef")
+
+[node name="Button2" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
+layout_mode = 2
+text = "Level: 2"

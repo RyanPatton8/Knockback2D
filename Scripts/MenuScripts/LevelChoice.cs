@@ -3,14 +3,19 @@ using System;
 
 public partial class LevelChoice : Button
 {
-	[Export] public Texture2D LevelImg {get; private set;}
+	[Export] public PackedScene Level {get; private set;}
+	PlayerManager playerManager;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		if(GetParent().GetChild(0) == this)
+			GrabFocus();
+		playerManager = PlayerManager.Instance;
+		ButtonDown += ChangeToLevelScene;
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    private void ChangeToLevelScene()
+    {
+		playerManager.playerGUIHolder.Visible = true;
+        GetTree().ChangeSceneToPacked(Level);
+    }
 }

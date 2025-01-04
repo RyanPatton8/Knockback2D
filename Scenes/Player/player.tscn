@@ -1,6 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
+[ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
 [ext_resource type="Texture2D" uid="uid://btfrdielphf7w" path="res://Sprites/TempPlayer.svg" id="2_cygnj"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
@@ -12,10 +13,6 @@
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
 [ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Player/hook.tscn" id="10_vnxqg"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2wmr8"]
-resource_local_to_scene = true
-friction = 0.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yh4tg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_42clv"]
@@ -26,7 +23,7 @@ friction = 0.0
 
 [node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite") groups=["player"]]
 mass = 10.0
-physics_material_override = SubResource("PhysicsMaterial_2wmr8")
+physics_material_override = ExtResource("1_wxact")
 lock_rotation = true
 continuous_cd = 1
 contact_monitor = true

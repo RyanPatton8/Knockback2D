@@ -126,8 +126,10 @@ public partial class PlayerManager : Node
         private Color playerColor = new Color();
         private int arrowCount = 4;
         private int hookCount = 4;
+        private float startingDamage = 0;
         private float damageTaken = 0;
         private float damageGiven = 0;
+        private float startingComboCount = 1;
         private float comboCount = 1;
         PlayerManager playerManager;
         public PlayerInfo() {}
@@ -135,7 +137,7 @@ public partial class PlayerManager : Node
             this.playerIndex = playerIndex;
             this.lives = lives;
             this.playerColor = playerColor;
-            playerManager = PlayerManager.Instance;
+            playerManager = Instance;
         }
         public int GetLives(){
             return lives;
