@@ -45,6 +45,7 @@ public partial class Player : RigidBody2D
     private double maxEndLagTime = 0.5f;
     private int attacker;
     public Color playerColor;
+    public int indexOfFinalAttacker = -1;
     // Reference to player manager singleton
     PlayerManager playerManager;
     public override void _Ready()
@@ -87,6 +88,7 @@ public partial class Player : RigidBody2D
         else{
             AttackEndLag(delta);
         }
+        HandleJump(delta);
         //Always allow changing weapon and Health regen
         if(damageTaken > 1500 && healthRegenerating){
             RegenerateHealth(delta);
@@ -99,7 +101,24 @@ public partial class Player : RigidBody2D
     }
     private void Move(double delta)
     {
-        // Handle Jumps
+        // Handle Horizontal Movement
+        float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
+
+        if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1){
+            LinearVelocity = new Vector2(0, LinearVelocity.Y);
+        }
+        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1 && WeaponHolder.currentWeapon == 0){
+            maxMoveSpeed = 450;
+            ApplyForce(new Vector2(15000 * direction, 0));
+        }
+        else if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1){
+            maxMoveSpeed = 300;
+            ApplyForce(new Vector2(15000 * direction, 0));
+        }
+    }
+    private void HandleJump(double delta)
+    {
+                // Handle Jumps
         if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded){
             PhysicsMaterialOverride.Friction = 0.6f;
         }
@@ -116,21 +135,6 @@ public partial class Player : RigidBody2D
         }
         else if (isGrounded && !canJump){
             canJump = true;
-        }
-
-        // Handle Horizontal Movement
-        float direction = Input.GetJoyAxis(playerIndex, JoyAxis.LeftX);
-
-        if (direction == -1 && LinearVelocity.X > 1 || direction == 1 && LinearVelocity.X < -1){
-            LinearVelocity = new Vector2(0, LinearVelocity.Y);
-        }
-        if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1 && WeaponHolder.currentWeapon == 0){
-            maxMoveSpeed = 450;
-            ApplyForce(new Vector2(15000 * direction, 0));
-        }
-        else if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1){
-            maxMoveSpeed = 300;
-            ApplyForce(new Vector2(15000 * direction, 0));
         }
     }
     private void Aim()
@@ -238,14 +242,17 @@ public partial class Player : RigidBody2D
             (info, attackOwner) = slash.GiveInfo();
             if(attackOwner != playerIndex){
                 DamageFromMelee(info);
+                indexOfFinalAttacker = attackOwner;
             }
         }
         else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
             info = hookHitBox.GiveInfo() - GlobalPosition;
+            indexOfFinalAttacker = hookHitBox.GiveIndexInfo();
             DamageFromHook(info);
         }
         else if (area is Explosion explosion ){
             Vector2 explosionPos = explosion.GiveInfo();
+            indexOfFinalAttacker = explosion.GiveIndexInfo();
             info = GlobalPosition - explosionPos;
             DamageFromExplosion(info);
         }
@@ -253,10 +260,11 @@ public partial class Player : RigidBody2D
     private void RecieveRangedHit(Node body)
     {
         if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
+            indexOfFinalAttacker = arrow.GiveIndexInfo();
             DamageFromArrow(2000f);
         }
     }
-    public void Clashed(Vector2 redirect){
+    public void Clashed(Vector2 redirect, int otherSlashOwner){
         Vector2 clashDir = redirect.Normalized() * 3000;
         ApplyImpulse(clashDir);
     }
@@ -357,6 +365,7 @@ public partial class Player : RigidBody2D
         //checking the y linear velocity to not allow passing through one way platform as grounding
         if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10)
         {
+            indexOfFinalAttacker = -1;
             isGrounded = true;
             comboCount = 1;
             playerManager.playerList[playerIndex].SetComboCount(comboCount);

@@ -1,7 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://blw0ui48abkvp"]
+[gd_scene load_steps=9 format=3 uid="uid://blw0ui48abkvp"]
 
 [ext_resource type="PackedScene" uid="uid://bsfsot0yn27p4" path="res://Scenes/Menus/LevelChoice.tscn" id="1_ul5m5"]
 [ext_resource type="PackedScene" uid="uid://dvbxbfm7w201b" path="res://Scenes/Levels/level_01.tscn" id="2_11aef"]
+[ext_resource type="Texture2D" uid="uid://dqig1i4d26ava" path="res://Sprites/LevelImgs/Level_01.png" id="3_lmqd4"]
+[ext_resource type="PackedScene" uid="uid://c1c46bytq34mh" path="res://Scenes/Levels/level_02.tscn" id="4_bmwcn"]
+[ext_resource type="Texture2D" uid="uid://cthxdoxkl7y0e" path="res://Sprites/LevelImgs/Level_02.png" id="5_tajtb"]
+[ext_resource type="PackedScene" uid="uid://cs4v4gruld815" path="res://Scenes/Levels/level_03.tscn" id="6_sp8ln"]
+[ext_resource type="Texture2D" uid="uid://dti6606v8d3xj" path="res://Sprites/LevelImgs/Screenshot 2025-02-02 103120.png" id="7_h82v8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jun4b"]
 font_size = 35
@@ -38,10 +43,17 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 columns = 5
 
-[node name="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
+[node name="Level_01" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
 layout_mode = 2
 Level = ExtResource("2_11aef")
+LevelImg = ExtResource("3_lmqd4")
 
-[node name="Button2" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
+[node name="Level_02" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
 layout_mode = 2
-text = "Level: 2"
+Level = ExtResource("4_bmwcn")
+LevelImg = ExtResource("5_tajtb")
+
+[node name="Level_03" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
+layout_mode = 2
+Level = ExtResource("6_sp8ln")
+LevelImg = ExtResource("7_h82v8")

@@ -98,13 +98,17 @@ public partial class PlayerManager : Node
         instance.playerIndex = playerIndex;
     }
     //decrement player life if they are not at 0 respawn otherwise check for game over
-    public void LoseALife(int playerIndex)
+    public void LoseALife(int playerIndex, int killerIndex)
     {
         playerList[playerIndex].SetLives(-1);
         playerList[playerIndex].SetArrowCount(4);
         playerList[playerIndex].SetHookCount(4);
         playerList[playerIndex].SetDamageTaken(0);
         playerList[playerIndex].SetComboCount(1);
+        if(killerIndex != -1){
+            playerList[killerIndex].SetKills(1);
+            GD.Print($"player {killerIndex} has {playerList[killerIndex].GetKills()} kills");
+        }
 
         if (playerList[playerIndex].GetLives() > 0){
             // Respawn player after losing a life

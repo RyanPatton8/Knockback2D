@@ -1,0 +1,4 @@
+Level Making Rules:
+	Always have a cliff
+	Always have some form of a roof
+	Level img is 239 x 134

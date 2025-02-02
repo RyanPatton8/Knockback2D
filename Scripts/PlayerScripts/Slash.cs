@@ -45,7 +45,7 @@ public partial class Slash : Area2D
 	private void Clash(Area2D area){
 		if(area is Slash slash){
 			player.isClashing = true;
-			player.Clashed(player.GlobalPosition - slash.player.GlobalPosition);
+			player.Clashed(player.GlobalPosition - slash.player.GlobalPosition, slash.playerIndex);
 			CallDeferred("queue_free");
 		}
 	}

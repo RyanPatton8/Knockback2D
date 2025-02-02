@@ -1,13 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://bsfsot0yn27p4"]
+[gd_scene load_steps=4 format=3 uid="uid://bsfsot0yn27p4"]
 
+[ext_resource type="Texture2D" uid="uid://fon8kwni7tyv" path="res://Sprites/LevelImgs/LevelTexturePlaceHolder.png" id="1_ny0n4"]
 [ext_resource type="Script" path="res://Scripts/MenuScripts/LevelChoice.cs" id="1_saxq3"]
+[ext_resource type="Texture2D" uid="uid://bq5nhkir7thj3" path="res://Sprites/LevelImgs/BorderFocus.png" id="2_sc23a"]
 
-[node name="Button" type="Button"]
-anchors_preset = -1
-anchor_right = 0.174
-anchor_bottom = 0.21142
-offset_right = -0.448013
-offset_bottom = 8.0
-text = "Level: 1"
+[node name="TextureButton" type="TextureButton"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -119.5
+offset_top = -67.0
+offset_right = 119.5
+offset_bottom = 67.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_ny0n4")
+texture_focused = ExtResource("2_sc23a")
 script = ExtResource("1_saxq3")
-metadata/_edit_use_anchors_ = true

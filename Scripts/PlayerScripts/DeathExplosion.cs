@@ -4,7 +4,7 @@ using System;
 public partial class DeathExplosion : Sprite2D
 {
 	[Export] public AnimationPlayer AnimExplosionNode { get; private set; }
-    public int playerIndex;
+    public Player player;
 	PlayerManager playerManager;
     public override void _Ready()
     {
@@ -13,7 +13,7 @@ public partial class DeathExplosion : Sprite2D
     }
     private void StopExploding(StringName animName)
     {
-		playerManager.LoseALife(playerIndex);
+		playerManager.LoseALife(player.playerIndex, player.indexOfFinalAttacker);
         CallDeferred("queue_free");
     }
 }
