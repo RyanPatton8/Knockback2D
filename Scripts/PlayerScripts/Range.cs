@@ -50,7 +50,7 @@ public partial class Range : Node
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
             instance.forceApplied = throwForce;
-            instance.arrowSprite.Modulate = playerNode.playerColor;
+            // instance.arrowSprite.Modulate = playerNode.playerColor;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
         }
     }

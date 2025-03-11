@@ -33,7 +33,15 @@ public partial class Melee : Node
             slashInstance.Rotation = playerNode.HitBox.Rotation;
             slashInstance.playerIndex = playerNode.playerIndex;
             slashInstance.player = playerNode;
-            playerNode.ApplyImpulse(new Vector2((slashInstance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, slashInstance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 110);
+            if(playerNode.justJumped){
+                playerNode.LinearVelocity = new Vector2(playerNode.LinearVelocity.X, 0);
+                playerNode.ApplyImpulse(new Vector2(0, -4500));
+                playerNode.ApplyImpulse(new Vector2((slashInstance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, slashInstance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 110);
+                GD.Print("Jump Slash");            
+            }
+            else{
+                playerNode.ApplyImpulse(new Vector2((slashInstance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, slashInstance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 110);            
+            }
         }
     }
 }

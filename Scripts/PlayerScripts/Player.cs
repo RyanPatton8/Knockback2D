@@ -16,8 +16,9 @@ public partial class Player : RigidBody2D
     private float offsetAmount = 27;
     // Movement Variables
     private bool isGrounded = false;
-    private bool isJumping = false;
     public bool canJump = true;
+    public bool justJumped = false;
+    private double jumpSlashWindow = .2;
     private int jumpCount = 1;
     private int maxJumpCount = 1;
     // Combat Variables 
@@ -41,6 +42,8 @@ public partial class Player : RigidBody2D
     private bool healthRegenerating = false;
     public bool isAttacking = false;
     public bool isClashing = false;
+    public bool isGrappling = false;
+    private double grappleTime = .2;
     public double endLagTime = 0.5f;
     private double maxEndLagTime = 0.5f;
     private int attacker;
@@ -88,7 +91,16 @@ public partial class Player : RigidBody2D
         else{
             AttackEndLag(delta);
         }
-        HandleJump(delta);
+        if(!isGrappling){
+            HandleJump(delta);
+        }
+        else{
+            grappleTime -= delta;
+            if(grappleTime <= Mathf.Epsilon){
+                isGrappling = false;
+                grappleTime = .2;
+            }
+        }
         //Always allow changing weapon and Health regen
         if(damageTaken > 1500 && healthRegenerating){
             RegenerateHealth(delta);
@@ -96,6 +108,16 @@ public partial class Player : RigidBody2D
         else if(damageTaken > 1500 && !healthRegenerating){
             healthRegenTime = maxHealthRegenTime;
             RegenerateHealth(delta);
+        }
+        //And for justJumped
+        if(justJumped && jumpSlashWindow > Mathf.Epsilon){
+            jumpSlashWindow -= delta;
+            GD.Print(jumpSlashWindow);
+            GD.Print(justJumped);
+        }
+        else if (justJumped){
+            justJumped = false;
+            jumpSlashWindow = .2;
         }
         ChangeWeapon();
     }
@@ -125,9 +147,11 @@ public partial class Player : RigidBody2D
         else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canJump){
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
             ApplyImpulse(new Vector2(0, -4500));
+            justJumped = true;
             jumpCount--;
             canJump = false;
             PhysicsMaterialOverride.Friction = 0f;
+            
         }
         else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && !canJump){
             canJump = true;
@@ -350,6 +374,7 @@ public partial class Player : RigidBody2D
     // turns off player stun recieved from hit and applies impulse to self in desired direction
     public void Grapple(Vector2 info)
     {
+        isGrappling = true;
         KnockBackDuration.WaitTime = 0.01f;
         if(jumpCount < maxJumpCount)
             jumpCount = maxJumpCount;
