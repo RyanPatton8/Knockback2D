@@ -18,7 +18,7 @@ public partial class Range : Node
     }
     public override void _Process(double delta)
 	{
-        if(!playerNode.knockedBack){
+        if(!playerNode.knockedBack || playerNode.rocketJumping){
             if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.7f && canAttack && playerNode.arrowCount > 0 && !isTriggerDown)
             {
                 Attack();

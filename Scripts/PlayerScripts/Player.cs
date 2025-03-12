@@ -36,6 +36,7 @@ public partial class Player : RigidBody2D
     private double maxRegenTime = 4;
     private bool regeneratingArrow = false;
     private bool regeneratingHook = false;
+    public bool rocketJumping = false;
     //Health Regen
     private double healthRegenTime = 5;
     private double maxHealthRegenTime = 5;
@@ -278,7 +279,7 @@ public partial class Player : RigidBody2D
             Vector2 explosionPos = explosion.GiveInfo();
             indexOfFinalAttacker = explosion.GiveIndexInfo();
             info = GlobalPosition - explosionPos;
-            DamageFromExplosion(info);
+            DamageFromExplosion(info, indexOfFinalAttacker);
         }
     }
     private void RecieveRangedHit(Node body)
@@ -332,20 +333,29 @@ public partial class Player : RigidBody2D
         GroundCheck.Monitoring = false;
     }
 
-    private void DamageFromExplosion(Vector2 info)
+    private void DamageFromExplosion(Vector2 info, int explosionIndex)
     {
-        knockedBack = true;
-        PhysicsMaterialOverride.Friction = 0;
-        PhysicsMaterialOverride.Bounce = 1;
         Vector2 hitDirection = new Vector2(info.X, info.Y).Normalized();
-        LinearVelocity = new Vector2(0, 0);
-        float knockBackMultiplier = comboCount > 0 ? comboCount * damageTaken : damageTaken;
-        ApplyImpulse(hitDirection * knockBackMultiplier);
-        // comboCount++;
-        // playerManager.playerList[playerIndex].SetComboCount(comboCount);
-        KnockBackDuration.WaitTime = damageTaken / 10000;
-        KnockBackDuration.Start();
-        GroundCheck.Monitoring = false;
+        if(playerIndex != explosionIndex){
+            knockedBack = true;
+            PhysicsMaterialOverride.Friction = 0;
+            PhysicsMaterialOverride.Bounce = 1;
+            LinearVelocity = new Vector2(0, 0);
+            float knockBackMultiplier = comboCount > 0 ? comboCount * damageTaken : damageTaken;
+            ApplyImpulse(hitDirection * knockBackMultiplier);
+            // comboCount++;
+            // playerManager.playerList[playerIndex].SetComboCount(comboCount);
+            KnockBackDuration.WaitTime = damageTaken / 10000;
+            KnockBackDuration.Start();
+            GroundCheck.Monitoring = false;
+        }
+        else{
+            // rocketJumping = true;
+            // KnockBackDuration.WaitTime = 1.25;
+            // KnockBackDuration.Start();
+            float knockBackMultiplier = 10000;
+            ApplyImpulse(hitDirection * knockBackMultiplier);
+        }
     }
 
     // functionally about the same but not applying damage having a fixed impulse strength
@@ -366,6 +376,7 @@ public partial class Player : RigidBody2D
     // Called to remove stun from knockback
     public void AllowMovement()
     {
+        rocketJumping = false;
         knockedBack = false;
         PhysicsMaterialOverride.Bounce = 0;
         PhysicsMaterialOverride.Friction = 0.6f;
