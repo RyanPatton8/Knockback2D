@@ -14,8 +14,15 @@ public partial class Melee : Node
     {
         if(!playerNode.knockedBack || playerNode.rocketJumping){
             if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.7f && !playerNode.isAttacking && !isTriggerDown){
-                Attack();
-                isTriggerDown = true;
+                if(playerNode.isWeaponInGround){
+                    playerNode.isClashing = true;
+			        playerNode.Clashed(playerNode.GlobalPosition - playerNode.HitBox.GlobalPosition, playerNode.playerIndex, false);
+                }
+                else{
+                    Attack();
+                    isTriggerDown = true; 
+                }
+                
             } 
             else if(isTriggerDown && Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) < 0.7f){
                 isTriggerDown = false;

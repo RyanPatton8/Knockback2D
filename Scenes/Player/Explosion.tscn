@@ -80,7 +80,7 @@ collision_layer = 2
 collision_mask = 0
 monitoring = false
 script = ExtResource("1_0e581")
-AnimExplosionNode = NodePath("AnimationPlayer")
+AnimExplosionNode = NodePath("AnimationSlashNode")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(3, 3)
@@ -90,7 +90,7 @@ shape = SubResource("CircleShape2D_bmpiy")
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_c8xvv")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationSlashNode" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3eevf")
 }

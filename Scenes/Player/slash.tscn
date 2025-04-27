@@ -1,10 +1,48 @@
-[gd_scene load_steps=4 format=3 uid="uid://htbr7noopagf"]
+[gd_scene load_steps=7 format=3 uid="uid://htbr7noopagf"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Slash.cs" id="1_8b25p"]
-[ext_resource type="Texture2D" uid="uid://jqmyoorr1pee" path="res://Sprites/TempSlash.svg" id="2_sjdox"]
+[ext_resource type="Texture2D" uid="uid://e06xfxjg46i" path="res://Sprites/SlashAnim/slash_02.png" id="2_pcx3e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvbo4"]
 size = Vector2(70, 20)
+
+[sub_resource type="Animation" id="Animation_pceyh"]
+resource_name = "slash"
+length = 0.133337
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.05, 0.143), Vector2(0.35, 1.001)]
+}
+
+[sub_resource type="Animation" id="Animation_2c3ta"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.35, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_laihx"]
+_data = {
+"RESET": SubResource("Animation_2c3ta"),
+"slash": SubResource("Animation_pceyh")
+}
 
 [node name="Slash" type="Area2D"]
 scale = Vector2(3, 3)
@@ -13,11 +51,18 @@ collision_mask = 3
 script = ExtResource("1_8b25p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(10, 0)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_sjdox")
+position = Vector2(3.33333, -5.96046e-08)
+rotation = -1.5708
+scale = Vector2(0.075, 0.1)
+texture = ExtResource("2_pcx3e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8.75, 0)
-scale = Vector2(0.35, 0.75)
+scale = Vector2(0.35, 1)
 shape = SubResource("RectangleShape2D_wvbo4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_laihx")
+}
+autoplay = "slash"

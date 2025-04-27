@@ -7,6 +7,7 @@ public partial class Slash : Area2D
 	public int playerIndex;
 	public Player player;
 	double attackDuration = .35;
+	private bool hittingPlayer = false;
     public override void _Ready()
     {
 		BodyEntered += Reflect;
@@ -14,11 +15,11 @@ public partial class Slash : Area2D
     }
     public override void _Process(double delta)
 	{
+		if(player.isClashing){
+			CallDeferred("queue_free");
+		}
 		attackDuration -= delta;
 		if(attackDuration < Mathf.Epsilon){
-			if(player.isClashing){
-				player.isClashing = false;
-			}
 			QueueFree();
 		}
 	}
@@ -39,13 +40,14 @@ public partial class Slash : Area2D
 	}
 	public (Vector2, int) GiveInfo()
 	{
-		attackDuration = 0.1f;
+		attackDuration = 0.15f;
+		hittingPlayer = true;
 		return (GlobalPosition - player.GlobalPosition, playerIndex);
 	}
 	private void Clash(Area2D area){
-		if(area is Slash slash){
+		if(area is Slash slash && !hittingPlayer){
 			player.isClashing = true;
-			player.Clashed(player.GlobalPosition - slash.player.GlobalPosition, slash.playerIndex);
+			player.Clashed(player.GlobalPosition - slash.player.GlobalPosition, slash.playerIndex, true);
 			CallDeferred("queue_free");
 		}
 	}

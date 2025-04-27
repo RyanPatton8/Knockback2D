@@ -44,9 +44,11 @@ public partial class Player : RigidBody2D
     public bool isAttacking = false;
     public bool isClashing = false;
     public bool isGrappling = false;
+    public bool isWeaponInGround = false;
     private double grappleTime = .2;
     public double endLagTime = 0.5f;
     private double maxEndLagTime = 0.5f;
+    private double clashDuration = .35;
     private int attacker;
     public Color playerColor;
     public int indexOfFinalAttacker = -1;
@@ -63,6 +65,8 @@ public partial class Player : RigidBody2D
         playerManager = PlayerManager.Instance;
         PlayerSprite.Modulate = playerColor;
         HitBox.GlobalPosition = GlobalPosition + new Vector2(1,0) * offsetAmount;
+        HitBox.BodyEntered += GroundClashEntered;
+        HitBox.BodyExited += GroundClashExit;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -120,7 +124,20 @@ public partial class Player : RigidBody2D
             justJumped = false;
             jumpSlashWindow = .2;
         }
+        if(isClashing){
+            StopClashing(delta);
+        }
         ChangeWeapon();
+    }
+    private void GroundClashEntered(Node body){
+        if(body is TileMapLayer){
+            isWeaponInGround = true;
+        }
+    }
+    private void GroundClashExit(Node body){
+        if(body is TileMapLayer){
+            isWeaponInGround = false;
+        }
     }
     private void Move(double delta)
     {
@@ -246,6 +263,13 @@ public partial class Player : RigidBody2D
             endLagTime = maxEndLagTime;
         }
     }
+    public void StopClashing(double delta){
+        clashDuration -= delta;
+        if(clashDuration <= Mathf.Epsilon){
+            isClashing = false;
+            clashDuration = .35;
+        }
+    }
     /*
         When you bump into another player reset velocity to prevent killing yourself off bouncing your opponent
 
@@ -289,8 +313,9 @@ public partial class Player : RigidBody2D
             DamageFromArrow(2000f);
         }
     }
-    public void Clashed(Vector2 redirect, int otherSlashOwner){
-        Vector2 clashDir = redirect.Normalized() * 3000;
+    public void Clashed(Vector2 redirect, int otherSlashOwner, bool fromSlash){
+        int multiplier = fromSlash ? 6000 : 150;
+        Vector2 clashDir = redirect.Normalized() * multiplier;
         ApplyImpulse(clashDir);
     }
     /*
