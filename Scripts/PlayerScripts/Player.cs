@@ -12,6 +12,7 @@ public partial class Player : RigidBody2D
     [Export] public Area2D HitBox { get; private set; }
     [Export] public WeaponHolder WeaponHolder { get; private set; }
     [Export] public Sprite2D PlayerSprite {get; private set;}
+    [Export] public AnimationPlayer Anim { get; private set; }
     // How far from player should hitbox rotate
     private float offsetAmount = 27;
     // Movement Variables
@@ -67,6 +68,7 @@ public partial class Player : RigidBody2D
         HitBox.GlobalPosition = GlobalPosition + new Vector2(1,0) * offsetAmount;
         HitBox.BodyEntered += GroundClashEntered;
         HitBox.BodyExited += GroundClashExit;
+        Anim.Play("Idle");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -154,6 +156,20 @@ public partial class Player : RigidBody2D
         else if (direction != 0 && LinearVelocity.X < maxMoveSpeed && LinearVelocity.X > maxMoveSpeed * -1){
             maxMoveSpeed = 300;
             ApplyForce(new Vector2(15000 * direction, 0));
+        }
+        if(direction > 0.3){
+            PlayerSprite.FlipH = false;
+            
+            if (Anim.CurrentAnimation != "Run" || !Anim.IsPlaying())
+                Anim.Play("Run");
+        }
+        else if(direction < -0.3){
+            PlayerSprite.FlipH = true;
+            if (Anim.CurrentAnimation != "Run" || !Anim.IsPlaying())
+                Anim.Play("Run");
+        }
+        else{
+            Anim.Play("Idle");
         }
     }
     private void HandleJump(double delta)

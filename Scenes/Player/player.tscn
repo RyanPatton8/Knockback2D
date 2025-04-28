@@ -1,9 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=25 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
-[ext_resource type="Texture2D" uid="uid://btfrdielphf7w" path="res://Sprites/TempPlayer.svg" id="2_cygnj"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
+[ext_resource type="Texture2D" uid="uid://celkdglnboh0n" path="res://Sprites/PlayerTest2.svg" id="3_m1n2w"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
 [ext_resource type="Texture2D" uid="uid://c4orj6glxdgwe" path="res://Sprites/MeleeAim.svg" id="4_soam1"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Melee.cs" id="5_k4pk5"]
@@ -12,6 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/Player/slash.tscn" id="7_vokl2"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
 [ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Player/hook.tscn" id="10_vnxqg"]
+[ext_resource type="Texture2D" uid="uid://cx7lqnspmvsr6" path="res://Sprites/Player/Idle/Idle-0001.svg" id="13_b8ck5"]
+[ext_resource type="Texture2D" uid="uid://cmnruyd6368br" path="res://Sprites/Player/Run/PlayerRun-0001.svg" id="14_qpcah"]
+[ext_resource type="Texture2D" uid="uid://c5y4l3mqdyyq7" path="res://Sprites/Player/Run/PlayerRun-0002.svg" id="15_60ine"]
+[ext_resource type="Texture2D" uid="uid://cjfowmp2uac72" path="res://Sprites/Player/Run/PlayerRun-0003.svg" id="16_nmr8y"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yh4tg"]
 
@@ -21,7 +25,62 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eg4u0"]
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite") groups=["player"]]
+[sub_resource type="Animation" id="Animation_6b6dq"]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("13_b8ck5")]
+}
+
+[sub_resource type="Animation" id="Animation_kvpmg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_m1n2w")]
+}
+
+[sub_resource type="Animation" id="Animation_ijwwk"]
+resource_name = "Run"
+length = 0.35
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("15_60ine"), ExtResource("16_nmr8y"), ExtResource("14_qpcah")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_efy3q"]
+_data = {
+"Idle": SubResource("Animation_6b6dq"),
+"RESET": SubResource("Animation_kvpmg"),
+"Run": SubResource("Animation_ijwwk")
+}
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim") groups=["player"]]
 mass = 10.0
 physics_material_override = ExtResource("1_wxact")
 lock_rotation = true
@@ -36,10 +95,10 @@ HurtBox = NodePath("HurtBox")
 HitBox = NodePath("HitBox")
 WeaponHolder = NodePath("WeaponHolder")
 PlayerSprite = NodePath("Sprite2D")
+Anim = NodePath("AnimationPlayer")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_cygnj")
+texture = ExtResource("3_m1n2w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_yh4tg")
@@ -100,3 +159,8 @@ arrow = ExtResource("7_f35k5")
 [node name="FishingRod" type="Node" parent="WeaponHolder"]
 script = ExtResource("9_rdm57")
 hook = ExtResource("10_vnxqg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_efy3q")
+}
