@@ -1,10 +1,14 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-public partial class ReadyUp : Control
+public partial class ReadyUp : Node2D
 {
-	[Export] public ColorRect[] players {get; private set;}
 	PlayerManager playerManager;
+	[Export] public Node PlayerSpawn { get; private set;}
+	public List<Marker2D> spawns = new List<Marker2D>();
+	private Random rnd = new Random();
     // // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Ready()
 	{
@@ -16,6 +20,15 @@ public partial class ReadyUp : Control
 				playerManager.playerList.Remove(player.playerIndex);
 				player.QueueFree();
 			}
+		}
+		
+		spawns = PlayerSpawn.GetChildren().OfType<Marker2D>().ToList();
+		playerManager.spawnPoints = spawns;
+
+		foreach (KeyValuePair<int, PlayerManager.PlayerInfo> kvp in playerManager.playerList)
+		{
+			Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;
+			playerManager.SpawnPlayer(kvp.Key, spawnPoint);
 		}
 	}
     public override void _Process(double delta)
@@ -41,6 +54,13 @@ public partial class ReadyUp : Control
 		}
 
 		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerList.Count > 0){
+			foreach (Node child in GetTree().Root.GetChildren())
+			{
+				if (child is Player player)
+				{
+					player.QueueFree();
+				}
+			}
 			GetTree().ChangeSceneToFile("res://Scenes/Menus/LevelSelect.tscn");
 		}
 	}
@@ -48,11 +68,10 @@ public partial class ReadyUp : Control
 	{
 		if (playerManager.playerList.ContainsKey(playerIndex))
             return;
-		Color currentColor = players[playerIndex].Color;
-		currentColor.A = 255;
-		players[playerIndex].Color = currentColor;
 		playerManager.playersAlive++;
 		playerManager.AddPlayer(playerIndex);
+		Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;
+		playerManager.SpawnPlayer(playerIndex, spawnPoint);
 	}
 
 	private void RemovePlayer(int playerIndex)
@@ -60,9 +79,13 @@ public partial class ReadyUp : Control
 		if (!playerManager.playerList.ContainsKey(playerIndex))
             return;
 		playerManager.playersAlive--;
-		Color currentColor = players[playerIndex].Color;
-		currentColor.A = 0;
-		players[playerIndex].Color = currentColor;
 		playerManager.RemovePlayer(playerIndex);
+		foreach (Node child in GetTree().Root.GetChildren())
+		{
+			if (child is Player player && player.playerIndex == playerIndex)
+			{
+				player.QueueFree();
+			}
+		}
 	}
 }

@@ -1,42 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpkbq4rd37qh5"]
+[gd_scene load_steps=3 format=3 uid="uid://dpkbq4rd37qh5"]
 
-[ext_resource type="Script" path="res://Scripts/LevelScripts/ReadyUp.cs" id="1_fo2u2"]
+[ext_resource type="Script" path="res://Scripts/MenuScripts/PlayBtn.cs" id="1_1p3ou"]
+[ext_resource type="PackedScene" uid="uid://fv1f5dui6yk5" path="res://Scenes/Menus/ready_up.tscn" id="2_p4yqm"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("players")]
+[node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_fo2u2")
-players = [NodePath("HBoxContainer/Player1"), NodePath("HBoxContainer/Player2"), NodePath("HBoxContainer/Player3"), NodePath("HBoxContainer/Player4")]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -15.5
+offset_right = 20.5
+offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="Player1" type="ColorRect" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-color = Color(1, 0, 0, 0)
-
-[node name="Player2" type="ColorRect" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-color = Color(0, 0, 1, 0)
-
-[node name="Player3" type="ColorRect" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-color = Color(1, 0.784314, 0, 0)
-
-[node name="Player4" type="ColorRect" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-color = Color(0, 1, 0, 0)
+text = "Play"
+script = ExtResource("1_1p3ou")
+Level = ExtResource("2_p4yqm")

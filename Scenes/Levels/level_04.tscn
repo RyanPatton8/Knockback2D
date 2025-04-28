@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="2_rmaub"]
 [ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/Levels/world_border.tscn" id="3_8ok3c"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ojjkd"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c71t6"]
 texture = ExtResource("2_rmaub")
 0:0/0 = 0
 1:0/0 = 0
@@ -545,7 +545,7 @@ texture = ExtResource("2_rmaub")
 
 [sub_resource type="TileSet" id="TileSet_gx5mp"]
 physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_ojjkd")
+sources/0 = SubResource("TileSetAtlasSource_c71t6")
 
 [node name="Level_04" type="Node2D" node_paths=PackedStringArray("PlayerSpawn", "camera")]
 script = ExtResource("1_ts46e")
