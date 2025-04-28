@@ -49,7 +49,9 @@ public partial class Range : Node
             AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
-            instance.forceApplied = throwForce;
+            if(!playerNode.isWeaponInGround){
+                instance.forceApplied = throwForce;
+            }
             // instance.arrowSprite.Modulate = playerNode.playerColor;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
         }
