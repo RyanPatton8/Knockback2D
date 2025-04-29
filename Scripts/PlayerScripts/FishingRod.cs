@@ -14,6 +14,8 @@ public partial class FishingRod : Node
     private double attackCoolDown = .6;
     private double maxAttackCoolDown = .6;
     PlayerManager playerManager;
+    [Export] public AudioStream HookAudio {get; private set;}
+
     public override void _Ready()
     {
         playerNode = GetOwner<Player>();
@@ -40,6 +42,8 @@ public partial class FishingRod : Node
     {
         //Alter physical hook count and hook count UI in playermanager
         playerNode.hookCount--;
+        playerNode.HookAudio.Stream = HookAudio;
+        playerNode.HookAudio.Play();
         playerManager.playerList[playerNode.playerIndex].SetHookCount(playerNode.hookCount);
         //Set the aim direction based on current aim direction relative to player
         Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;

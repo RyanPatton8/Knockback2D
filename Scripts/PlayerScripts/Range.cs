@@ -10,6 +10,7 @@ public partial class Range : Node
     private bool isTriggerDown = false;
     private double attackCoolDown = .5;
     private double maxAttackCoolDown = .5;
+    [Export] public AudioStream GunShotAudio {get; private set;}
     PlayerManager playerManager;
     public override void _Ready()
     {
@@ -45,10 +46,13 @@ public partial class Range : Node
             playerNode.arrowCount--;
             playerManager.playerList[playerNode.playerIndex].SetArrowCount(playerNode.arrowCount);
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
+            playerNode.WeaponAudio.Stream = GunShotAudio;
+            playerNode.WeaponAudio.Play();
             Arrow instance = (Arrow)arrow.Instantiate();
             AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
+            instance.playerNode = playerNode;
             if(!playerNode.isWeaponInGround){
                 instance.forceApplied = throwForce;
             }

@@ -41,19 +41,19 @@ public partial class PlayerManager : Node
     {
         switch(playerIndex){
             case 0:
-                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(.5f,0,0), 4, 4));
+                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(.65f,0,0), 4, 4));
                  playerGUIHolder.AddCard(0);
                  break;
             case 1:
-                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(0,0,.5f), 4, 4));
+                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(0,0,.65f), 4, 4));
                  playerGUIHolder.AddCard(1);
                  break;
             case 2:
-                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3,new Color(.5f,.5f,0), 4, 4));
+                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3,new Color(.65f,.65f,0), 4, 4));
                  playerGUIHolder.AddCard(2);
                  break;
             case 3:
-                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3,new Color(0,.5f,0), 4, 4));
+                 playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3,new Color(0,.65f,0), 4, 4));
                  playerGUIHolder.AddCard(3);
                  break;
             default:

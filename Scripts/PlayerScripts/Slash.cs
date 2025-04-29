@@ -27,6 +27,8 @@ public partial class Slash : Area2D
 	{
 		if (body is RigidBody2D rb && (body is Arrow || body is Hook))
 		{
+			var hb = player.HitBox as HitBox;
+        	hb.Clash();
 			rb.LinearVelocity = Vector2.Zero;
 			Vector2 reflectDir = (player.HitBox.GlobalPosition - player.GlobalPosition).Normalized();
 			rb.ApplyImpulse(reflectDir * 1500);
@@ -40,12 +42,16 @@ public partial class Slash : Area2D
 	}
 	public (Vector2, int) GiveInfo()
 	{
+		var hb = player.HitBox as HitBox;
+        hb.Hit();
 		attackDuration = 0.15f;
 		hittingPlayer = true;
 		return (GlobalPosition - player.GlobalPosition, playerIndex);
 	}
 	private void Clash(Area2D area){
 		if(area is Slash slash && !hittingPlayer){
+			var hb = player.HitBox as HitBox;
+       	 	hb.Clash();
 			player.isClashing = true;
 			player.Clashed(player.GlobalPosition - slash.player.GlobalPosition, slash.playerIndex, true);
 			CallDeferred("queue_free");

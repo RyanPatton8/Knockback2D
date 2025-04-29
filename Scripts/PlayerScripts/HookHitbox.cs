@@ -7,6 +7,7 @@ public partial class HookHitbox : Area2D
 	private Player playerNode;
     private FishingRod fishingRod;
     public double forceApplied;
+    [Export] public AudioStream ImpactAudio {get; private set;}
 	
 	public override void _Ready()
     {
@@ -23,6 +24,8 @@ public partial class HookHitbox : Area2D
         {
             return;
         }
+        playerNode.HookAudio.Stream = ImpactAudio;
+        playerNode.HookAudio.Play();
         //Grapple if its environment
 		if(body.IsInGroup("Environment"))
         {

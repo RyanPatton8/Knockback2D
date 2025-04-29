@@ -6,6 +6,7 @@ public partial class Melee : Node
     private Player playerNode;
     private bool isTriggerDown = false;
     public Slash slashInstance;
+    [Export] public AudioStream SlashAudio {get; private set;}
     public override void _Ready()
     {
         playerNode = GetOwner<Player>();
@@ -15,10 +16,15 @@ public partial class Melee : Node
         if(!playerNode.knockedBack || playerNode.rocketJumping){
             if (Input.GetJoyAxis(playerNode.playerIndex, JoyAxis.TriggerRight) > 0.7f && !playerNode.isAttacking && !isTriggerDown){
                 if(playerNode.isWeaponInGround){
+                    var hb = playerNode.HitBox as HitBox;
+                    hb.Clash();
                     playerNode.isClashing = true;
 			        playerNode.Clashed(playerNode.GlobalPosition - playerNode.HitBox.GlobalPosition, playerNode.playerIndex, false);
+                    isTriggerDown = true; 
                 }
                 else{
+                    playerNode.WeaponAudio.Stream = SlashAudio;
+                    playerNode.WeaponAudio.Play();
                     Attack();
                     isTriggerDown = true; 
                 }

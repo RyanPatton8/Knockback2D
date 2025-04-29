@@ -5,6 +5,7 @@ public partial class Explosion : Area2D
 {
     [Export] public AnimationPlayer AnimExplosionNode { get; private set; }
     public int playerIndex;
+
     public override void _Ready()
     {
         AnimExplosionNode.AnimationFinished += StopExploding;

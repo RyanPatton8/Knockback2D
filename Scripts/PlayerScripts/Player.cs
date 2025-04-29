@@ -13,6 +13,9 @@ public partial class Player : RigidBody2D
     [Export] public WeaponHolder WeaponHolder { get; private set; }
     [Export] public Sprite2D PlayerSprite {get; private set;}
     [Export] public AnimationPlayer Anim { get; private set; }
+    [Export] public AudioStreamPlayer2D WeaponAudio {get; private set;}
+    [Export] public AudioStreamPlayer2D HookAudio {get; private set;}
+    [Export] public AudioStreamPlayer2D PlayerAudio {get; private set;}
     // How far from player should hitbox rotate
     private float offsetAmount = 27;
     // Movement Variables
@@ -53,6 +56,7 @@ public partial class Player : RigidBody2D
     private int attacker;
     public Color playerColor;
     public int indexOfFinalAttacker = -1;
+    [Export] public AudioStream Running {get; private set;}
     // Reference to player manager singleton
     PlayerManager playerManager;
     public override void _Ready()
@@ -69,6 +73,7 @@ public partial class Player : RigidBody2D
         HitBox.BodyEntered += GroundClashEntered;
         HitBox.BodyExited += GroundClashExit;
         Anim.Play("Idle");
+        PlayerAudio.Stream = Running;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -162,11 +167,15 @@ public partial class Player : RigidBody2D
             
             if (Anim.CurrentAnimation != "Run" || !Anim.IsPlaying())
                 Anim.Play("Run");
+            if (!PlayerAudio.IsPlaying() && isGrounded)
+                PlayerAudio.Play();
         }
         else if(direction < -0.3){
             PlayerSprite.FlipH = true;
             if (Anim.CurrentAnimation != "Run" || !Anim.IsPlaying())
                 Anim.Play("Run");
+            if (!PlayerAudio.IsPlaying() && isGrounded)
+                PlayerAudio.Play();
         }
         else{
             Anim.Play("Idle");

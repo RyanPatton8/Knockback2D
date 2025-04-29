@@ -1,21 +1,31 @@
-[gd_scene load_steps=25 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=33 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
-[ext_resource type="Texture2D" uid="uid://celkdglnboh0n" path="res://Sprites/PlayerTest2.svg" id="3_m1n2w"]
+[ext_resource type="AudioStream" uid="uid://c153qmh1iqess" path="res://Audio/Player/Running/08_Step_rock_3.wav" id="3_ltoaf"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
+[ext_resource type="Texture2D" uid="uid://b448v4a505ej3" path="res://Sprites/Melee/Slash/clash.png" id="4_gmai7"]
 [ext_resource type="Texture2D" uid="uid://c4orj6glxdgwe" path="res://Sprites/MeleeAim.svg" id="4_soam1"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Melee.cs" id="5_k4pk5"]
+[ext_resource type="Texture2D" uid="uid://cnm1mvixwfn06" path="res://Sprites/Melee/Slash/hit.png" id="5_kidg5"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Range.cs" id="6_703d2"]
 [ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Player/Arrow.tscn" id="7_f35k5"]
+[ext_resource type="AudioStream" uid="uid://csy35e3jqanyd" path="res://Audio/Player/Slash/SlashImpact.wav" id="7_s272n"]
 [ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/Player/slash.tscn" id="7_vokl2"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
+[ext_resource type="AudioStream" uid="uid://xgovjoihyf5v" path="res://Audio/Player/Slash/SlashClash.wav" id="10_vfy0c"]
 [ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Player/hook.tscn" id="10_vnxqg"]
+[ext_resource type="AudioStream" uid="uid://bhbpy0x43ylxl" path="res://Audio/Player/Slash/SlashSwing.wav" id="11_o107o"]
 [ext_resource type="Texture2D" uid="uid://cx7lqnspmvsr6" path="res://Sprites/Player/Idle/Idle-0001.svg" id="13_b8ck5"]
 [ext_resource type="Texture2D" uid="uid://cmnruyd6368br" path="res://Sprites/Player/Run/PlayerRun-0001.svg" id="14_qpcah"]
+[ext_resource type="AudioStream" uid="uid://bjya1fmrc7tjt" path="res://Audio/Player/Ranged/GunShot.wav" id="15_8crvf"]
 [ext_resource type="Texture2D" uid="uid://c5y4l3mqdyyq7" path="res://Sprites/Player/Run/PlayerRun-0002.svg" id="15_60ine"]
 [ext_resource type="Texture2D" uid="uid://cjfowmp2uac72" path="res://Sprites/Player/Run/PlayerRun-0003.svg" id="16_nmr8y"]
+[ext_resource type="AudioStream" uid="uid://b1yx7v0rpnd1q" path="res://Audio/Player/Hook/HookCast.wav" id="17_new1x"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcp6b"]
+load_path = "res://.godot/imported/PlayerTest2.svg-3ef46a88e1b866685aeb47dc6024c129.ctex"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yh4tg"]
 
@@ -52,7 +62,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_m1n2w")]
+"values": [SubResource("CompressedTexture2D_pcp6b")]
 }
 
 [sub_resource type="Animation" id="Animation_ijwwk"]
@@ -80,7 +90,7 @@ _data = {
 "Run": SubResource("Animation_ijwwk")
 }
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim") groups=["player"]]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio") groups=["player"]]
 mass = 10.0
 physics_material_override = ExtResource("1_wxact")
 lock_rotation = true
@@ -96,9 +106,15 @@ HitBox = NodePath("HitBox")
 WeaponHolder = NodePath("WeaponHolder")
 PlayerSprite = NodePath("Sprite2D")
 Anim = NodePath("AnimationPlayer")
+WeaponAudio = NodePath("WeaponAudio")
+HookAudio = NodePath("HookAudio")
+PlayerAudio = NodePath("PlayerAudio")
+Running = ExtResource("3_ltoaf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_m1n2w")
+position = Vector2(0, -1)
+scale = Vector2(1.1, 1.1)
+texture = SubResource("CompressedTexture2D_pcp6b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_yh4tg")
@@ -110,12 +126,19 @@ position = Vector2(0, 7)
 scale = Vector2(0.88, 1)
 shape = SubResource("CircleShape2D_42clv")
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="HitBox" type="Area2D" parent="." node_paths=PackedStringArray("HitSprite", "SpriteTimer", "WeaponAudio")]
 collision_layer = 7
 collision_mask = 7
 collision_priority = 0.0
 input_pickable = false
 script = ExtResource("3_2rrik")
+HitSprite = NodePath("SlashHit")
+SpriteTimer = NodePath("SlashHitSpriteDur")
+ClashTexture = ExtResource("4_gmai7")
+HitTexture = ExtResource("5_kidg5")
+ClashAudio = ExtResource("10_vfy0c")
+ImpactAudio = ExtResource("7_s272n")
+WeaponAudio = NodePath("../WeaponAudio")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 scale = Vector2(0.45, 0.45)
@@ -128,6 +151,14 @@ texture = ExtResource("4_soam1")
 
 [node name="DashCoolDown" type="Timer" parent="HitBox"]
 wait_time = 0.35
+one_shot = true
+
+[node name="SlashHit" type="Sprite2D" parent="HitBox"]
+position = Vector2(50, 0)
+scale = Vector2(0.4, 0.4)
+
+[node name="SlashHitSpriteDur" type="Timer" parent="HitBox"]
+wait_time = 0.2
 one_shot = true
 
 [node name="HurtBox" type="Area2D" parent="." groups=["HurtBox"]]
@@ -151,16 +182,26 @@ hitBoxSprite = NodePath("../HitBox/CollisionShape2D/Sprite2D")
 [node name="Melee" type="Node" parent="WeaponHolder"]
 script = ExtResource("5_k4pk5")
 slash = ExtResource("7_vokl2")
+SlashAudio = ExtResource("11_o107o")
 
 [node name="Range" type="Node" parent="WeaponHolder"]
 script = ExtResource("6_703d2")
 arrow = ExtResource("7_f35k5")
+GunShotAudio = ExtResource("15_8crvf")
 
 [node name="FishingRod" type="Node" parent="WeaponHolder"]
 script = ExtResource("9_rdm57")
 hook = ExtResource("10_vnxqg")
+HookAudio = ExtResource("17_new1x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_efy3q")
 }
+
+[node name="WeaponAudio" type="AudioStreamPlayer2D" parent="."]
+
+[node name="HookAudio" type="AudioStreamPlayer2D" parent="."]
+
+[node name="PlayerAudio" type="AudioStreamPlayer2D" parent="."]
+volume_db = -15.0

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://1ncy12c8ef2i"]
+[gd_scene load_steps=6 format=3 uid="uid://1ncy12c8ef2i"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Arrow.cs" id="1_44v55"]
 [ext_resource type="PackedScene" uid="uid://beyckrt4nh0f7" path="res://Scenes/Player/Explosion.tscn" id="2_bq8he"]
+[ext_resource type="AudioStream" uid="uid://beikii8vipwpq" path="res://Audio/Player/Ranged/BulletExplosion.wav" id="3_rt6i4"]
 [ext_resource type="Texture2D" uid="uid://ct8xftfwukhpf" path="res://Sprites/Bomb2.svg" id="3_wnwmf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6m410"]
@@ -16,6 +17,7 @@ script = ExtResource("1_44v55")
 collision = NodePath("CollisionShape2D")
 explosion = ExtResource("2_bq8he")
 arrowSprite = NodePath("Sprite2D")
+ExplosionAudio = ExtResource("3_rt6i4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.3, 0.3)
