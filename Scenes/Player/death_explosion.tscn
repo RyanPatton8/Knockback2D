@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cmsir1424tdhe"]
+[gd_scene load_steps=18 format=3 uid="uid://cmsir1424tdhe"]
 
 [ext_resource type="Texture2D" uid="uid://887dgojy7jqw" path="res://Sprites/explosion-1-d/Sprites/explosion-d1.png" id="1_g320r"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/DeathExplosion.cs" id="2_3bwu2"]
@@ -13,9 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://dbhbg2u4pt367" path="res://Sprites/explosion-1-d/Sprites/explosion-d10.png" id="10_d42ho"]
 [ext_resource type="Texture2D" uid="uid://qbu17n7lsing" path="res://Sprites/explosion-1-d/Sprites/explosion-d11.png" id="11_mccjv"]
 [ext_resource type="Texture2D" uid="uid://dj4sp1c1np7s7" path="res://Sprites/explosion-1-d/Sprites/explosion-d12.png" id="12_ckq3x"]
+[ext_resource type="AudioStream" uid="uid://bk3nu37oo0pri" path="res://Audio/Player/Death/Explosion.wav" id="14_yarf6"]
 
 [sub_resource type="Animation" id="Animation_nyyyw"]
 resource_name = "Death"
+length = 1.1
 step = 0.0909091
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -24,10 +26,10 @@ tracks/0/path = NodePath(".:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0909091, 0.181818, 0.272727, 0.363636, 0.454545, 0.545455, 0.636364, 0.727273, 0.818182, 0.909091, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.0909091, 0.181818, 0.272727, 0.363636, 0.454545, 0.545455, 0.636364, 0.727273, 0.818182, 0.909091, 1, 1.09091),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [ExtResource("1_g320r"), ExtResource("2_clqd6"), ExtResource("3_d3kqc"), ExtResource("4_46y3o"), ExtResource("5_ldv5e"), ExtResource("6_o6r5l"), ExtResource("7_57ici"), ExtResource("8_ir04e"), ExtResource("9_4wrrv"), ExtResource("10_d42ho"), ExtResource("11_mccjv"), ExtResource("12_ckq3x")]
+"values": [ExtResource("1_g320r"), ExtResource("2_clqd6"), ExtResource("3_d3kqc"), ExtResource("4_46y3o"), ExtResource("5_ldv5e"), ExtResource("6_o6r5l"), ExtResource("7_57ici"), ExtResource("8_ir04e"), ExtResource("9_4wrrv"), ExtResource("10_d42ho"), ExtResource("11_mccjv"), ExtResource("12_ckq3x"), null]
 }
 
 [sub_resource type="Animation" id="Animation_gqmif"]
@@ -51,16 +53,22 @@ _data = {
 "RESET": SubResource("Animation_gqmif")
 }
 
-[node name="DeathExplosion" type="Sprite2D" node_paths=PackedStringArray("AnimExplosionNode")]
+[node name="DeathExplosion" type="Sprite2D" node_paths=PackedStringArray("AnimExplosionNode", "ExplosionAudioPlayer")]
 z_index = 3
 scale = Vector2(0.05, 0.05)
 texture = ExtResource("1_g320r")
 offset = Vector2(0, -40)
 script = ExtResource("2_3bwu2")
 AnimExplosionNode = NodePath("AnimationPlayer")
+ExplosionAudioPlayer = NodePath("AudioStreamPlayer2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_4mp0y")
 }
 autoplay = "Death"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_yarf6")
+volume_db = 10.0
+autoplay = true

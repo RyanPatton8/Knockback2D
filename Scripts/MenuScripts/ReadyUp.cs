@@ -25,7 +25,7 @@ public partial class ReadyUp : Node2D
 		spawns = PlayerSpawn.GetChildren().OfType<Marker2D>().ToList();
 		playerManager.spawnPoints = spawns;
 
-		foreach (KeyValuePair<int, PlayerManager.PlayerInfo> kvp in playerManager.playerList)
+		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
 		{
 			Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;
 			playerManager.SpawnPlayer(kvp.Key, spawnPoint);

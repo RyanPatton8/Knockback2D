@@ -204,4 +204,3 @@ libraries = {
 [node name="HookAudio" type="AudioStreamPlayer2D" parent="."]
 
 [node name="PlayerAudio" type="AudioStreamPlayer2D" parent="."]
-volume_db = -15.0

@@ -11,6 +11,9 @@ public partial class PlayerManager : Node
     public Dictionary<int, PlayerInfo> playerList = new Dictionary<int, PlayerInfo>();
     public List<Marker2D> spawnPoints = new List<Marker2D>();
     public int playersAlive = 0;
+    public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
+    private AudioManager audioManager = new AudioManager();
+    
     //allows any script to reference PlayerManager
     public static PlayerManager Instance
     {
@@ -35,6 +38,19 @@ public partial class PlayerManager : Node
     {
         playerGUIHolder = (PlayerInfoGUI) playerGUI.Instantiate();
         AddChild(playerGUIHolder);
+        AddChild(Music);
+        Music.Finished += PlayNextSong;
+        Music.Stream = audioManager.GetSong();
+        Music.Play();
+    }
+    public void PlayNextSong(){
+        AudioStream next = audioManager.GetSong();
+        while (next == Music.Stream)
+        {
+            next = audioManager.GetSong();
+        }
+        Music.Stream = next;
+        Music.Play();
     }
     //adds and remove players to and from dictionary indexed by player index
     public void AddPlayer(int playerIndex)
@@ -120,86 +136,6 @@ public partial class PlayerManager : Node
             playerGUIHolder.playerCards[playerIndex].MakeBlank();
             playersAlive--;
             CheckForGameOver();
-        }
-    }
-    public class PlayerInfo
-    {
-        private int playerIndex;
-        private int lives = 3;
-        private int kills;
-        private Color playerColor = new Color();
-        private int arrowCount = 4;
-        private int hookCount = 4;
-        private float startingDamage = 0;
-        private float damageTaken = 0;
-        private float damageGiven = 0;
-        private float startingComboCount = 1;
-        private float comboCount = 1;
-        PlayerManager playerManager;
-        public PlayerInfo() {}
-        public PlayerInfo(int playerIndex, int lives, Color playerColor, int arrowCount, int hookCount){
-            this.playerIndex = playerIndex;
-            this.lives = lives;
-            this.playerColor = playerColor;
-            playerManager = Instance;
-        }
-        public int GetLives(){
-            return lives;
-        }
-        public void SetLives(int liveLost){
-            lives += liveLost;
-            playerManager.playerGUIHolder.playerCards[playerIndex].SetLivesCount(lives.ToString());
-        }
-        public int GetKills(){
-            return kills;
-        }
-        public void SetKills(int newKill){
-            kills += newKill;
-        }
-        public Color GetColor(){
-            return playerColor;
-        }
-        public void SetColor(Color newColor){
-            playerColor = newColor;
-        }
-        public int GetArrowCount(){
-            return arrowCount;
-        }
-        public void SetArrowCount(int arrowCount){
-            this.arrowCount = arrowCount;
-            playerManager.playerGUIHolder.playerCards[playerIndex].SetArrowCount(arrowCount.ToString());
-        }
-        public int GetHookCount(){
-            return hookCount;
-        }
-        public void SetHookCount(int hookCount){
-            this.hookCount = hookCount;
-            playerManager.playerGUIHolder.playerCards[playerIndex].SetHookCount(hookCount.ToString());
-        }
-        public float GetDamageTaken(){
-            return damageTaken;
-        }
-        public void SetDamageTaken(float damage){
-            if(damage <= 1500){
-                damageTaken = 0;
-            }
-            else{
-                damageTaken = (damage / 100) - 15;
-            }
-            playerManager.playerGUIHolder.playerCards[playerIndex].SetHealth(damageTaken.ToString());
-        }
-        public float GetDamageGiven(){
-            return damageGiven;
-        }
-        public void SetDamageGiven(float damage){
-            damageGiven += damage;
-        }
-        public float GetComboCount(){
-            return comboCount;
-        }
-        public void SetComboCount(float newComboCount){
-            comboCount = newComboCount;
-            playerManager.playerGUIHolder.playerCards[playerIndex].SetComboCount(comboCount.ToString());
         }
     }
 }

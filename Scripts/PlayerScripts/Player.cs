@@ -124,8 +124,6 @@ public partial class Player : RigidBody2D
         //And for justJumped
         if(justJumped && jumpSlashWindow > Mathf.Epsilon){
             jumpSlashWindow -= delta;
-            GD.Print(jumpSlashWindow);
-            GD.Print(justJumped);
         }
         else if (justJumped){
             justJumped = false;
