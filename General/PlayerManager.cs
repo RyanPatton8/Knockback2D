@@ -40,6 +40,7 @@ public partial class PlayerManager : Node
         AddChild(playerGUIHolder);
         AddChild(Music);
         Music.Finished += PlayNextSong;
+        audioManager.LoadAllAudio("res://Audio//Music");
         Music.Stream = audioManager.GetSong();
         Music.Play();
     }

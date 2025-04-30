@@ -49,7 +49,7 @@ public partial class Range : Node
             playerNode.WeaponAudio.Stream = GunShotAudio;
             playerNode.WeaponAudio.Play();
             Arrow instance = (Arrow)arrow.Instantiate();
-            AddChild(instance);
+            GetTree().Root.AddChild(instance);
             instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
             instance.playerNode = playerNode;

@@ -14,25 +14,38 @@ public partial class Arrow : RigidBody2D
     private bool objectHit = false;
     private double timeToLive = 0.4;
     public Player playerNode;
+
+    bool hasCollided= false;
 	public override void _Ready()
     {
 		BodyEntered += Explode;
     }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (hasCollided)
+        {
+            SpawnExplosion();
+            Freeze = true;
+            hasCollided = false;
+        }
+    }
+
     private void Explode(Node body)
     {
         if(body is Player player && player.playerIndex == playerIndex){
             return;
         }
-        CallDeferred(nameof(SpawnExplosion));
-        CallDeferred("queue_free");
+        hasCollided = true;
     }
     private void SpawnExplosion(){
         playerNode.WeaponAudio.Stream = ExplosionAudio;
         playerNode.WeaponAudio.Play();
         Explosion instance = (Explosion)explosion.Instantiate();
-        playerNode.AddChild(instance);
-        instance.GlobalPosition = GlobalPosition;
+        GetTree().Root.AddChild(instance);
+        instance.GlobalPosition = Position;
         instance.playerIndex = playerIndex;
+        CallDeferred("queue_free");
     }
     public int GiveIndexInfo(){
         return playerIndex;
