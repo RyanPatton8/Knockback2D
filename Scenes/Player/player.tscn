@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=44 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
@@ -23,6 +23,15 @@
 [ext_resource type="Texture2D" uid="uid://c5y4l3mqdyyq7" path="res://Sprites/Player/Run/PlayerRun-0002.svg" id="15_60ine"]
 [ext_resource type="Texture2D" uid="uid://cjfowmp2uac72" path="res://Sprites/Player/Run/PlayerRun-0003.svg" id="16_nmr8y"]
 [ext_resource type="AudioStream" uid="uid://b1yx7v0rpnd1q" path="res://Audio/Player/Hook/HookCast.wav" id="17_new1x"]
+[ext_resource type="Texture2D" uid="uid://dltvyi074yb3a" path="res://Sprites/Player/Jump/Jump-0001.svg" id="24_0vmdk"]
+[ext_resource type="Texture2D" uid="uid://vr7uuquj1b8m" path="res://Sprites/Player/Stunned/Stunned-0001.svg" id="25_2ctjr"]
+[ext_resource type="Texture2D" uid="uid://dtx5bw7led407" path="res://Sprites/Player/Stunned/Stunned-0002.svg" id="26_l88jj"]
+[ext_resource type="Texture2D" uid="uid://wkf50t6krmij" path="res://Sprites/Player/Stunned/Stunned-0003.svg" id="27_mn0al"]
+[ext_resource type="Texture2D" uid="uid://bikhns0tuylfk" path="res://Sprites/Player/Stunned/Stunned-0004.svg" id="28_0h5fx"]
+[ext_resource type="Texture2D" uid="uid://bqn4hdi07vlbk" path="res://Sprites/Player/Stunned/Stars-0001.svg" id="29_dq6rs"]
+[ext_resource type="Texture2D" uid="uid://rlqd4q2j3gmu" path="res://Sprites/Player/Stunned/Stars-0002.svg" id="30_vf0gu"]
+[ext_resource type="Texture2D" uid="uid://c1abo8krvwojw" path="res://Sprites/Player/Stunned/Stars-0003.svg" id="31_cft8v"]
+[ext_resource type="Texture2D" uid="uid://dmp6fdbpl6xpb" path="res://Sprites/Player/Stunned/Stars-0004.svg" id="32_f7gt6"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcp6b"]
 load_path = "res://.godot/imported/PlayerTest2.svg-3ef46a88e1b866685aeb47dc6024c129.ctex"
@@ -40,7 +49,7 @@ resource_name = "Idle"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -49,13 +58,25 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("13_b8ck5")]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StarsSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
 
 [sub_resource type="Animation" id="Animation_kvpmg"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -63,6 +84,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [SubResource("CompressedTexture2D_pcp6b")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StarsSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
 }
 
 [sub_resource type="Animation" id="Animation_ijwwk"]
@@ -73,7 +106,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -82,12 +115,85 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("15_60ine"), ExtResource("16_nmr8y"), ExtResource("14_qpcah")]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StarsSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+
+[sub_resource type="Animation" id="Animation_o8jrp"]
+resource_name = "Jump"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("24_0vmdk")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StarsSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+
+[sub_resource type="Animation" id="Animation_nxwq0"]
+resource_name = "Stunned"
+length = 0.400005
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.05, 0.15, 0.25, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("25_2ctjr"), ExtResource("26_l88jj"), ExtResource("27_mn0al"), ExtResource("28_0h5fx")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StarsSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05, 0.15, 0.25, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("29_dq6rs"), ExtResource("30_vf0gu"), ExtResource("31_cft8v"), ExtResource("32_f7gt6")]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_efy3q"]
 _data = {
 "Idle": SubResource("Animation_6b6dq"),
+"Jump": SubResource("Animation_o8jrp"),
 "RESET": SubResource("Animation_kvpmg"),
-"Run": SubResource("Animation_ijwwk")
+"Run": SubResource("Animation_ijwwk"),
+"Stunned": SubResource("Animation_nxwq0")
 }
 
 [node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio") groups=["player"]]
@@ -104,14 +210,14 @@ KnockBackDuration = NodePath("HurtBox/KnockBackTimer")
 HurtBox = NodePath("HurtBox")
 HitBox = NodePath("HitBox")
 WeaponHolder = NodePath("WeaponHolder")
-PlayerSprite = NodePath("Sprite2D")
+PlayerSprite = NodePath("CharacterSprite")
 Anim = NodePath("AnimationPlayer")
 WeaponAudio = NodePath("WeaponAudio")
 HookAudio = NodePath("HookAudio")
 PlayerAudio = NodePath("PlayerAudio")
 Running = ExtResource("3_ltoaf")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="CharacterSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -1)
 scale = Vector2(1.1, 1.1)
 texture = SubResource("CompressedTexture2D_pcp6b")
@@ -204,3 +310,6 @@ libraries = {
 [node name="HookAudio" type="AudioStreamPlayer2D" parent="."]
 
 [node name="PlayerAudio" type="AudioStreamPlayer2D" parent="."]
+
+[node name="StarsSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -15)

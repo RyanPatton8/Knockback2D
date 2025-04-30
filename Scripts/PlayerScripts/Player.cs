@@ -17,6 +17,7 @@ public partial class Player : RigidBody2D
     [Export] public AudioStreamPlayer2D WeaponAudio {get; private set;}
     [Export] public AudioStreamPlayer2D HookAudio {get; private set;}
     [Export] public AudioStreamPlayer2D PlayerAudio {get; private set;}
+    [Export] public Sprite2D StarsSprite {get; private set;}
 
     [Export] public float normalFriction = 0.7f;
     // How far from player should hitbox rotate
@@ -59,7 +60,6 @@ public partial class Player : RigidBody2D
     private int attacker;
     public Color playerColor;
     public int indexOfFinalAttacker = -1;
-
     public double slashIndexDuration = 1;
     private List<string> slashList = new List<string>();
     [Export] public AudioStream Running {get; private set;}
@@ -167,7 +167,7 @@ public partial class Player : RigidBody2D
             maxMoveSpeed = 300;
             ApplyForce(new Vector2(15000 * direction, 0));
         }
-        if(direction > 0.3){
+        if(direction > 0.3 && isGrounded){
             PlayerSprite.FlipH = false;
             
             if (Anim.CurrentAnimation != "Run" || !Anim.IsPlaying())
@@ -175,14 +175,14 @@ public partial class Player : RigidBody2D
             if (!PlayerAudio.IsPlaying() && isGrounded)
                 PlayerAudio.Play();
         }
-        else if(direction < -0.3){
+        else if(direction < -0.3 && isGrounded){
             PlayerSprite.FlipH = true;
             if (Anim.CurrentAnimation != "Run" || !Anim.IsPlaying())
                 Anim.Play("Run");
             if (!PlayerAudio.IsPlaying() && isGrounded)
                 PlayerAudio.Play();
         }
-        else{
+        else if(isGrounded){
             Anim.Play("Idle");
         }
     }
@@ -378,6 +378,7 @@ public partial class Player : RigidBody2D
         playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
+        Anim.Play("Stunned");
         GroundCheck.Monitoring = false;
     }
     private void DamageFromArrow(float damage)
@@ -391,6 +392,7 @@ public partial class Player : RigidBody2D
         playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
         KnockBackDuration.WaitTime = damageTaken / 10000;
         KnockBackDuration.Start();
+        Anim.Play("Stunned");
         GroundCheck.Monitoring = false;
     }
 
@@ -408,6 +410,7 @@ public partial class Player : RigidBody2D
             // playerManager.playerList[playerIndex].SetComboCount(comboCount);
             KnockBackDuration.WaitTime = damageTaken / 10000;
             KnockBackDuration.Start();
+            Anim.Play("Stunned");
             GroundCheck.Monitoring = false;
         }
         else{
@@ -432,6 +435,7 @@ public partial class Player : RigidBody2D
         playerManager.playerList[playerIndex].SetComboCount(comboCount);
         KnockBackDuration.WaitTime = .5;
         KnockBackDuration.Start();
+        Anim.Play("Stunned");
         GroundCheck.Monitoring = false;
     }
     // Called to remove stun from knockback
@@ -469,6 +473,7 @@ public partial class Player : RigidBody2D
             canJump = true;
             jumpCount = maxJumpCount;
             attacker = playerIndex;
+            Anim.Play("Idle");
         }
     }
     private void UnGrounded(Node2D body)
@@ -476,6 +481,9 @@ public partial class Player : RigidBody2D
         if (body.IsInGroup("Environment"))
         {
             isGrounded = false;
+            if(!knockedBack){
+                Anim.Play("Jump");
+            }
         }
     }
 
