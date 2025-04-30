@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Player : RigidBody2D
 {
@@ -16,6 +17,8 @@ public partial class Player : RigidBody2D
     [Export] public AudioStreamPlayer2D WeaponAudio {get; private set;}
     [Export] public AudioStreamPlayer2D HookAudio {get; private set;}
     [Export] public AudioStreamPlayer2D PlayerAudio {get; private set;}
+
+    [Export] public float normalFriction = 0.7f;
     // How far from player should hitbox rotate
     private float offsetAmount = 27;
     // Movement Variables
@@ -31,8 +34,8 @@ public partial class Player : RigidBody2D
     public float damageTaken = 1500;
     public bool changingWeapon = false;
     // Arrow Regen and Ammo
-    public int arrowCount = 4;
-    public int maxArrows = 4;
+    public int arrowCount = 8;
+    public int maxArrows = 8;
     public int hookCount = 4;
     public int maxHooks = 4;
     private double arrowRegenTime = 4;
@@ -56,6 +59,9 @@ public partial class Player : RigidBody2D
     private int attacker;
     public Color playerColor;
     public int indexOfFinalAttacker = -1;
+
+    public double slashIndexDuration = 1;
+    private List<string> slashList = new List<string>();
     [Export] public AudioStream Running {get; private set;}
     // Reference to player manager singleton
     PlayerManager playerManager;
@@ -82,27 +88,12 @@ public partial class Player : RigidBody2D
             if (!knockedBack){// Only allow them to move if they also aren't stunned from being hit
                 Move(delta);
             }
-            //Always regenerate arrows if less than max arrows but reset max regen time after every arrow generated
-            if(arrowCount < maxArrows && regeneratingArrow){
-                RegenerateArrows(delta);
-            }
-            else if(arrowCount < maxArrows && !regeneratingArrow){
-                arrowRegenTime = maxRegenTime;
-                RegenerateArrows(delta);
-            }
-            //Same logic for hooks
-            if(hookCount < maxHooks && regeneratingHook){
-                RegenerateHooks(delta);
-            }
-            else if(hookCount < maxHooks && !regeneratingHook){
-                hookRegenTime = maxRegenTime;
-                RegenerateHooks(delta);
-            }
             Aim();
         }
         else{
             AttackEndLag(delta);
         }
+        // Mitigate weird glitch where jumping and grappling would cancel each other
         if(!isGrappling){
             HandleJump(delta);
         }
@@ -113,6 +104,10 @@ public partial class Player : RigidBody2D
                 grappleTime = .2;
             }
         }
+        Regen(delta);
+        ChangeWeapon();
+    }
+    private void Regen(double delta){
         //Always allow changing weapon and Health regen
         if(damageTaken > 1500 && healthRegenerating){
             RegenerateHealth(delta);
@@ -120,6 +115,29 @@ public partial class Player : RigidBody2D
         else if(damageTaken > 1500 && !healthRegenerating){
             healthRegenTime = maxHealthRegenTime;
             RegenerateHealth(delta);
+        }
+        //Always regenerate arrows if less than max arrows but reset max regen time after every arrow generated
+        if(arrowCount < maxArrows && regeneratingArrow){
+            RegenerateArrows(delta);
+        }
+        else if(arrowCount < maxArrows && !regeneratingArrow){
+            arrowRegenTime = maxRegenTime;
+            RegenerateArrows(delta);
+        }
+        //Same logic for hooks
+        if(hookCount < maxHooks && regeneratingHook){
+            RegenerateHooks(delta);
+        }
+        else if(hookCount < maxHooks && !regeneratingHook){
+            hookRegenTime = maxRegenTime;
+            RegenerateHooks(delta);
+        }
+        if(slashList.Count > 0){
+            slashIndexDuration -= delta;
+            if(slashIndexDuration < Mathf.Epsilon){
+                slashList.RemoveAt(0);
+                slashIndexDuration = 1;
+            }
         }
         //And for justJumped
         if(justJumped && jumpSlashWindow > Mathf.Epsilon){
@@ -131,17 +149,6 @@ public partial class Player : RigidBody2D
         }
         if(isClashing){
             StopClashing(delta);
-        }
-        ChangeWeapon();
-    }
-    private void GroundClashEntered(Node body){
-        if(body is TileMapLayer){
-            isWeaponInGround = true;
-        }
-    }
-    private void GroundClashExit(Node body){
-        if(body is TileMapLayer){
-            isWeaponInGround = false;
         }
     }
     private void Move(double delta)
@@ -183,7 +190,7 @@ public partial class Player : RigidBody2D
     {
                 // Handle Jumps
         if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && isGrounded){
-            PhysicsMaterialOverride.Friction = 0.6f;
+            PhysicsMaterialOverride.Friction = normalFriction;
         }
         else if (Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && canJump){
             LinearVelocity = new Vector2(LinearVelocity.X, 0);
@@ -196,7 +203,7 @@ public partial class Player : RigidBody2D
         }
         else if (!Input.IsJoyButtonPressed(playerIndex, JoyButton.A) && jumpCount > 0 && !canJump){
             canJump = true;
-            PhysicsMaterialOverride.Friction = 0.6f;
+            PhysicsMaterialOverride.Friction = normalFriction;
         }
         else if (isGrounded && !canJump){
             canJump = true;
@@ -309,12 +316,18 @@ public partial class Player : RigidBody2D
     {
         Vector2 info;
         int attackOwner;
+        string slashUuid;
+        HitBox hb;
 
         if (area is Slash slash){
-            (info, attackOwner) = slash.GiveInfo();
-            if(attackOwner != playerIndex){
+            (info, attackOwner, slashUuid, hb) = slash.GiveInfo();
+            if(attackOwner != playerIndex && !slashList.Contains(slashUuid)){
+                slashList.Add(slashUuid);
+                hb.Hit();
                 DamageFromMelee(info);
                 indexOfFinalAttacker = attackOwner;
+                GD.Print("SLASH LIST: " + slashList);
+                GD.Print("SLASH UUID: " + slashUuid);
             }
         }
         else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex){
@@ -427,7 +440,7 @@ public partial class Player : RigidBody2D
         rocketJumping = false;
         knockedBack = false;
         PhysicsMaterialOverride.Bounce = 0;
-        PhysicsMaterialOverride.Friction = 0.6f;
+        PhysicsMaterialOverride.Friction = normalFriction;
         GroundCheck.Monitoring = true;
     }
     // turns off player stun recieved from hit and applies impulse to self in desired direction
@@ -463,6 +476,17 @@ public partial class Player : RigidBody2D
         if (body.IsInGroup("Environment"))
         {
             isGrounded = false;
+        }
+    }
+
+    private void GroundClashEntered(Node body){
+        if(body is TileMapLayer){
+            isWeaponInGround = true;
+        }
+    }
+    private void GroundClashExit(Node body){
+        if(body is TileMapLayer){
+            isWeaponInGround = false;
         }
     }
 }

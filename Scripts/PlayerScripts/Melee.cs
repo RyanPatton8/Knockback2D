@@ -49,8 +49,7 @@ public partial class Melee : Node
             if(playerNode.justJumped){
                 playerNode.LinearVelocity = new Vector2(playerNode.LinearVelocity.X, 0);
                 playerNode.ApplyImpulse(new Vector2(0, -4500));
-                playerNode.ApplyImpulse(new Vector2((slashInstance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, slashInstance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 110);
-                GD.Print("Jump Slash");            
+                playerNode.ApplyImpulse(new Vector2((slashInstance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, slashInstance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 110);        
             }
             else{
                 playerNode.ApplyImpulse(new Vector2((slashInstance.GlobalPosition.X - playerNode.GlobalPosition.X) / 2, slashInstance.GlobalPosition.Y - playerNode.GlobalPosition.Y ) * 110);            

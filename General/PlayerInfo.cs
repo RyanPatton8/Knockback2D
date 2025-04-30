@@ -7,7 +7,7 @@ public partial class PlayerInfo : Node
 	private int lives = 3;
 	private int kills;
 	private Color playerColor = new Color();
-	private int arrowCount = 4;
+	private int arrowCount = 8;
 	private int hookCount = 4;
 	private float startingDamage = 0;
 	private float damageTaken = 0;
@@ -79,5 +79,18 @@ public partial class PlayerInfo : Node
 	public void SetComboCount(float newComboCount){
 		comboCount = newComboCount;
 		playerManager.playerGUIHolder.playerCards[playerIndex].SetComboCount(comboCount.ToString());
+	}
+
+	public void ResetVariables(){
+		lives = 3;
+		kills = 0;
+		arrowCount = 8;
+		hookCount = 4;
+		startingDamage = 0;
+		damageTaken = 0;
+		damageGiven = 0;
+		startingComboCount = 1;
+		comboCount = 1;
+		playerManager.playerGUIHolder.ResetCardInfo(playerIndex);
 	}
 }

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class LevelChoice : TextureButton
 {
@@ -21,6 +22,11 @@ public partial class LevelChoice : TextureButton
     private void ChangeToLevelScene()
     {
 		playerManager.playerGUIHolder.Visible = true;
+		
+		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
+		{
+			kvp.Value.ResetVariables();
+		}
         GetTree().ChangeSceneToPacked(Level);
     }
 }

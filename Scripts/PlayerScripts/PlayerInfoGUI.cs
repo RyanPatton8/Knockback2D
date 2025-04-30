@@ -26,6 +26,16 @@ public partial class PlayerInfoGUI : CanvasLayer
 				playerManager.playerList[playerIndex].GetColor()
             );
 	}
+	public void ResetCardInfo(int playerIndex){
+		playerCards[playerIndex].SetAll(
+                playerManager.playerList[playerIndex].GetArrowCount().ToString(),
+                playerManager.playerList[playerIndex].GetHookCount().ToString(),
+                playerManager.playerList[playerIndex].GetLives().ToString(),
+                playerManager.playerList[playerIndex].GetDamageTaken().ToString(),
+                playerManager.playerList[playerIndex].GetComboCount().ToString(),
+				playerManager.playerList[playerIndex].GetColor()
+            );
+	}
 	public void RemoveCard(int playerIndex){
 		hBox.RemoveChild(playerCards[playerIndex]);
 		playerCards.Remove(playerIndex);

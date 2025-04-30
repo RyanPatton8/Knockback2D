@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Data.Common;
+using System.Diagnostics;
 
 public partial class Slash : Area2D
 {
@@ -8,10 +9,12 @@ public partial class Slash : Area2D
 	public Player player;
 	double attackDuration = .35;
 	private bool hittingPlayer = false;
+
+	private string uuid = Guid.NewGuid().ToString();
     public override void _Ready()
     {
 		BodyEntered += Reflect;
-		AreaEntered += Clash;
+		// AreaEntered += Clash;
     }
     public override void _Process(double delta)
 	{
@@ -40,13 +43,12 @@ public partial class Slash : Area2D
 			}
 		}
 	}
-	public (Vector2, int) GiveInfo()
+	public (Vector2, int, string, HitBox) GiveInfo()
 	{
 		var hb = player.HitBox as HitBox;
-        hb.Hit();
 		attackDuration = 0.15f;
 		hittingPlayer = true;
-		return (GlobalPosition - player.GlobalPosition, playerIndex);
+		return (GlobalPosition - player.GlobalPosition, playerIndex, uuid, hb);
 	}
 	private void Clash(Area2D area){
 		if(area is Slash slash && !hittingPlayer){
