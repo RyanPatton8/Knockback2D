@@ -15,6 +15,6 @@ public partial class PlayBtn : Button
 
 	private void ChangeToLevelScene()
     {
-		gameManager.ReadyUp(Level);
+		gameManager.ReadyUp();
 	}
 }

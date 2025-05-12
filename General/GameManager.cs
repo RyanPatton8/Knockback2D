@@ -53,9 +53,11 @@ public partial class GameManager : Node
 		GetTree().ChangeSceneToFile("res://Scenes/Menus/LevelSelect.tscn");
 	}
 
-	public void ReadyUp(PackedScene Level)
+	public void ReadyUp()
 	{
-		GetTree().ChangeSceneToPacked(Level);
+		playerManager.playerGUIHolder.Visible = false;
+        GetTree().ChangeSceneToFile("res://Scenes/Menus/ready_up.tscn");
+		playerManager.playersAlive = playerManager.playerList.Count;
 	}
 
 	public void MainMenu()
@@ -67,13 +69,7 @@ public partial class GameManager : Node
     {
         if (playerManager.playersAlive <= 1)
         {
-            CallDeferred(nameof(ChangeScene));
+            CallDeferred(nameof(ReadyUp));
         }
-    }
-    private void ChangeScene()
-    {
-		playerManager.playerGUIHolder.Visible = false;
-        GetTree().ChangeSceneToFile("res://Scenes/Menus/ready_up.tscn");
-		playerManager.playersAlive = playerManager.playerList.Count;
     }
 }

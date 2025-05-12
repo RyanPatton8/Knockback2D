@@ -15,13 +15,28 @@ public partial class WorldBorder : Area2D
     private void Destroy(Node2D body)
     {
         if(body is Player player){
+			// // Instantiate the explosion
+			// DeathExplosion instance = (DeathExplosion)Explosion.Instantiate();
+			// AddChild(instance);
+			// instance.player = player;
+			// Vector2 dir = (GlobalPosition - player.GlobalPosition).Normalized();
+			// instance.GlobalPosition = player.GlobalPosition + new Vector2(dir.X * offset, dir.Y * offset * 1.35f);
+			// instance.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(player.GlobalPosition)) - 90;
 			// Instantiate the explosion
 			DeathExplosion instance = (DeathExplosion)Explosion.Instantiate();
 			AddChild(instance);
+			// Set the explosion's position to the player's current position
+			instance.GlobalPosition = player.GlobalPosition;
 			instance.player = player;
-			Vector2 dir = (GlobalPosition - player.GlobalPosition).Normalized();
-			instance.GlobalPosition = player.GlobalPosition + new Vector2(dir.X * offset, dir.Y * offset * 1.35f);
-			instance.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(player.GlobalPosition)) - 90;
+			// Retrieve the player's velocity
+			Vector2 playerVelocity = player.LinearVelocity;
+			// Calculate the direction opposite to the player's movement
+			Vector2 reverseDirection = playerVelocity.Normalized();
+			// Apply an offset to position the explosion slightly behind the player
+			float offset = -250f; // Adjust this value as needed
+			instance.GlobalPosition += reverseDirection * offset;
+			// Set the rotation of the explosion to align with the reverse direction
+			instance.Rotation = reverseDirection.Angle() - Mathf.DegToRad(90);
 		}
 		else if(body is Hook hook){
 			hook.GetParent<FishingRod>().hookOut = false;

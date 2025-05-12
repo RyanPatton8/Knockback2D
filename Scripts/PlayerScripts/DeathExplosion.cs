@@ -15,6 +15,6 @@ public partial class DeathExplosion : Sprite2D
     private void StopExploding()
     {
 		playerManager.LoseALife(player.playerIndex, player.indexOfFinalAttacker);
-        CallDeferred("queue_free");
+        // CallDeferred("queue_free");
     }
 }
