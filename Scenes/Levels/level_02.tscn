@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/LevelScripts/Level.cs" id="1_li8er"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="2_8ll8g"]
-[ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/Levels/world_border.tscn" id="3_j2awg"]
+[ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/LevelComponents/world_border.tscn" id="3_j2awg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ojjkd"]
 texture = ExtResource("2_8ll8g")
