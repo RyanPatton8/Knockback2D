@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=45 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
@@ -196,7 +196,11 @@ _data = {
 "Stunned": SubResource("Animation_nxwq0")
 }
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio") groups=["player"]]
+[sub_resource type="LabelSettings" id="LabelSettings_bpw5t"]
+outline_size = 6
+outline_color = Color(0.054902, 0.054902, 0.054902, 1)
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio", "StarsSprite", "ComboLabel") groups=["player"]]
 mass = 10.0
 physics_material_override = ExtResource("1_wxact")
 lock_rotation = true
@@ -215,7 +219,9 @@ Anim = NodePath("AnimationPlayer")
 WeaponAudio = NodePath("WeaponAudio")
 HookAudio = NodePath("HookAudio")
 PlayerAudio = NodePath("PlayerAudio")
+StarsSprite = NodePath("StarsSprite")
 Running = ExtResource("3_ltoaf")
+ComboLabel = NodePath("ComboCountLabel")
 
 [node name="CharacterSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -1)
@@ -313,3 +319,13 @@ libraries = {
 
 [node name="StarsSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -15)
+
+[node name="ComboCountLabel" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -41.0
+offset_right = 20.0
+offset_bottom = -18.0
+text = "x0"
+label_settings = SubResource("LabelSettings_bpw5t")
+horizontal_alignment = 1
+vertical_alignment = 1

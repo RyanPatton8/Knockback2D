@@ -105,7 +105,7 @@ public partial class PlayerManager : Node
     public void LoseALife(int playerIndex, int killerIndex)
     {
         playerList[playerIndex].SetLives(-1);
-        playerList[playerIndex].SetArrowCount(4);
+        playerList[playerIndex].SetArrowCount(8);
         playerList[playerIndex].SetHookCount(4);
         playerList[playerIndex].SetDamageTaken(0);
         playerList[playerIndex].SetComboCount(1);
