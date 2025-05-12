@@ -6,6 +6,7 @@ using System.Linq;
 public partial class ReadyUp : Node2D
 {
 	PlayerManager playerManager;
+	GameManager gameManager;
 	[Export] public Node PlayerSpawn { get; private set;}
 	public List<Marker2D> spawns = new List<Marker2D>();
 	private Random rnd = new Random();
@@ -13,6 +14,7 @@ public partial class ReadyUp : Node2D
     public override void _Ready()
 	{
 		playerManager = PlayerManager.Instance;
+		gameManager = GameManager.Instance;
 		foreach (Node child in GetTree().Root.GetChildren())
 		{
 			if (child is Player player)
@@ -21,10 +23,8 @@ public partial class ReadyUp : Node2D
 				player.QueueFree();
 			}
 		}
-		
 		spawns = PlayerSpawn.GetChildren().OfType<Marker2D>().ToList();
 		playerManager.spawnPoints = spawns;
-
 		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
 		{
 			Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;
@@ -54,14 +54,7 @@ public partial class ReadyUp : Node2D
 		}
 
 		if(Input.IsJoyButtonPressed(0, JoyButton.Start) && playerManager.playerList.Count > 0){
-			foreach (Node child in GetTree().Root.GetChildren())
-			{
-				if (child is Player player)
-				{
-					player.QueueFree();
-				}
-			}
-			GetTree().ChangeSceneToFile("res://Scenes/Menus/LevelSelect.tscn");
+			gameManager.LevelSelect();
 		}
 	}
 	private void AddPlayer(int playerIndex)

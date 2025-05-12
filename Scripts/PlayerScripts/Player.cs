@@ -337,9 +337,12 @@ public partial class Player : RigidBody2D
         }
         else if (area is Explosion explosion ){
             Vector2 explosionPos = explosion.GiveInfo();
-            indexOfFinalAttacker = explosion.GiveIndexInfo();
+            int explosionOwner = explosion.GiveIndexInfo();
+            if(explosionOwner != playerIndex){
+                indexOfFinalAttacker = explosion.GiveIndexInfo();
+            }
             info = GlobalPosition - explosionPos;
-            DamageFromExplosion(info, indexOfFinalAttacker);
+            DamageFromExplosion(info, explosionOwner);
         }
     }
     private void RecieveRangedHit(Node body)

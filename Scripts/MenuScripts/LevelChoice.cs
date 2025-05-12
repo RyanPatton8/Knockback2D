@@ -6,7 +6,7 @@ public partial class LevelChoice : TextureButton
 {
 	[Export] public PackedScene Level {get; private set;}
 	[Export] public Texture2D LevelImg {get; private set;}
-	PlayerManager playerManager;
+	GameManager gameManager;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -16,17 +16,11 @@ public partial class LevelChoice : TextureButton
 			throw new Exception($"Level img too big");
 		}
 		TextureNormal = LevelImg;
-		playerManager = PlayerManager.Instance;
+		gameManager = GameManager.Instance;
 		ButtonDown += ChangeToLevelScene;
 	}
     private void ChangeToLevelScene()
     {
-		playerManager.playerGUIHolder.Visible = true;
-		
-		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
-		{
-			kvp.Value.ResetVariables();
-		}
-        GetTree().ChangeSceneToPacked(Level);
+		gameManager.StartGame(Level);
     }
 }

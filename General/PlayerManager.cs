@@ -13,6 +13,7 @@ public partial class PlayerManager : Node
     public int playersAlive = 0;
     public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
     private AudioManager audioManager;
+    private GameManager gameManager;
     
     //allows any script to reference PlayerManager
     public static PlayerManager Instance
@@ -36,6 +37,7 @@ public partial class PlayerManager : Node
     }
     public override void _Ready()
     {
+        gameManager = GameManager.Instance;
         playerGUIHolder = (PlayerInfoGUI) playerGUI.Instantiate();
         AddChild(playerGUIHolder);
         AddChild(Music);
@@ -83,22 +85,7 @@ public partial class PlayerManager : Node
         playerList.Remove(playerIndex);
         playerGUIHolder.RemoveCard(playerIndex);
     }
-    //Checks to see if the total players left alive are equal or less than one and brings back to lobby if thats the case
-    public void CheckForGameOver()
-    {
-        if (playersAlive <= 1)
-        {
-            CallDeferred(nameof(ChangeScene));
-        }
-    }
-    private void ChangeScene()
-    {
-        // Ensure the scene change is handled safely after deferring
-        GetTree().ChangeSceneToFile("res://Scenes/Levels/main.tscn");
-        CallDeferred(nameof(ClearPlayerList));
-        playersAlive = 0;
-    }
-    private void ClearPlayerList()
+    public void ClearPlayerList()
     {
         playerList.Clear();
         playerGUIHolder.RemoveAll();
@@ -126,6 +113,9 @@ public partial class PlayerManager : Node
             playerList[killerIndex].SetKills(1);
             GD.Print($"player {killerIndex} has {playerList[killerIndex].GetKills()} kills");
         }
+        else{
+            GD.Print("player has killed themself");
+        }
 
         if (playerList[playerIndex].GetLives() > 0){
             // Respawn player after losing a life
@@ -136,7 +126,7 @@ public partial class PlayerManager : Node
         else{
             playerGUIHolder.playerCards[playerIndex].MakeBlank();
             playersAlive--;
-            CheckForGameOver();
+            gameManager.CheckForGameOver();
         }
     }
 }
