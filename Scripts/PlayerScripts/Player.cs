@@ -63,6 +63,7 @@ public partial class Player : RigidBody2D
     public double slashIndexDuration = 1;
     private List<string> slashList = new List<string>();
     [Export] public AudioStream Running {get; private set;}
+    [Export] public Label ComboLabel {get; private set;}
     // Reference to player manager singleton
     PlayerManager playerManager;
     public override void _Ready()
@@ -106,6 +107,12 @@ public partial class Player : RigidBody2D
         }
         Regen(delta);
         ChangeWeapon();
+
+        if(comboCount > 1){
+            ComboLabel.Text = $"x{comboCount-1}";
+        }else{
+            ComboLabel.Text = "";
+        }
     }
     private void Regen(double delta){
         //Always allow changing weapon and Health regen
@@ -337,9 +344,12 @@ public partial class Player : RigidBody2D
         }
         else if (area is Explosion explosion ){
             Vector2 explosionPos = explosion.GiveInfo();
-            indexOfFinalAttacker = explosion.GiveIndexInfo();
+            int explosionOwner = explosion.GiveIndexInfo();
+            if(explosionOwner != playerIndex){
+                indexOfFinalAttacker = explosion.GiveIndexInfo();
+            }
             info = GlobalPosition - explosionPos;
-            DamageFromExplosion(info, indexOfFinalAttacker);
+            DamageFromExplosion(info, explosionOwner);
         }
     }
     private void RecieveRangedHit(Node body)

@@ -8,6 +8,31 @@ public partial class AudioManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public List<AudioStream> streams = new();
 
+    private static AudioManager _instance;
+	public static AudioManager Instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+    //ensures PlayerManager is always in every scene
+    public override void _EnterTree()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            QueueFree();
+        }
+    }
+    public override void _Ready()
+    {
+        LoadAllAudio("res://Audio//Music");
+    }
+
     public void LoadAllAudio(string folderPath)
     {
         // Open the directory (res:// is read-only inside the PCK)

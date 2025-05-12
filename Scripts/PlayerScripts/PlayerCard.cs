@@ -9,14 +9,12 @@ public partial class PlayerCard : MarginContainer
 	[Export] public Label HookCount {get; private set;}
 	[Export] public Label LivesCount {get; private set;}
 	[Export] public Label Health {get; private set;}
-	[Export] public Label ComboCount {get; private set;}
 
-	public void SetAll(string arrows, string hooks, string lives, string health, string comboCount, Color backgroundColor){
+	public void SetAll(string arrows, string hooks, string lives, string health, Color backgroundColor){
 		SetArrowCount(arrows);
 		SetHookCount(hooks);
 		SetLivesCount(lives);
 		SetHealth(health);
-		SetComboCount(comboCount);
 		SetBackgroundColor(new Color(backgroundColor.R * 2, backgroundColor.G * 2 , backgroundColor.B * 2, 0.85f));
 	}
 	public void SetArrowCount(string change){
@@ -31,14 +29,6 @@ public partial class PlayerCard : MarginContainer
 	public void SetHealth(string change){
 		Health.Text = change + "%";
 	}
-	public void SetComboCount(string change){
-		if(change == "1"){
-			ComboCount.Text = "";
-		}
-		else{
-			ComboCount.Text = "x" + change;
-		}
-	}
 	private void SetBackgroundColor(Color backgroundColor){
 		OuterBackground.Modulate = backgroundColor;
 	}
@@ -47,6 +37,5 @@ public partial class PlayerCard : MarginContainer
 		HookCount.Text = "";
 		LivesCount.Text = "";
 		Health.Text = "";
-		ComboCount.Text = "";
 	}
 }

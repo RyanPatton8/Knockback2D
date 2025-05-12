@@ -12,7 +12,8 @@ public partial class PlayerManager : Node
     public List<Marker2D> spawnPoints = new List<Marker2D>();
     public int playersAlive = 0;
     public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
-    private AudioManager audioManager = new AudioManager();
+    private AudioManager audioManager;
+    private GameManager gameManager;
     
     //allows any script to reference PlayerManager
     public static PlayerManager Instance
@@ -36,11 +37,12 @@ public partial class PlayerManager : Node
     }
     public override void _Ready()
     {
+        gameManager = GameManager.Instance;
         playerGUIHolder = (PlayerInfoGUI) playerGUI.Instantiate();
         AddChild(playerGUIHolder);
         AddChild(Music);
+        audioManager = AudioManager.Instance;
         Music.Finished += PlayNextSong;
-        audioManager.LoadAllAudio("res://Audio//Music");
         Music.Stream = audioManager.GetSong();
         Music.Play();
     }
@@ -83,22 +85,7 @@ public partial class PlayerManager : Node
         playerList.Remove(playerIndex);
         playerGUIHolder.RemoveCard(playerIndex);
     }
-    //Checks to see if the total players left alive are equal or less than one and brings back to lobby if thats the case
-    public void CheckForGameOver()
-    {
-        if (playersAlive <= 1)
-        {
-            CallDeferred(nameof(ChangeScene));
-        }
-    }
-    private void ChangeScene()
-    {
-        // Ensure the scene change is handled safely after deferring
-        GetTree().ChangeSceneToFile("res://Scenes/Levels/main.tscn");
-        CallDeferred(nameof(ClearPlayerList));
-        playersAlive = 0;
-    }
-    private void ClearPlayerList()
+    public void ClearPlayerList()
     {
         playerList.Clear();
         playerGUIHolder.RemoveAll();
@@ -118,13 +105,15 @@ public partial class PlayerManager : Node
     public void LoseALife(int playerIndex, int killerIndex)
     {
         playerList[playerIndex].SetLives(-1);
-        playerList[playerIndex].SetArrowCount(4);
+        playerList[playerIndex].SetArrowCount(8);
         playerList[playerIndex].SetHookCount(4);
         playerList[playerIndex].SetDamageTaken(0);
-        playerList[playerIndex].SetComboCount(1);
         if(killerIndex != -1){
             playerList[killerIndex].SetKills(1);
             GD.Print($"player {killerIndex} has {playerList[killerIndex].GetKills()} kills");
+        }
+        else{
+            GD.Print("player has killed themself");
         }
 
         if (playerList[playerIndex].GetLives() > 0){
@@ -136,7 +125,7 @@ public partial class PlayerManager : Node
         else{
             playerGUIHolder.playerCards[playerIndex].MakeBlank();
             playersAlive--;
-            CheckForGameOver();
+            gameManager.CheckForGameOver();
         }
     }
 }
