@@ -1,25 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://be436skp13tha"]
+[gd_scene load_steps=3 format=3 uid="uid://be436skp13tha"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerCard.cs" id="1_1wihs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0gwmf"]
-font_size = 45
-
-[sub_resource type="LabelSettings" id="LabelSettings_s0lg3"]
-font_size = 20
+font_size = 60
 
 [node name="PlayerCard" type="MarginContainer" node_paths=PackedStringArray("OuterBackground", "ArrowCount", "HookCount", "LivesCount", "Health", "ComboCount")]
 custom_minimum_size = Vector2(200, 180)
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_vertical = 10
+theme_override_constants/margin_left = 0
 script = ExtResource("1_1wihs")
 OuterBackground = NodePath("OuterBackdrop")
 ArrowCount = NodePath("Content/UpperContent/VBoxContainer/Label")
 HookCount = NodePath("Content/UpperContent/VBoxContainer/Label2")
 LivesCount = NodePath("Content/UpperContent/VBoxContainer2/Label")
-Health = NodePath("Content/MarginContainer/GridContainer/Label")
-ComboCount = NodePath("Content/MarginContainer/GridContainer/Label2")
+Health = NodePath("Content/Label")
+ComboCount = NodePath("")
 
 [node name="OuterBackdrop" type="Panel" parent="."]
 clip_contents = true
@@ -27,6 +25,7 @@ layout_mode = 2
 
 [node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 0
 alignment = 1
 
 [node name="UpperContent" type="HBoxContainer" parent="Content"]
@@ -53,29 +52,10 @@ size_flags_horizontal = 8
 layout_mode = 2
 text = "Lives: 3"
 
-[node name="MarginContainer" type="MarginContainer" parent="Content"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
-
-[node name="GridContainer" type="GridContainer" parent="Content/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 10
-columns = 2
-
-[node name="Label" type="Label" parent="Content/MarginContainer/GridContainer"]
+[node name="Label" type="Label" parent="Content"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "0%"
 label_settings = SubResource("LabelSettings_0gwmf")
 horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="Content/MarginContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "x2"
-label_settings = SubResource("LabelSettings_s0lg3")
-horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2

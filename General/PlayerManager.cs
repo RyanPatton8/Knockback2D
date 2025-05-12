@@ -108,7 +108,6 @@ public partial class PlayerManager : Node
         playerList[playerIndex].SetArrowCount(8);
         playerList[playerIndex].SetHookCount(4);
         playerList[playerIndex].SetDamageTaken(0);
-        playerList[playerIndex].SetComboCount(1);
         if(killerIndex != -1){
             playerList[killerIndex].SetKills(1);
             GD.Print($"player {killerIndex} has {playerList[killerIndex].GetKills()} kills");

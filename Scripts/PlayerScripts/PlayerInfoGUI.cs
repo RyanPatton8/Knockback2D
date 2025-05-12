@@ -22,7 +22,6 @@ public partial class PlayerInfoGUI : CanvasLayer
                 playerManager.playerList[playerIndex].GetHookCount().ToString(),
                 playerManager.playerList[playerIndex].GetLives().ToString(),
                 playerManager.playerList[playerIndex].GetDamageTaken().ToString(),
-                playerManager.playerList[playerIndex].GetComboCount().ToString(),
 				playerManager.playerList[playerIndex].GetColor()
             );
 	}
@@ -32,7 +31,6 @@ public partial class PlayerInfoGUI : CanvasLayer
                 playerManager.playerList[playerIndex].GetHookCount().ToString(),
                 playerManager.playerList[playerIndex].GetLives().ToString(),
                 playerManager.playerList[playerIndex].GetDamageTaken().ToString(),
-                playerManager.playerList[playerIndex].GetComboCount().ToString(),
 				playerManager.playerList[playerIndex].GetColor()
             );
 	}

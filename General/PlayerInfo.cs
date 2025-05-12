@@ -78,7 +78,6 @@ public partial class PlayerInfo : Node
 	}
 	public void SetComboCount(float newComboCount){
 		comboCount = newComboCount;
-		playerManager.playerGUIHolder.playerCards[playerIndex].SetComboCount(comboCount.ToString());
 	}
 
 	public void ResetVariables(){
