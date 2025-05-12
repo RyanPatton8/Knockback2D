@@ -12,7 +12,7 @@ public partial class PlayerManager : Node
     public List<Marker2D> spawnPoints = new List<Marker2D>();
     public int playersAlive = 0;
     public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
-    private AudioManager audioManager = new AudioManager();
+    private AudioManager audioManager;
     
     //allows any script to reference PlayerManager
     public static PlayerManager Instance
@@ -39,8 +39,8 @@ public partial class PlayerManager : Node
         playerGUIHolder = (PlayerInfoGUI) playerGUI.Instantiate();
         AddChild(playerGUIHolder);
         AddChild(Music);
+        audioManager = AudioManager.Instance;
         Music.Finished += PlayNextSong;
-        audioManager.LoadAllAudio("res://Audio//Music");
         Music.Stream = audioManager.GetSong();
         Music.Play();
     }
