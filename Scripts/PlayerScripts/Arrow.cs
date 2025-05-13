@@ -33,7 +33,10 @@ public partial class Arrow : RigidBody2D
 
     private void Explode(Node body)
     {
-        if(body is Player player && player.playerIndex == playerIndex){
+        // if(body is Player player && player.playerIndex == playerIndex){
+        //     return;
+        // }
+        if(body.IsInGroup("Environment")){
             return;
         }
         hasCollided = true;

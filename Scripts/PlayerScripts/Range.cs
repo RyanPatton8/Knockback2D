@@ -50,11 +50,14 @@ public partial class Range : Node
             playerNode.WeaponAudio.Play();
             Arrow instance = (Arrow)arrow.Instantiate();
             GetTree().Root.AddChild(instance);
-            instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
             instance.playerIndex = playerNode.playerIndex;
             instance.playerNode = playerNode;
             if(!playerNode.isWeaponInGround){
                 instance.forceApplied = throwForce;
+                instance.GlobalPosition = playerNode.HitBox.GlobalPosition;
+            }
+            else{
+                instance.GlobalPosition = playerNode.HitBox.GlobalPosition + (playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition).Normalized() * -20;
             }
             // instance.arrowSprite.Modulate = playerNode.playerColor;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);

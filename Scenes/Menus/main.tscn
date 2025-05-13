@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dpkbq4rd37qh5"]
+[gd_scene load_steps=3 format=3 uid="uid://rv6o7djxuani"]
 
 [ext_resource type="Script" path="res://Scripts/MenuScripts/PlayBtn.cs" id="1_0ll2v"]
 [ext_resource type="PackedScene" uid="uid://fv1f5dui6yk5" path="res://Scenes/Menus/ready_up.tscn" id="2_qpyqt"]
 
-[node name="Control" type="Control"]
+[node name="Control2" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
