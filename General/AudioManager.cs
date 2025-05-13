@@ -49,7 +49,6 @@ public partial class AudioManager : Node
 		// now begin the listing
 		dir.ListDirBegin();
         string fileName = dir.GetNext();
-		GD.Print("FILE NAME: "+ fileName);
         while (fileName != string.Empty)
         {
             // Only files (not sub-folders)

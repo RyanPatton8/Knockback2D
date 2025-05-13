@@ -9,10 +9,16 @@ public partial class Explosion : Area2D
     public override void _Ready()
     {
         AnimExplosionNode.AnimationFinished += StopExploding;
+        BodyEntered += MakeExplode;
     }
     private void StopExploding(StringName animName)
     {
         CallDeferred("queue_free");
+    }
+    public void MakeExplode(Node body){
+        if(body is Arrow arrow){
+            arrow.Explode(arrow);
+        }
     }
     public Vector2 GiveInfo(){
 		return GlobalPosition;

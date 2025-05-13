@@ -44,6 +44,7 @@ public partial class PlayerManager : Node
         audioManager = AudioManager.Instance;
         Music.Finished += PlayNextSong;
         Music.Stream = audioManager.GetSong();
+        GD.Print(Music.Stream);
         Music.Play();
     }
     public void PlayNextSong(){

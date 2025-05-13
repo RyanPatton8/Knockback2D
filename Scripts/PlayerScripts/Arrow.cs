@@ -15,7 +15,7 @@ public partial class Arrow : RigidBody2D
     private double timeToLive = 0.4;
     public Player playerNode;
 
-    bool hasCollided= false;
+    public bool hasCollided = false;
 	public override void _Ready()
     {
 		BodyEntered += Explode;
@@ -31,12 +31,12 @@ public partial class Arrow : RigidBody2D
         }
     }
 
-    private void Explode(Node body)
+    public void Explode(Node body)
     {
         // if(body is Player player && player.playerIndex == playerIndex){
         //     return;
         // }
-        if(body.IsInGroup("Environment")){
+        if(body.IsInGroup("Environment") || body is Arrow){
             return;
         }
         hasCollided = true;

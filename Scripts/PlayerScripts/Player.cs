@@ -17,7 +17,6 @@ public partial class Player : RigidBody2D
     [Export] public AudioStreamPlayer2D WeaponAudio {get; private set;}
     [Export] public AudioStreamPlayer2D HookAudio {get; private set;}
     [Export] public AudioStreamPlayer2D PlayerAudio {get; private set;}
-    [Export] public Sprite2D StarsSprite {get; private set;}
 
     [Export] public float normalFriction = 0.7f;
     // How far from player should hitbox rotate
@@ -72,7 +71,7 @@ public partial class Player : RigidBody2D
         GroundCheck.BodyExited += UnGrounded;
         HurtBox.AreaEntered += RecieveHit;
         BodyEntered += PlayerBump;
-        HurtBox.BodyEntered += RecieveRangedHit;
+        // HurtBox.BodyEntered += RecieveRangedHit;
         KnockBackDuration.Timeout += AllowMovement;
         playerManager = PlayerManager.Instance;
         PlayerSprite.Modulate = playerColor;
@@ -352,13 +351,13 @@ public partial class Player : RigidBody2D
             DamageFromExplosion(info, explosionOwner);
         }
     }
-    private void RecieveRangedHit(Node body)
-    {
-        if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
-            indexOfFinalAttacker = arrow.GiveIndexInfo();
-            DamageFromArrow(2000f);
-        }
-    }
+    // private void RecieveRangedHit(Node body)
+    // {
+    //     if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
+    //         indexOfFinalAttacker = arrow.GiveIndexInfo();
+    //         DamageFromArrow(2000f);
+    //     }
+    // }
     public void Clashed(Vector2 redirect, int otherSlashOwner, bool fromSlash){
         int multiplier = fromSlash ? 6000 : 150;
         Vector2 clashDir = redirect.Normalized() * multiplier;
@@ -373,6 +372,8 @@ public partial class Player : RigidBody2D
         the damage to the player is unchanged but the force applied is
 
         then increase combo count, start a timer for when the player is no longer bouncey and stunned and make it so the players ground check is not monitoring
+
+        Melee increases Combo Count after ranged does it before
     */
     private void DamageFromMelee(Vector2 info)
     {
@@ -391,20 +392,20 @@ public partial class Player : RigidBody2D
         Anim.Play("Stunned");
         GroundCheck.Monitoring = false;
     }
-    private void DamageFromArrow(float damage)
-    {
-        knockedBack = true;
-        PhysicsMaterialOverride.Friction = 0;
-        PhysicsMaterialOverride.Bounce = 1;
-        damageTaken += damage;
-        comboCount++;
-        playerManager.playerList[playerIndex].SetComboCount(comboCount);
-        playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
-        KnockBackDuration.WaitTime = damageTaken / 10000;
-        KnockBackDuration.Start();
-        Anim.Play("Stunned");
-        GroundCheck.Monitoring = false;
-    }
+    // private void DamageFromArrow(float damage)
+    // {
+    //     knockedBack = true;
+    //     PhysicsMaterialOverride.Friction = 0;
+    //     PhysicsMaterialOverride.Bounce = 1;
+    //     damageTaken += damage;
+    //     comboCount++;
+    //     playerManager.playerList[playerIndex].SetComboCount(comboCount);
+    //     playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
+    //     KnockBackDuration.WaitTime = damageTaken / 10000;
+    //     KnockBackDuration.Start();
+    //     Anim.Play("Stunned");
+    //     GroundCheck.Monitoring = false;
+    // }
 
     private void DamageFromExplosion(Vector2 info, int explosionIndex)
     {
@@ -414,9 +415,13 @@ public partial class Player : RigidBody2D
             PhysicsMaterialOverride.Friction = 0;
             PhysicsMaterialOverride.Bounce = 1;
             LinearVelocity = new Vector2(0, 0);
+            damageTaken += 2000f;
+            comboCount++;
+            GD.Print($"Player {playerIndex} Hit Combo count: {comboCount}");
+            playerManager.playerList[playerIndex].SetComboCount(comboCount);
+            playerManager.playerList[playerIndex].SetDamageTaken(damageTaken);
             float knockBackMultiplier = comboCount > 0 ? comboCount * damageTaken : damageTaken;
             ApplyImpulse(hitDirection * knockBackMultiplier);
-            // comboCount++;
             // playerManager.playerList[playerIndex].SetComboCount(comboCount);
             KnockBackDuration.WaitTime = damageTaken / 10000;
             KnockBackDuration.Start();
@@ -428,7 +433,8 @@ public partial class Player : RigidBody2D
             // KnockBackDuration.WaitTime = 1.25;
             // KnockBackDuration.Start();
             float knockBackMultiplier = 10000;
-            ApplyImpulse(hitDirection * knockBackMultiplier);
+            ApplyImpulse(hitDirection * knockBackMultiplier * comboCount);
+            comboCount++;
         }
     }
 

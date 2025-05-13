@@ -200,7 +200,7 @@ _data = {
 outline_size = 6
 outline_color = Color(0.054902, 0.054902, 0.054902, 1)
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio", "StarsSprite", "ComboLabel") groups=["player"]]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio", "ComboLabel") groups=["player"]]
 mass = 10.0
 physics_material_override = ExtResource("1_wxact")
 lock_rotation = true
@@ -219,7 +219,6 @@ Anim = NodePath("AnimationPlayer")
 WeaponAudio = NodePath("WeaponAudio")
 HookAudio = NodePath("HookAudio")
 PlayerAudio = NodePath("PlayerAudio")
-StarsSprite = NodePath("StarsSprite")
 Running = ExtResource("3_ltoaf")
 ComboLabel = NodePath("ComboCountLabel")
 
