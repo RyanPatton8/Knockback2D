@@ -61,7 +61,7 @@ public partial class GameManager : Node
 	public void ReadyUp()
 	{
 		playerManager.playerGUIHolder.Visible = false;
-        GetTree().ChangeSceneToFile("res://Scenes/Menus/ready_up.tscn");
+		GetTree().ChangeSceneToFile("res://Scenes/Menus/ready_up.tscn");
 		playerManager.playersAlive = playerManager.playerList.Count;
 	}
 

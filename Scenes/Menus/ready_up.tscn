@@ -557,9 +557,6 @@ shadow_color = Color(0.054902, 0.054902, 0.054902, 1)
 script = ExtResource("1_1tg8q")
 PlayerSpawn = NodePath("PlayerSpawner")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 324)
-
 [node name="Environment" type="Node" parent="."]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Environment" groups=["Environment"]]
@@ -670,13 +667,13 @@ layout_mode = 2
 
 [node name="Tip4" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
-text = "Super Jump"
+text = "Aim"
 horizontal_alignment = 1
 
 [node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-text = "Jump Button followed by immediate slash upwards"
+text = "Is right and or left thumbstick"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -727,7 +724,22 @@ horizontal_alignment = 1
 [node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer3"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-text = "removes stun and increases enemy combo count by 2"
+text = "removes stun, replenishes jump and increases enemy combo count by 2"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Tip4" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+text = "Super Jump"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer4"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Jump Button followed by immediate slash upwards"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -765,3 +777,6 @@ layout_mode = 2
 text = "all regenerate overtime. Hooks and health one by one bullets all at once"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
