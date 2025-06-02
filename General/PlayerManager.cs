@@ -105,6 +105,7 @@ public partial class PlayerManager : Node
     //decrement player life if they are not at 0 respawn otherwise check for game over
     public void LoseALife(int playerIndex, int killerIndex)
     {
+        gameManager.EmitSignal(nameof(gameManager.PlayerDeath), playerIndex, killerIndex);
         playerList[playerIndex].SetLives(-1);
         playerList[playerIndex].SetArrowCount(8);
         playerList[playerIndex].SetHookCount(4);

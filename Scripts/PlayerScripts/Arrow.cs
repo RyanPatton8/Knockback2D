@@ -14,11 +14,15 @@ public partial class Arrow : RigidBody2D
     private bool objectHit = false;
     private double timeToLive = 0.4;
     public Player playerNode;
+    GameManager gameManager;
 
     public bool hasCollided = false;
-	public override void _Ready()
+    public override void _Ready()
     {
-		BodyEntered += Explode;
+        BodyEntered += Explode;
+        gameManager = GameManager.Instance;
+        var cb = new Callable(this, nameof(Delete));
+        gameManager.Connect(GameManager.SignalName.PlayerDeath, cb);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -50,7 +54,15 @@ public partial class Arrow : RigidBody2D
         instance.playerIndex = playerIndex;
         CallDeferred("queue_free");
     }
-    public int GiveIndexInfo(){
+    private void Delete(int playerIndex, int killerIndex)
+    {
+        if (playerIndex == this.playerIndex)
+        {
+            CallDeferred("queue_free");
+        }
+    }
+    public int GiveIndexInfo()
+    {
         return playerIndex;
     }
 }

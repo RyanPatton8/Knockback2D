@@ -8,8 +8,8 @@ public partial class Range : Node
     private double throwForce = 40;
     private bool canAttack = true;
     private bool isTriggerDown = false;
-    private double attackCoolDown = .5;
-    private double maxAttackCoolDown = .5;
+    private double attackCoolDown = .1;
+    private double maxAttackCoolDown = .1;
     [Export] public AudioStream GunShotAudio {get; private set;}
     PlayerManager playerManager;
     public override void _Ready()
@@ -59,7 +59,7 @@ public partial class Range : Node
             else{
                 instance.GlobalPosition = playerNode.HitBox.GlobalPosition + (playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition).Normalized() * -20;
             }
-            // instance.arrowSprite.Modulate = playerNode.playerColor;
+            instance.arrowSprite.Modulate = playerNode.playerColor;
 		    instance.ApplyImpulse(aimDirection * (float)throwForce);
         }
     }

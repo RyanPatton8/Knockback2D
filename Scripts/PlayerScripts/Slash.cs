@@ -36,10 +36,11 @@ public partial class Slash : Area2D
 			Vector2 reflectDir = (player.HitBox.GlobalPosition - player.GlobalPosition).Normalized();
 			rb.ApplyImpulse(reflectDir * 1500);
 			player.isAttacking = false;
-			CallDeferred("queue_free");
-			if(body is Arrow arrow)
+			// CallDeferred("queue_free");
+			if (body is Arrow arrow)
 			{
 				arrow.playerIndex = playerIndex;
+				arrow.arrowSprite.Modulate = player.playerColor;
 			}
 		}
 	}

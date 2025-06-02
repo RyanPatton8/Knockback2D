@@ -16,8 +16,11 @@ public partial class Explosion : Area2D
         CallDeferred("queue_free");
     }
     public void MakeExplode(Node body){
-        if(body is Arrow arrow){
-            arrow.Explode(arrow);
+        GD.Print("body Entered");
+        if (body is Arrow arrow)
+        {
+            arrow.hasCollided = true;
+            GD.Print("arrow Entered");
         }
     }
     public Vector2 GiveInfo(){

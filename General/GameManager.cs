@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public partial class GameManager : Node
 {
 	private static GameManager _instance;
-	
+
+	[Signal] public delegate void PlayerDeathEventHandler(int playerIndex, int indexOfFinalAttacker);
 	public GameMode gameMode;
 	PlayerManager playerManager;
 	public static GameManager Instance
@@ -51,6 +52,7 @@ public partial class GameManager : Node
 			if (child is Player player)
 			{
 				player.QueueFree();
+				EmitSignal(nameof(PlayerDeath), player.playerIndex, player.indexOfFinalAttacker);
 			}
 		}
 		GetTree().ChangeSceneToFile("res://Scenes/Menus/LevelSelect.tscn");

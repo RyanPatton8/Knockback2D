@@ -15,13 +15,6 @@ public partial class WorldBorder : Area2D
     private void Destroy(Node2D body)
     {
         if(body is Player player){
-			// // Instantiate the explosion
-			// DeathExplosion instance = (DeathExplosion)Explosion.Instantiate();
-			// AddChild(instance);
-			// instance.player = player;
-			// Vector2 dir = (GlobalPosition - player.GlobalPosition).Normalized();
-			// instance.GlobalPosition = player.GlobalPosition + new Vector2(dir.X * offset, dir.Y * offset * 1.35f);
-			// instance.RotationDegrees = Mathf.RadToDeg(GlobalPosition.AngleToPoint(player.GlobalPosition)) - 90;
 			// Instantiate the explosion
 			DeathExplosion instance = (DeathExplosion)Explosion.Instantiate();
 			AddChild(instance);
