@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=4 uid="uid://cs4v4gruld815"]
 
-[ext_resource type="Script" path="res://Scripts/LevelScripts/Level.cs" id="1_6t1kh"]
+[ext_resource type="Script" uid="uid://5ncflcpbaqxe" path="res://Scripts/LevelScripts/Level.cs" id="1_6t1kh"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="2_nouam"]
 [ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/LevelComponents/world_border.tscn" id="3_c7nap"]
 

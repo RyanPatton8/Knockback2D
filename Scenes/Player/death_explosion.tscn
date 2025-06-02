@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://cmsir1424tdhe"]
 
 [ext_resource type="Texture2D" uid="uid://887dgojy7jqw" path="res://Sprites/explosion-1-d/Sprites/explosion-d1.png" id="1_g320r"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/DeathExplosion.cs" id="2_3bwu2"]
+[ext_resource type="Script" uid="uid://c8gjqcpfy8hqm" path="res://Scripts/PlayerScripts/DeathExplosion.cs" id="2_3bwu2"]
 [ext_resource type="Texture2D" uid="uid://dw8h1rm5aia45" path="res://Sprites/explosion-1-d/Sprites/explosion-d2.png" id="2_clqd6"]
 [ext_resource type="Texture2D" uid="uid://dtesrvyypm1vn" path="res://Sprites/explosion-1-d/Sprites/explosion-d3.png" id="3_d3kqc"]
 [ext_resource type="Texture2D" uid="uid://co0y4lfiy7eqx" path="res://Sprites/explosion-1-d/Sprites/explosion-d4.png" id="4_46y3o"]
@@ -49,8 +49,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4mp0y"]
 _data = {
-"Death": SubResource("Animation_nyyyw"),
-"RESET": SubResource("Animation_gqmif")
+&"Death": SubResource("Animation_nyyyw"),
+&"RESET": SubResource("Animation_gqmif")
 }
 
 [node name="DeathExplosion" type="Sprite2D" node_paths=PackedStringArray("AnimExplosionNode", "ExplosionAudioPlayer")]
@@ -64,7 +64,7 @@ ExplosionAudioPlayer = NodePath("AudioStreamPlayer2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_4mp0y")
+&"": SubResource("AnimationLibrary_4mp0y")
 }
 autoplay = "Death"
 

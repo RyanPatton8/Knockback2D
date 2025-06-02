@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://beyckrt4nh0f7"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Explosion.cs" id="1_0e581"]
+[ext_resource type="Script" uid="uid://d0m84a2cx677x" path="res://Scripts/PlayerScripts/Explosion.cs" id="1_0e581"]
 [ext_resource type="Texture2D" uid="uid://yoa7wq8xt41v" path="res://Sprites/explosion-1-f/Sprites/explosion-f1.png" id="2_c8xvv"]
 [ext_resource type="Texture2D" uid="uid://btqg8p783u8mf" path="res://Sprites/explosion-1-f/Sprites/explosion-f2.png" id="3_rl2tv"]
 [ext_resource type="Texture2D" uid="uid://br3nsah4w8wia" path="res://Sprites/explosion-1-f/Sprites/explosion-f3.png" id="4_rwd77"]
@@ -70,8 +70,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3eevf"]
 _data = {
-"GrowingExplosion": SubResource("Animation_jxsqa"),
-"RESET": SubResource("Animation_gm6af")
+&"GrowingExplosion": SubResource("Animation_jxsqa"),
+&"RESET": SubResource("Animation_gm6af")
 }
 
 [node name="Explosion" type="Area2D" node_paths=PackedStringArray("AnimExplosionNode")]
@@ -91,6 +91,6 @@ texture = ExtResource("2_c8xvv")
 
 [node name="AnimationSlashNode" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_3eevf")
+&"": SubResource("AnimationLibrary_3eevf")
 }
 autoplay = "GrowingExplosion"

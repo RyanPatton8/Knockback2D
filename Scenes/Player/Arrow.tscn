@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://1ncy12c8ef2i"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Arrow.cs" id="1_44v55"]
+[ext_resource type="Script" uid="uid://cuqf1bxpn428t" path="res://Scripts/PlayerScripts/Arrow.cs" id="1_44v55"]
 [ext_resource type="PackedScene" uid="uid://beyckrt4nh0f7" path="res://Scenes/Player/Explosion.tscn" id="2_bq8he"]
 [ext_resource type="AudioStream" uid="uid://beikii8vipwpq" path="res://Audio/Player/Ranged/BulletExplosion.wav" id="3_rt6i4"]
 [ext_resource type="Texture2D" uid="uid://cgh3ftjgi5of8" path="res://Sprites/Weapons/Bullet/BulletInterior.svg" id="4_3qv4g"]

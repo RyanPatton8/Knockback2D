@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://fv1f5dui6yk5"]
 
-[ext_resource type="Script" path="res://Scripts/MenuScripts/ReadyUp.cs" id="1_1tg8q"]
+[ext_resource type="Script" uid="uid://bir7sktdj052x" path="res://Scripts/MenuScripts/ReadyUp.cs" id="1_1tg8q"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="1_qh7jn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7tamx"]

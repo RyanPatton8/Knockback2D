@@ -1,19 +1,19 @@
 [gd_scene load_steps=45 format=3 uid="uid://duyhsvlnmlums"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
+[ext_resource type="Script" uid="uid://chnfgtuts1po8" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
+[ext_resource type="Script" uid="uid://wpoct8u6rj1a" path="res://Scripts/PlayerScripts/HitBox.cs" id="3_2rrik"]
 [ext_resource type="AudioStream" uid="uid://c153qmh1iqess" path="res://Audio/Player/Running/08_Step_rock_3.wav" id="3_ltoaf"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
+[ext_resource type="Script" uid="uid://cywfyif7r8ed5" path="res://Scripts/PlayerScripts/WeaponHolder.cs" id="4_e3b1r"]
 [ext_resource type="Texture2D" uid="uid://b448v4a505ej3" path="res://Sprites/Melee/Slash/clash.png" id="4_gmai7"]
 [ext_resource type="Texture2D" uid="uid://c4orj6glxdgwe" path="res://Sprites/MeleeAim.svg" id="4_soam1"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Melee.cs" id="5_k4pk5"]
+[ext_resource type="Script" uid="uid://cfsw0opjy2kwi" path="res://Scripts/PlayerScripts/Melee.cs" id="5_k4pk5"]
 [ext_resource type="Texture2D" uid="uid://cnm1mvixwfn06" path="res://Sprites/Melee/Slash/hit.png" id="5_kidg5"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Range.cs" id="6_703d2"]
+[ext_resource type="Script" uid="uid://cjqml5pq1b1vi" path="res://Scripts/PlayerScripts/Range.cs" id="6_703d2"]
 [ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Player/Arrow.tscn" id="7_f35k5"]
 [ext_resource type="AudioStream" uid="uid://csy35e3jqanyd" path="res://Audio/Player/Slash/SlashImpact.wav" id="7_s272n"]
 [ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/Player/slash.tscn" id="7_vokl2"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
+[ext_resource type="Script" uid="uid://b8rdd1a3eduab" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]
 [ext_resource type="AudioStream" uid="uid://xgovjoihyf5v" path="res://Audio/Player/Slash/SlashClash.wav" id="10_vfy0c"]
 [ext_resource type="PackedScene" uid="uid://btsk4ci5bevrv" path="res://Scenes/Player/hook.tscn" id="10_vnxqg"]
 [ext_resource type="AudioStream" uid="uid://bhbpy0x43ylxl" path="res://Audio/Player/Slash/SlashSwing.wav" id="11_o107o"]
@@ -189,11 +189,11 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_efy3q"]
 _data = {
-"Idle": SubResource("Animation_6b6dq"),
-"Jump": SubResource("Animation_o8jrp"),
-"RESET": SubResource("Animation_kvpmg"),
-"Run": SubResource("Animation_ijwwk"),
-"Stunned": SubResource("Animation_nxwq0")
+&"Idle": SubResource("Animation_6b6dq"),
+&"Jump": SubResource("Animation_o8jrp"),
+&"RESET": SubResource("Animation_kvpmg"),
+&"Run": SubResource("Animation_ijwwk"),
+&"Stunned": SubResource("Animation_nxwq0")
 }
 
 [sub_resource type="LabelSettings" id="LabelSettings_bpw5t"]
@@ -307,7 +307,7 @@ HookAudio = ExtResource("17_new1x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_efy3q")
+&"": SubResource("AnimationLibrary_efy3q")
 }
 
 [node name="WeaponAudio" type="AudioStreamPlayer2D" parent="."]

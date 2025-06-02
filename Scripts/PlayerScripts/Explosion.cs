@@ -17,7 +17,7 @@ public partial class Explosion : Area2D
     }
     public void MakeExplode(Node body){
         GD.Print("body Entered");
-        if (body is Arrow arrow)
+        if (body is Arrow arrow && arrow.grounded)
         {
             arrow.hasCollided = true;
             GD.Print("arrow Entered");

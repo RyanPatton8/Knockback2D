@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://btsk4ci5bevrv"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Hook.cs" id="1_brk3s"]
+[ext_resource type="Script" uid="uid://beustm8gk6imh" path="res://Scripts/PlayerScripts/Hook.cs" id="1_brk3s"]
 [ext_resource type="Texture2D" uid="uid://bv4jq88iktnpl" path="res://Sprites/FishingHook.svg" id="2_8pgd3"]
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/HookHitbox.cs" id="3_uer0q"]
+[ext_resource type="Script" uid="uid://b7vv6y75n16y1" path="res://Scripts/PlayerScripts/HookHitbox.cs" id="3_uer0q"]
 [ext_resource type="AudioStream" uid="uid://knqmeutqnkln" path="res://Audio/Player/Hook/HookImpact.wav" id="4_8pt2t"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6m410"]

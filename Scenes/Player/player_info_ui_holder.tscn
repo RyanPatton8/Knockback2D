@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ddbcrhmcu54rn"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerInfoGUI.cs" id="1_8oghx"]
+[ext_resource type="Script" uid="uid://daos0hbgl0lxw" path="res://Scripts/PlayerScripts/PlayerInfoGUI.cs" id="1_8oghx"]
 [ext_resource type="PackedScene" uid="uid://be436skp13tha" path="res://Scenes/Player/player_card.tscn" id="2_vawyp"]
 
 [node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("hBox")]

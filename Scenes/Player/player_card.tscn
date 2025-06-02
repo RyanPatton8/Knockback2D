@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://be436skp13tha"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/PlayerCard.cs" id="1_1wihs"]
+[ext_resource type="Script" uid="uid://cfj0pf23n3ujl" path="res://Scripts/PlayerScripts/PlayerCard.cs" id="1_1wihs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0gwmf"]
 font_size = 60

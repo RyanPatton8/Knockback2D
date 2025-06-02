@@ -11,6 +11,7 @@ public partial class Arrow : RigidBody2D
     public int playerIndex;
     public double forceApplied;
     private bool hittingPlayer;
+    public bool grounded;
     private bool objectHit = false;
     private double timeToLive = 0.4;
     public Player playerNode;
@@ -40,7 +41,13 @@ public partial class Arrow : RigidBody2D
         // if(body is Player player && player.playerIndex == playerIndex){
         //     return;
         // }
-        if(body.IsInGroup("Environment") || body is Arrow){
+        if (body is Arrow)
+        {
+            return;
+        }
+        else if (body.IsInGroup("Environment"))
+        {
+            grounded = true;
             return;
         }
         hasCollided = true;

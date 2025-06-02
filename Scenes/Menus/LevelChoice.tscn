@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bsfsot0yn27p4"]
 
 [ext_resource type="Texture2D" uid="uid://fon8kwni7tyv" path="res://Sprites/LevelImgs/LevelTexturePlaceHolder.png" id="1_ny0n4"]
-[ext_resource type="Script" path="res://Scripts/MenuScripts/LevelChoice.cs" id="1_saxq3"]
+[ext_resource type="Script" uid="uid://brldyhjgohjr8" path="res://Scripts/MenuScripts/LevelChoice.cs" id="1_saxq3"]
 [ext_resource type="Texture2D" uid="uid://bq5nhkir7thj3" path="res://Sprites/LevelImgs/BorderFocus.png" id="2_sc23a"]
 
 [node name="TextureButton" type="TextureButton"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=4 uid="uid://cgh3ncgr73oxy"]
 
-[ext_resource type="Script" path="res://Scripts/LevelScripts/Level.cs" id="1_3252a"]
+[ext_resource type="Script" uid="uid://5ncflcpbaqxe" path="res://Scripts/LevelScripts/Level.cs" id="1_3252a"]
 [ext_resource type="Texture2D" uid="uid://fc64eg35dxhd" path="res://Sprites/TileSets/Snow platform tileset.png" id="2_oe75u"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="3_gh02f"]
 [ext_resource type="Texture2D" uid="uid://d2wu2ujqp66g" path="res://Sprites/TileSets/Textures-16.png" id="4_c8k62"]

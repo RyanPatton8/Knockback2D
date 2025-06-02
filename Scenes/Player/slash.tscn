@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://htbr7noopagf"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerScripts/Slash.cs" id="1_8b25p"]
+[ext_resource type="Script" uid="uid://dmhyw5qysb8wp" path="res://Scripts/PlayerScripts/Slash.cs" id="1_8b25p"]
 [ext_resource type="Texture2D" uid="uid://e06xfxjg46i" path="res://Sprites/Melee/Slash/slash_02.png" id="2_pcx3e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvbo4"]
@@ -40,8 +40,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_laihx"]
 _data = {
-"RESET": SubResource("Animation_2c3ta"),
-"slash": SubResource("Animation_pceyh")
+&"RESET": SubResource("Animation_2c3ta"),
+&"slash": SubResource("Animation_pceyh")
 }
 
 [node name="Slash" type="Area2D"]
@@ -63,6 +63,6 @@ shape = SubResource("RectangleShape2D_wvbo4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_laihx")
+&"": SubResource("AnimationLibrary_laihx")
 }
 autoplay = "slash"
