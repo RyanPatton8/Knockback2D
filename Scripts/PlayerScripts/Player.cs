@@ -383,8 +383,6 @@ public partial class Player : RigidBody2D
                 hb.Hit();
                 DamageFromMelee(info);
                 indexOfFinalAttacker = attackOwner;
-                GD.Print("SLASH LIST: " + slashList);
-                GD.Print("SLASH UUID: " + slashUuid);
             }
         }
         else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
@@ -405,13 +403,6 @@ public partial class Player : RigidBody2D
             DamageFromExplosion(info, explosionOwner);
         }
     }
-    // private void RecieveRangedHit(Node body)
-    // {
-    //     if (body is Arrow arrow && arrow.GiveIndexInfo() != playerIndex){
-    //         indexOfFinalAttacker = arrow.GiveIndexInfo();
-    //         DamageFromArrow(2000f);
-    //     }
-    // }
     public void Clashed(Vector2 redirect, int otherSlashOwner, bool fromSlash)
     {
         int multiplier = fromSlash ? 6000 : 150;

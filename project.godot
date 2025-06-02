@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 AudioManager="*res://General/AudioManager.cs"
 PlayerManager="*res://General/PlayerManager.cs"
 GameManager="*res://General/GameManager.cs"
+PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 
 [display]
 
@@ -28,6 +29,10 @@ window/size/mode=3
 [dotnet]
 
 project/assembly_name="Knockback2D"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
 
 [input]
 

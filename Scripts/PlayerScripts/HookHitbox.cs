@@ -29,7 +29,7 @@ public partial class HookHitbox : Area2D
         //Grapple if its environment
 		if(body.IsInGroup("Environment"))
         {
-			playerNode.Grapple(GlobalPosition - playerNode.GlobalPosition);
+		    playerNode.Grapple(GlobalPosition - playerNode.GlobalPosition);
         }
         fishingRod.hookOut = false;
         hookNode.QueueFree();
