@@ -5,11 +5,11 @@ using System.Linq;
 
 public partial class AudioManager : Node
 {
-	// Called when the node enters the scene tree for the first time.
-	public List<AudioStream> streams = new();
+    public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
+    public List<AudioStream> streams = new();
 
     private static AudioManager _instance;
-	public static AudioManager Instance
+    public static AudioManager Instance
     {
         get
         {
@@ -30,7 +30,11 @@ public partial class AudioManager : Node
     }
     public override void _Ready()
     {
+        AddChild(Music);
+        Music.Finished += PlayNextSong;
         LoadAllAudio("res://Audio//Music");
+        Music.Stream = GetSong();
+        Music.Play();
     }
 
     public void LoadAllAudio(string folderPath)
@@ -42,12 +46,12 @@ public partial class AudioManager : Node
             GD.PrintErr($"Could not open folder: {folderPath}");
             return;
         }
-		// tell it whether to include “.”/“..” and hidden files
-		dir.SetIncludeNavigational(false);  // skip “.” and “..”
-		dir.SetIncludeHidden(false);        // skip hidden files
+        // tell it whether to include “.”/“..” and hidden files
+        dir.SetIncludeNavigational(false);  // skip “.” and “..”
+        dir.SetIncludeHidden(false);        // skip hidden files
 
-		// now begin the listing
-		dir.ListDirBegin();
+        // now begin the listing
+        dir.ListDirBegin();
         string fileName = dir.GetNext();
         while (fileName != string.Empty)
         {
@@ -69,10 +73,21 @@ public partial class AudioManager : Node
             }
             fileName = dir.GetNext();
         }
-		dir.ListDirEnd();
+        dir.ListDirEnd();
     }
-	public AudioStream GetSong(){
-		Random rnd = new Random();
-		return streams[rnd.Next(0, streams.Count)];
-	}
+    public AudioStream GetSong()
+    {
+        Random rnd = new Random();
+        return streams[rnd.Next(0, streams.Count)];
+    }
+    
+    public void PlayNextSong(){
+        AudioStream next = GetSong();
+        while (next == Music.Stream)
+        {
+            next = GetSong();
+        }
+        Music.Stream = next;
+        Music.Play();
+    }
 }

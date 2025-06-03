@@ -40,22 +40,7 @@ public partial class PlayerManager : Node
     {
         gameManager = GameManager.Instance;
         playerGUIHolder = (PlayerInfoGUI) playerGUI.Instantiate();
-        AddChild(playerGUIHolder);
-        AddChild(Music);
-        audioManager = AudioManager.Instance;
-        Music.Finished += PlayNextSong;
-        Music.Stream = audioManager.GetSong();
-        GD.Print(Music.Stream);
-        Music.Play();
-    }
-    public void PlayNextSong(){
-        AudioStream next = audioManager.GetSong();
-        while (next == Music.Stream)
-        {
-            next = audioManager.GetSong();
-        }
-        Music.Stream = next;
-        Music.Play();
+        AddChild(playerGUIHolder);  
     }
     //adds and remove players to and from dictionary indexed by player index
     public void AddPlayer(int playerIndex)
