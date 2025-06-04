@@ -1,8 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://rv6o7djxuani"]
+[gd_scene load_steps=4 format=3 uid="uid://rv6o7djxuani"]
 
 [ext_resource type="Script" uid="uid://dpcx0pem7kf5e" path="res://Scripts/MenuScripts/Main.cs" id="1_ojkwd"]
+[ext_resource type="Texture2D" uid="uid://c43m18bsv1re" path="res://Sprites/c0a6d1e2-dd1d-4452-958d-a7c5a63d90ef-processed(lightpdf.com).jpg" id="2_nardx"]
 
-[node name="Control2" type="Control" node_paths=PackedStringArray("PlayBtn", "TeamsOn", "GameMode")]
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_nardx"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+follow_viewport_enabled = true
+
+[node name="Control2" type="Control" parent="." node_paths=PackedStringArray("PlayBtn", "TeamsOn", "GameMode")]
+top_level = true
+z_index = -1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,30 +22,32 @@ PlayBtn = NodePath("VBoxContainer/Play Button")
 TeamsOn = NodePath("VBoxContainer/CheckButton")
 GameMode = NodePath("VBoxContainer/OptionButton")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2"]
+top_level = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -62.5
+offset_left = -135.5
 offset_top = -50.5
-offset_right = 62.5
+offset_right = 135.5
 offset_bottom = 50.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Play Button" type="Button" parent="VBoxContainer"]
+[node name="Play Button" type="Button" parent="Control2/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_icons/icon = SubResource("PlaceholderTexture2D_nardx")
 text = "Play"
+icon_alignment = 1
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer"]
+[node name="CheckButton" type="CheckButton" parent="Control2/VBoxContainer"]
 layout_mode = 2
 text = "Teams"
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="Control2/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Game Mode"
@@ -49,13 +59,16 @@ popup/item_0/id = 0
 popup/item_1/text = "Elimination (Not Implemented)"
 popup/item_1/id = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="Control2"]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -49.5
-offset_right = 49.5
+offset_left = -192.0
+offset_top = -188.0
+offset_right = 192.0
+offset_bottom = 188.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_nardx")
+stretch_mode = 4

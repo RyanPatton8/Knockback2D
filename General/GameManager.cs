@@ -8,6 +8,7 @@ public partial class GameManager : Node
 
 	[Signal] public delegate void PlayerDeathEventHandler(int playerIndex, int indexOfFinalAttacker);
 	public GameMode gameMode;
+	public bool TeamsOn;
 	PlayerManager playerManager;
 	public static GameManager Instance
     {
