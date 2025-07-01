@@ -16,7 +16,7 @@ public partial class LevelSelect : Control
 	public override void _Process(double delta)
 	{
 		if(Input.IsJoyButtonPressed(0, JoyButton.B) && playerManager.playerList.Count > 0){
-			gameManager.ReadyUp();
+			gameManager.ReadyUp(gameManager.gameMode, false);
 		}
 	}
 }

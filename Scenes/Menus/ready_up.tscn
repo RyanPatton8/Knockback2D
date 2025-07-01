@@ -568,7 +568,7 @@ tile_set = SubResource("TileSet_aawrc")
 [node name="PlayerSpawner" type="Node" parent="."]
 
 [node name="Marker2D2" type="Marker2D" parent="PlayerSpawner"]
-position = Vector2(575, 441)
+position = Vector2(576, 110)
 
 [node name="Marker2D3" type="Marker2D" parent="PlayerSpawner"]
 position = Vector2(1121, 231)

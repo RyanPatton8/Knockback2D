@@ -57,7 +57,7 @@ public partial class ReadyUp : Node2D
 	}
 	private void JoinInputs()
 	{
-		if (!gameManager.TeamsOn)
+		if (!gameManager.gameMode.teamsOn)
 		{
 			if (Input.IsJoyButtonPressed(0, JoyButton.A))
 			{

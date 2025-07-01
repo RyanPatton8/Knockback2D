@@ -1,15 +1,24 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-public partial class Elimination : Node
+public partial class Elimination : GameMode
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	public override bool IsGameOver()
 	{
+		if (playerManager.GetHighestKills() > 1)
+		{
+			return true;
+		}
+		else if (playerManager.playersAlive <= 1)
+		{
+			gameManager.LoadRandomLevel();
+		}
+		return false;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    public override bool ShouldRespawn(int playerIndex)
+    {
+		return false;
+    }
 }

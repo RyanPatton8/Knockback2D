@@ -15,7 +15,7 @@ public partial class PlayerManager : Node
     private AudioManager audioManager;
     private GameManager gameManager;
 
-    
+
     //allows any script to reference PlayerManager
     public static PlayerManager Instance
     {
@@ -39,8 +39,8 @@ public partial class PlayerManager : Node
     public override void _Ready()
     {
         gameManager = GameManager.Instance;
-        playerGUIHolder = (PlayerInfoGUI) playerGUI.Instantiate();
-        AddChild(playerGUIHolder);  
+        playerGUIHolder = (PlayerInfoGUI)playerGUI.Instantiate();
+        AddChild(playerGUIHolder);
     }
     //adds and remove players to and from dictionary indexed by player index
     public void AddPlayer(int playerIndex)
@@ -97,24 +97,40 @@ public partial class PlayerManager : Node
         playerList[playerIndex].SetArrowCount(8);
         playerList[playerIndex].SetHookCount(4);
         playerList[playerIndex].SetDamageTaken(0);
-        if(killerIndex != -1){
+        if (killerIndex != -1)
+        {
             playerList[killerIndex].SetKills(1);
             GD.Print($"player {killerIndex} has {playerList[killerIndex].GetKills()} kills");
         }
-        else{
+        else
+        {
             GD.Print("player has killed themself");
         }
-
-        if (playerList[playerIndex].GetLives() > 0){
-            // Respawn player after losing a life
+        if (gameManager.gameMode.ShouldRespawn(playerIndex))
+        {
             Random rnd = new Random();
             Vector2 spawnPoint = spawnPoints[rnd.Next(0, spawnPoints.Count)].GlobalPosition;
             CallDeferred(nameof(SpawnPlayer), playerIndex, spawnPoint);
         }
-        else{
+        else
+        {
             playerGUIHolder.playerCards[playerIndex].MakeBlank();
             playersAlive--;
-            gameManager.CheckForGameOver();
         }
+        gameManager.CheckForGameOver();
+    }
+
+    public int GetHighestKills()
+    {
+        int highestKills = 0;
+        foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
+        {
+            GD.Print($"{kvp.Value.GetKills()}");
+            if (kvp.Value.GetKills() >= highestKills)
+            {
+                highestKills = kvp.Value.GetKills();
+            }
+        }
+        return highestKills;
     }
 }
