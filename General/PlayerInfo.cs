@@ -14,12 +14,14 @@ public partial class PlayerInfo : Node
 	private float damageGiven = 0;
 	private float startingComboCount = 1;
 	private float comboCount = 1;
+	public string team;
 	PlayerManager playerManager;
 	public PlayerInfo() {}
-	public PlayerInfo(int playerIndex, int lives, Color playerColor, int arrowCount, int hookCount){
+	public PlayerInfo(int playerIndex, int lives, Color playerColor, string team){
 		this.playerIndex = playerIndex;
 		this.lives = lives;
 		this.playerColor = playerColor;
+		this.team = team;
 		playerManager = PlayerManager.Instance;
 	}
 	public int GetLives(){

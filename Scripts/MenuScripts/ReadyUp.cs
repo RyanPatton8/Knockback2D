@@ -57,51 +57,51 @@ public partial class ReadyUp : Node2D
 	}
 	private void JoinInputs()
 	{
-		if (!gameManager.gameMode.teamsOn)
+		if (gameManager.gameMode.teamsOn)
 		{
 			if (Input.IsJoyButtonPressed(0, JoyButton.A))
 			{
-				AddPlayer(0);
+				AddPlayer(0, "RED");
 			}
 			else if (Input.IsJoyButtonPressed(1, JoyButton.A))
 			{
-				AddPlayer(1);
+				AddPlayer(1, "RED");
 			}
 			else if (Input.IsJoyButtonPressed(2, JoyButton.A))
 			{
-				AddPlayer(2);
+				AddPlayer(2, "RED");
 			}
 			else if (Input.IsJoyButtonPressed(3, JoyButton.A))
 			{
-				AddPlayer(3);
+				AddPlayer(3, "BLUE");
 			}
 		}
 		else
 		{
 			if (Input.IsJoyButtonPressed(0, JoyButton.A))
 			{
-				AddPlayer(0);
+				AddPlayer(0, "RED");
 			}
 			else if (Input.IsJoyButtonPressed(1, JoyButton.A))
 			{
-				AddPlayer(1);
+				AddPlayer(1, "BLUE");
 			}
 			else if (Input.IsJoyButtonPressed(2, JoyButton.A))
 			{
-				AddPlayer(2);
+				AddPlayer(2, "YELLOW");
 			}
 			else if (Input.IsJoyButtonPressed(3, JoyButton.A))
 			{
-				AddPlayer(3);
+				AddPlayer(3, "GREEN");
 			}
 		}
 	}
-	private void AddPlayer(int playerIndex)
+	private void AddPlayer(int playerIndex, string team)
 	{
 		if (playerManager.playerList.ContainsKey(playerIndex))
 			return;
 		playerManager.playersAlive++;
-		playerManager.AddPlayer(playerIndex);
+		playerManager.AddPlayer(playerIndex, team);
 		Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;
 		playerManager.SpawnPlayer(playerIndex, spawnPoint);
 	}

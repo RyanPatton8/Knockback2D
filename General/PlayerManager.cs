@@ -9,6 +9,12 @@ public partial class PlayerManager : Node
     public PlayerInfoGUI playerGUIHolder;
     private static PlayerManager _instance;
     public Dictionary<int, PlayerInfo> playerList = new Dictionary<int, PlayerInfo>();
+    public Dictionary<string, Color> colorList = new Dictionary<string, Color>{
+        { "RED", new Color(.8f, 0, 0) },
+        { "BLUE", new Color(0, 0, .65f) },
+        { "YELLOW", new Color(.65f, .65f, 0) },
+        { "GREEN", new Color(0, .65f, 0)}
+    };
     public List<Marker2D> spawnPoints = new List<Marker2D>();
     public int playersAlive = 0;
     public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
@@ -43,24 +49,42 @@ public partial class PlayerManager : Node
         AddChild(playerGUIHolder);
     }
     //adds and remove players to and from dictionary indexed by player index
-    public void AddPlayer(int playerIndex)
+    public void AddPlayer(int playerIndex, string team)
     {
+        Color playerColor = colorList[team];
+        float teamCount = GetTeamCount(team);
+        switch (team)
+        {
+            case "RED":
+                playerColor.R -= teamCount;
+                break;
+            case "BLUE":
+                playerColor.B -= teamCount;
+                break;
+            case "YELLOW":
+                playerColor.R -= teamCount;
+                playerColor.G -= teamCount;
+                break;
+            case "GREEN":
+                playerColor.G -= teamCount;
+                break;
+        }
         switch (playerIndex)
         {
             case 0:
-                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(.65f, 0, 0), 4, 4));
+                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, playerColor, team));
                 playerGUIHolder.AddCard(0);
                 break;
             case 1:
-                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(0, 0, .65f), 4, 4));
+                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, playerColor, team));
                 playerGUIHolder.AddCard(1);
                 break;
             case 2:
-                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(.65f, .65f, 0), 4, 4));
+                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, playerColor, team));
                 playerGUIHolder.AddCard(2);
                 break;
             case 3:
-                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, new Color(0, .65f, 0), 4, 4));
+                playerList.Add(playerIndex, new PlayerInfo(playerIndex, 3, playerColor, team));
                 playerGUIHolder.AddCard(3);
                 break;
             default:
@@ -120,6 +144,19 @@ public partial class PlayerManager : Node
         gameManager.CheckForGameOver();
     }
 
+    private float GetTeamCount(string team)
+    {
+        float teamCount = 0;
+        foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
+        {
+            GD.Print($"{kvp.Value.GetKills()}");
+            if (kvp.Value.team == team)
+            {
+                teamCount += 0.3f;
+            }
+        }
+        return teamCount;
+    }
     public int GetHighestKills()
     {
         int highestKills = 0;

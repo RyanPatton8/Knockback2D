@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 public partial class Elimination : GameMode
 {
+	public Elimination(PlayerManager playerManager, GameManager gameManager, bool teamsOn)
+	{
+		this.playerManager = playerManager;
+		this.gameManager = gameManager;
+		this.teamsOn = teamsOn;
+	}
 	public override bool IsGameOver()
 	{
 		if (playerManager.GetHighestKills() > 1)

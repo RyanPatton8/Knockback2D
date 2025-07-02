@@ -7,11 +7,13 @@ public partial class GameSelect : Control
     [Export] public CheckButton TeamsOn { get; private set; }
     [Export] public OptionButton GameMode { get; private set; }
     GameManager gameManager;
+    PlayerManager playerManager;
     public override void _Ready()
     {
         PlayBtn.GrabFocus();
         PlayBtn.ButtonDown += ChangeToLevelScene;
         gameManager = GameManager.Instance;
+        playerManager = PlayerManager.Instance;
     }
     private void ChangeToLevelScene()
     {
@@ -19,17 +21,17 @@ public partial class GameSelect : Control
         switch (GameMode.Selected)
         {
             case 0:
-                chosenGameMode = new StockBattle();
+                chosenGameMode = new StockBattle(playerManager, gameManager, TeamsOn.ButtonPressed);
                 break;
             case 1:
-                chosenGameMode = new Elimination();
+                chosenGameMode = new Elimination(playerManager, gameManager, TeamsOn.ButtonPressed);
                 break;
             default:
-                chosenGameMode = new StockBattle();
+                chosenGameMode = new StockBattle(playerManager, gameManager, TeamsOn.ButtonPressed);
                 GD.Print("Something went wrong with gamemode switchcase");
                 break;
         }
         GD.Print($"Current GameMode {GameMode.Selected}");
-		gameManager.ReadyUp(chosenGameMode, TeamsOn.ButtonPressed);
+		gameManager.ReadyUp(chosenGameMode);
 	}
 }

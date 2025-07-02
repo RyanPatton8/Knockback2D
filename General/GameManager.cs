@@ -60,14 +60,11 @@ public partial class GameManager : Node
 		GetTree().ChangeSceneToFile("res://Scenes/Menus/LevelSelect.tscn");
 	}
 
-	public void ReadyUp(GameMode chosenGameMode, bool teamsOn)
+	public void ReadyUp(GameMode chosenGameMode)
 	{
 		playerManager.playerGUIHolder.Visible = false;
 		GetTree().ChangeSceneToFile("res://Scenes/Menus/ready_up.tscn");
 		gameMode = chosenGameMode;
-		gameMode.teamsOn = teamsOn;
-		gameMode.playerManager = playerManager;
-		gameMode.gameManager = this;
 		playerManager.playersAlive = playerManager.playerList.Count;
 	}
 
@@ -80,7 +77,7 @@ public partial class GameManager : Node
 	{
 		if (gameMode.IsGameOver())
 		{
-			ReadyUp(gameMode, gameMode.teamsOn);
+			ReadyUp(gameMode);
 		}
 	}
 
