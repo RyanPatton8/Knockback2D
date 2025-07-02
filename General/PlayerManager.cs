@@ -129,7 +129,7 @@ public partial class PlayerManager : Node
         else
         {
             playerList[playerIndex].SetKills(-1);
-            GD.Print("player has killed themself");
+            GD.Print($"player has killed themself and has {playerList[playerIndex].GetKills()} kills");
         }
         if (gameManager.gameMode.ShouldRespawn(playerIndex))
         {

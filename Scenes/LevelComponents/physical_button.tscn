@@ -21,18 +21,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("2_bre31")]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Label:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_r15lq"]
 resource_name = "button_down"
@@ -48,18 +36,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [ExtResource("2_bre31"), ExtResource("3_08s33")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Label:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_rql4v"]
@@ -77,18 +53,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("3_08s33"), ExtResource("2_bre31")]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Label:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pu3j8"]
 _data = {
@@ -99,12 +63,11 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tpsu3"]
 
-[node name="PhysicalButton" type="StaticBody2D" node_paths=PackedStringArray("anim", "btnArea", "label") groups=["Environment"]]
+[node name="PhysicalButton" type="StaticBody2D" node_paths=PackedStringArray("anim", "btnArea") groups=["Environment"]]
 z_index = 1
 script = ExtResource("1_u1540")
 anim = NodePath("AnimationPlayer")
 btnArea = NodePath("Area2D")
-label = NodePath("Label")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_bre31")
@@ -132,4 +95,5 @@ offset_left = -66.0
 offset_top = -104.0
 offset_right = 71.0
 offset_bottom = -81.0
-text = "This does nothing"
+text = "Ready"
+horizontal_alignment = 1
