@@ -128,6 +128,7 @@ public partial class PlayerManager : Node
         }
         else
         {
+            playerList[playerIndex].SetKills(-1);
             GD.Print("player has killed themself");
         }
         if (gameManager.gameMode.ShouldRespawn(playerIndex))

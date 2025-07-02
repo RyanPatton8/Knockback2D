@@ -12,7 +12,7 @@ public partial class Elimination : GameMode
 	}
 	public override bool IsGameOver()
 	{
-		if (playerManager.GetHighestKills() > 1)
+		if (playerManager.GetHighestKills() >= 3)
 		{
 			return true;
 		}

@@ -5,6 +5,7 @@ public partial class Explosion : Area2D
 {
     [Export] public AnimationPlayer AnimExplosionNode { get; private set; }
     public int playerIndex;
+    private string uuid = Guid.NewGuid().ToString();
 
     public override void _Ready()
     {
@@ -16,15 +17,15 @@ public partial class Explosion : Area2D
         CallDeferred("queue_free");
     }
     public void MakeExplode(Node body){
-        if (body is Bullet arrow && arrow.grounded)
+        if (body is Bullet bullet && bullet.grounded && (bullet.LinearVelocity.X < 8 || bullet.LinearVelocity.X > -8))
         {
-            arrow.hasCollided = true;
+            bullet.hasCollided = true;
         }
     }
     public Vector2 GiveInfo(){
 		return GlobalPosition;
 	}
-    public int GiveIndexInfo(){
-        return playerIndex;
+    public (int, string) GiveIndexInfo(){
+        return (playerIndex, uuid);
     }
 }

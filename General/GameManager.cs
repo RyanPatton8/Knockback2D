@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public partial class GameManager : Node
 {
 	private static GameManager _instance;
-
 	[Signal] public delegate void PlayerDeathEventHandler(int playerIndex, int indexOfFinalAttacker);
 	public GameMode gameMode;
 	private List<string> levels;
 	Random rnd = new Random();
 	PlayerManager playerManager;
+	PackedScene currentLevel;
 	public static GameManager Instance
 	{
 		get
@@ -62,6 +62,7 @@ public partial class GameManager : Node
 
 	public void ReadyUp(GameMode chosenGameMode)
 	{
+		currentLevel = null;
 		playerManager.playerGUIHolder.Visible = false;
 		GetTree().ChangeSceneToFile("res://Scenes/Menus/ready_up.tscn");
 		gameMode = chosenGameMode;
@@ -83,9 +84,15 @@ public partial class GameManager : Node
 
 	public void LoadRandomLevel()
 	{
-		GetTree().ChangeSceneToFile(levels[rnd.Next(0, levels.Count)]);
-	}
+		PackedScene newLevel = ResourceLoader.Load(levels[rnd.Next(0, levels.Count)]) as PackedScene;
 
+		while (newLevel == currentLevel)
+		{
+			newLevel = ResourceLoader.Load(levels[rnd.Next(0, levels.Count)]) as PackedScene;
+		}
+		GetTree().ChangeSceneToPacked(newLevel);
+		currentLevel = newLevel;
+	}
 	public List<string> GetLevelList()
 	{
 		List<string> levels = new List<string>();

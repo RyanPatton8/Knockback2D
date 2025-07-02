@@ -61,7 +61,7 @@ public partial class Player : RigidBody2D
     public Color playerColor;
     public int indexOfFinalAttacker = -1;
     public double slashIndexDuration = 1;
-    private List<string> slashList = new List<string>();
+    private List<string> attacksTaken = new List<string>();
     [Export] public AudioStream Running { get; private set; }
     [Export] public Label ComboLabel { get; private set; }
     // Reference to player manager singleton
@@ -157,12 +157,12 @@ public partial class Player : RigidBody2D
             hookRegenTime = maxRegenTime;
             RegenerateHooks(delta);
         }
-        if (slashList.Count > 0)
+        if (attacksTaken.Count > 0)
         {
             slashIndexDuration -= delta;
             if (slashIndexDuration < Mathf.Epsilon)
             {
-                slashList.RemoveAt(0);
+                attacksTaken.RemoveAt(0);
                 slashIndexDuration = 1;
             }
         }
@@ -377,9 +377,9 @@ public partial class Player : RigidBody2D
         if (area is Slash slash)
         {
             (info, attackOwner, slashUuid, hb) = slash.GiveInfo();
-            if (attackOwner != playerIndex && !slashList.Contains(slashUuid))
+            if (attackOwner != playerIndex && !attacksTaken.Contains(slashUuid))
             {
-                slashList.Add(slashUuid);
+                attacksTaken.Add(slashUuid);
                 hb.Hit();
                 DamageFromMelee(info);
                 indexOfFinalAttacker = attackOwner;
@@ -394,10 +394,13 @@ public partial class Player : RigidBody2D
         else if (area is Explosion explosion)
         {
             Vector2 explosionPos = explosion.GiveInfo();
-            int explosionOwner = explosion.GiveIndexInfo();
+            (int explosionOwner, string explosionId) = explosion.GiveIndexInfo();
+            if (attacksTaken.Contains(explosionId))
+                return;
+            attacksTaken.Add(explosionId);
             if (explosionOwner != playerIndex)
             {
-                indexOfFinalAttacker = explosion.GiveIndexInfo();
+                indexOfFinalAttacker = explosionOwner;
             }
             info = GlobalPosition - explosionPos;
             DamageFromExplosion(info, explosionOwner);
