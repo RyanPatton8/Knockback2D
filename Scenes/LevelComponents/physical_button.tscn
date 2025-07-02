@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://8ts5w2ywiwe6"]
+
+[ext_resource type="Script" uid="uid://bgb3yi37nkqtq" path="res://GameButton.cs" id="1_u1540"]
+[ext_resource type="Texture2D" uid="uid://bqfutrrid2moq" path="res://Sprites/PhysicalButton/Button1.svg" id="2_bre31"]
+[ext_resource type="Texture2D" uid="uid://d3aljoyfemlif" path="res://Sprites/PhysicalButton/Button2.svg" id="3_08s33"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3yvr"]
+size = Vector2(20, 22.6667)
+
+[sub_resource type="Animation" id="Animation_nledg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_bre31")]
+}
+
+[sub_resource type="Animation" id="Animation_r15lq"]
+resource_name = "button_down"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("2_bre31"), ExtResource("3_08s33")]
+}
+
+[sub_resource type="Animation" id="Animation_rql4v"]
+resource_name = "button_up"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("3_08s33"), ExtResource("2_bre31")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pu3j8"]
+_data = {
+&"RESET": SubResource("Animation_nledg"),
+&"button_down": SubResource("Animation_r15lq"),
+&"button_up": SubResource("Animation_rql4v")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tpsu3"]
+
+[node name="StaticBody2D" type="StaticBody2D" node_paths=PackedStringArray("anim", "btnArea") groups=["Environment"]]
+script = ExtResource("1_u1540")
+anim = NodePath("AnimationPlayer")
+btnArea = NodePath("Area2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bre31")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 20)
+scale = Vector2(7, 1.5)
+shape = SubResource("RectangleShape2D_o3yvr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pu3j8")
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -13)
+scale = Vector2(5, 1.5)
+shape = SubResource("RectangleShape2D_tpsu3")

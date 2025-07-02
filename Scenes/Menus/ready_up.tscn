@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=4 uid="uid://fv1f5dui6yk5"]
+[gd_scene load_steps=8 format=4 uid="uid://fv1f5dui6yk5"]
 
 [ext_resource type="Script" uid="uid://bir7sktdj052x" path="res://Scripts/MenuScripts/ReadyUp.cs" id="1_1tg8q"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="1_qh7jn"]
+[ext_resource type="PackedScene" uid="uid://8ts5w2ywiwe6" path="res://Scenes/LevelComponents/physical_button.tscn" id="3_r1kvl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7tamx"]
 texture = ExtResource("1_qh7jn")
@@ -780,3 +781,6 @@ autowrap_mode = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 324)
+
+[node name="StaticBody2D" parent="." instance=ExtResource("3_r1kvl")]
+position = Vector2(-101, 490)
