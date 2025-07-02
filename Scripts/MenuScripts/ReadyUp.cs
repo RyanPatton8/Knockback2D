@@ -65,7 +65,7 @@ public partial class ReadyUp : Node2D
 			}
 			else if (Input.IsJoyButtonPressed(1, JoyButton.A))
 			{
-				AddPlayer(1, "RED");
+				AddPlayer(1, "BLUE");
 			}
 			else if (Input.IsJoyButtonPressed(2, JoyButton.A))
 			{
