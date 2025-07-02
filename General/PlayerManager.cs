@@ -11,9 +11,9 @@ public partial class PlayerManager : Node
     public Dictionary<int, PlayerInfo> playerList = new Dictionary<int, PlayerInfo>();
     public Dictionary<string, Color> colorList = new Dictionary<string, Color>{
         { "RED", new Color(.8f, 0, 0) },
-        { "BLUE", new Color(0, 0, .65f) },
-        { "YELLOW", new Color(.65f, .65f, 0) },
-        { "GREEN", new Color(0, .65f, 0)}
+        { "BLUE", new Color(0, 0, .8f) },
+        { "YELLOW", new Color(.8f, .8f, 0) },
+        { "GREEN", new Color(0, .8f, 0)}
     };
     public List<Marker2D> spawnPoints = new List<Marker2D>();
     public int playersAlive = 0;

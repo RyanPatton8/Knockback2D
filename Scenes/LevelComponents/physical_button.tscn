@@ -63,7 +63,8 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tpsu3"]
 
-[node name="StaticBody2D" type="StaticBody2D" node_paths=PackedStringArray("anim", "btnArea") groups=["Environment"]]
+[node name="PhysicalButton" type="StaticBody2D" node_paths=PackedStringArray("anim", "btnArea") groups=["Environment"]]
+z_index = 1
 script = ExtResource("1_u1540")
 anim = NodePath("AnimationPlayer")
 btnArea = NodePath("Area2D")

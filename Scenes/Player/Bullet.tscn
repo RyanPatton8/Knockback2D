@@ -13,6 +13,7 @@ bounce = 0.4
 [sub_resource type="CircleShape2D" id="CircleShape2D_6m410"]
 
 [node name="RigidBody2D" type="RigidBody2D" node_paths=PackedStringArray("collision", "arrowSprite")]
+z_index = 2
 collision_layer = 3
 collision_mask = 3
 physics_material_override = SubResource("PhysicsMaterial_m4ix4")
