@@ -6,13 +6,12 @@
 font_size = 60
 
 [node name="PlayerCard" type="MarginContainer" node_paths=PackedStringArray("OuterBackground", "ArrowCount", "HookCount", "LivesCount", "Health")]
-custom_minimum_size = Vector2(200, 180)
+custom_minimum_size = Vector2(200, 145)
 offset_left = 6.0
 offset_top = 8.0
 offset_right = 206.0
-offset_bottom = 188.0
+offset_bottom = 153.0
 size_flags_vertical = 10
-theme_override_constants/margin_left = 0
 script = ExtResource("1_1wihs")
 OuterBackground = NodePath("OuterBackdrop")
 ArrowCount = NodePath("Content/UpperContent/VBoxContainer/Label")

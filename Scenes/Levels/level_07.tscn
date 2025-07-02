@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://g6q2wbkp4k76"]
+[gd_scene load_steps=13 format=4 uid="uid://caiiwgomk8hcm"]
 
 [ext_resource type="Script" uid="uid://5ncflcpbaqxe" path="res://Scripts/LevelScripts/Level.cs" id="1_7x6ig"]
 [ext_resource type="Texture2D" uid="uid://fc64eg35dxhd" path="res://Sprites/TileSets/Snow platform tileset.png" id="2_p5fpe"]
