@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://cfsw0opjy2kwi" path="res://Scripts/PlayerScripts/Melee.cs" id="5_k4pk5"]
 [ext_resource type="Texture2D" uid="uid://cnm1mvixwfn06" path="res://Sprites/Melee/Slash/hit.png" id="5_kidg5"]
 [ext_resource type="Script" uid="uid://cjqml5pq1b1vi" path="res://Scripts/PlayerScripts/Range.cs" id="6_703d2"]
-[ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Player/Arrow.tscn" id="7_f35k5"]
+[ext_resource type="PackedScene" uid="uid://1ncy12c8ef2i" path="res://Scenes/Player/Bullet.tscn" id="7_f35k5"]
 [ext_resource type="AudioStream" uid="uid://csy35e3jqanyd" path="res://Audio/Player/Slash/SlashImpact.wav" id="7_s272n"]
 [ext_resource type="PackedScene" uid="uid://htbr7noopagf" path="res://Scenes/Player/slash.tscn" id="7_vokl2"]
 [ext_resource type="Script" uid="uid://b8rdd1a3eduab" path="res://Scripts/PlayerScripts/FishingRod.cs" id="9_rdm57"]

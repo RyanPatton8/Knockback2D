@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Arrow : RigidBody2D
+public partial class Bullet : RigidBody2D
 {
     [Export] public CollisionShape2D collision {get; private set;}
     [Export] public PackedScene explosion {get; private set;}
@@ -41,7 +41,7 @@ public partial class Arrow : RigidBody2D
         // if(body is Player player && player.playerIndex == playerIndex){
         //     return;
         // }
-        if (body is Arrow)
+        if (body is Bullet)
         {
             return;
         }

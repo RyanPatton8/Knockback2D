@@ -48,7 +48,7 @@ public partial class Range : Node
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             playerNode.WeaponAudio.Stream = GunShotAudio;
             playerNode.WeaponAudio.Play();
-            Arrow instance = (Arrow)arrow.Instantiate();
+            Bullet instance = (Bullet)arrow.Instantiate();
             GetTree().Root.AddChild(instance);
             instance.playerIndex = playerNode.playerIndex;
             instance.playerNode = playerNode;

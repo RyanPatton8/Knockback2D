@@ -28,7 +28,7 @@ public partial class Slash : Area2D
 	}
 	public void Reflect(Node2D body)
 	{
-		if (body is RigidBody2D rb && (body is Arrow || body is Hook))
+		if (body is RigidBody2D rb && (body is Bullet || body is Hook))
 		{
 			var hb = player.HitBox as HitBox;
         	hb.Clash();
@@ -37,7 +37,7 @@ public partial class Slash : Area2D
 			rb.ApplyImpulse(reflectDir * 1500);
 			player.isAttacking = false;
 			// CallDeferred("queue_free");
-			if (body is Arrow arrow)
+			if (body is Bullet arrow)
 			{
 				arrow.playerIndex = playerIndex;
 				arrow.arrowSprite.Modulate = player.playerColor;

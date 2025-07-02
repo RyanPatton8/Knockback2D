@@ -16,7 +16,7 @@ public partial class Explosion : Area2D
         CallDeferred("queue_free");
     }
     public void MakeExplode(Node body){
-        if (body is Arrow arrow && arrow.grounded)
+        if (body is Bullet arrow && arrow.grounded)
         {
             arrow.hasCollided = true;
         }
