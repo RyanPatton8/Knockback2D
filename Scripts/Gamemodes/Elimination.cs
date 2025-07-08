@@ -12,7 +12,10 @@ public partial class Elimination : GameMode
 	}
 	public override bool IsGameOver()
 	{
-		if (playerManager.GetHighestKills() >= 3)
+		(int highestKills, bool tie) = playerManager.GetHighestKills();
+		if(tie){ return false; }
+
+		if (highestKills >= 10)
 		{
 			return true;
 		}

@@ -151,24 +151,57 @@ public partial class PlayerManager : Node
         foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
         {
             GD.Print($"{kvp.Value.GetKills()}");
-            if (kvp.Value.team == team)
+            if (kvp.Value.GetTeam() == team)
             {
                 teamCount += 0.3f;
             }
         }
         return teamCount;
     }
-    public int GetHighestKills()
+    public (int, bool) GetHighestKills()
     {
         int highestKills = 0;
-        foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
+        bool tied = false;
+        if (!gameManager.gameMode.teamsOn)
         {
-            GD.Print($"{kvp.Value.GetKills()}");
-            if (kvp.Value.GetKills() >= highestKills)
+            string highestKillTeam = "";
+            foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
             {
-                highestKills = kvp.Value.GetKills();
+                GD.Print($"{kvp.Value.GetKills()}");
+                if (kvp.Value.GetKills() > highestKills)
+                {
+                    highestKills = kvp.Value.GetKills();
+                    highestKillTeam = kvp.Value.GetTeam();
+                }
+                else if (kvp.Value.GetKills() == highestKills)
+                {
+                    tied = true;
+                }
             }
         }
-        return highestKills;
+        else
+        {
+            int redKills = 0;
+            int blueKills = 0;
+            foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
+            {
+                if (kvp.Value.GetTeam() == "RED")
+                {
+                    redKills += kvp.Value.GetKills();
+                }
+                else
+                {
+                    blueKills += kvp.Value.GetKills();
+                }
+            }
+
+            highestKills = redKills > blueKills ? redKills : blueKills;
+            if (redKills == blueKills)
+            {
+                tied = true;
+            }
+        }
+        
+        return (highestKills, tied);
     }
 }

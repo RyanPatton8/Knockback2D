@@ -14,7 +14,7 @@ public partial class PlayerInfo : Node
 	private float damageGiven = 0;
 	private float startingComboCount = 1;
 	private float comboCount = 1;
-	public string team;
+	private string team;
 	PlayerManager playerManager;
 	public PlayerInfo() {}
 	public PlayerInfo(int playerIndex, int lives, Color playerColor, string team){
@@ -82,7 +82,17 @@ public partial class PlayerInfo : Node
 		comboCount = newComboCount;
 	}
 
-	public void ResetVariables(){
+	public string GetTeam()
+	{
+		return team;
+	}
+	public void SetTeam(string newTeam)
+	{
+		team = newTeam;
+	}
+
+	public void ResetVariables()
+	{
 		lives = 3;
 		kills = 0;
 		arrowCount = 8;
