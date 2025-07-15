@@ -6,7 +6,7 @@ using System.Linq;
 public partial class AudioManager : Node
 {
     public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
-    public List<AudioStream> streams = new();
+    public Dictionary<string, List<AudioStream>> musicStreams = new();
 
     private static AudioManager _instance;
     public static AudioManager Instance
@@ -31,63 +31,71 @@ public partial class AudioManager : Node
     public override void _Ready()
     {
         AddChild(Music);
-        Music.Finished += PlayNextSong;
-        LoadAllAudio("res://Audio//Music");
-        Music.Stream = GetSong();
+        Music.Finished += () => PlayNextSong("Fight"); // Correct
+        LoadMusic("res://Audio/Music/FightMusic", "Fight");
+        LoadMusic("res://Audio/Music/MenuMusic", "Menu");
+        Music.Stream = GetSong("Menu");
         Music.Play();
     }
-
-    public void LoadAllAudio(string folderPath)
+    public void LoadMusic(string folderPath, string category)
     {
-        // Open the directory (res:// is read-only inside the PCK)
         var dir = DirAccess.Open(folderPath);
         if (dir == null)
         {
             GD.PrintErr($"Could not open folder: {folderPath}");
             return;
         }
-        // tell it whether to include “.”/“..” and hidden files
-        dir.SetIncludeNavigational(false);  // skip “.” and “..”
-        dir.SetIncludeHidden(false);        // skip hidden files
 
-        // now begin the listing
+        if (!musicStreams.ContainsKey(category))
+            musicStreams[category] = new List<AudioStream>();
+
+        dir.SetIncludeNavigational(false);
+        dir.SetIncludeHidden(false);
         dir.ListDirBegin();
+
         string fileName = dir.GetNext();
         while (fileName != string.Empty)
         {
-            // Only files (not sub-folders)
             if (!dir.CurrentIsDir())
             {
-                // filter by audio extension
                 var ext = System.IO.Path.GetExtension(fileName).ToLowerInvariant();
                 if (ext == ".ogg" || ext == ".wav" || ext == ".mp3")
                 {
                     var fullPath = $"{folderPath}/{fileName}";
-                    // load the AudioStream resource
                     var stream = ResourceLoader.Load<AudioStream>(fullPath);
                     if (stream != null)
-                        streams.Add(stream);
+                        musicStreams[category].Add(stream);
                     else
                         GD.PrintErr($"Failed to load audio at {fullPath}");
                 }
             }
             fileName = dir.GetNext();
         }
+
         dir.ListDirEnd();
     }
-    public AudioStream GetSong()
+
+    public AudioStream GetSong(string category)
     {
-        Random rnd = new Random();
-        return streams[rnd.Next(0, streams.Count)];
-    }
-    
-    public void PlayNextSong(){
-        AudioStream next = GetSong();
-        while (next == Music.Stream)
+        if (!musicStreams.ContainsKey(category) || musicStreams[category].Count == 0)
         {
-            next = GetSong();
+            GD.PrintErr($"No songs found for category: {category}");
+            return null;
         }
-        Music.Stream = next;
-        Music.Play();
+
+        Random rnd = new Random();
+        var list = musicStreams[category];
+        return list[rnd.Next(0, list.Count)];
+    }
+
+    
+    public void PlayNextSong(string category)
+    {
+        AudioStream next = GetSong(category);
+        if (next != null)
+        {
+            Music.Stream = next;
+            Music.Play();
+        }
     }
 }

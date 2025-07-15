@@ -10,6 +10,7 @@ public partial class GameManager : Node
 	private List<string> levels;
 	Random rnd = new Random();
 	PlayerManager playerManager;
+	AudioManager audioManager;
 	PackedScene currentLevel;
 	public static GameManager Instance
 	{
@@ -34,11 +35,13 @@ public partial class GameManager : Node
 	public override void _Ready()
 	{
 		playerManager = PlayerManager.Instance;
+		audioManager = AudioManager.Instance;
 		levels = GetLevelList();
 	}
 
 	public void StartGame(PackedScene Level)
 	{
+		audioManager.PlayNextSong("Fight");
 		playerManager.playerGUIHolder.Visible = true;
 		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
 		{
