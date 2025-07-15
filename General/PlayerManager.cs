@@ -140,11 +140,9 @@ public partial class PlayerManager : Node
         else
         {
             playerGUIHolder.playerCards[playerIndex].MakeBlank();
-            playersAlive--;
         }
         gameManager.CheckForGameOver();
     }
-
     private float GetTeamCount(string team)
     {
         float teamCount = 0;
@@ -201,7 +199,18 @@ public partial class PlayerManager : Node
                 tied = true;
             }
         }
-        
         return (highestKills, tied);
+    }
+    public bool IsOneTeamRemaining()
+    {
+        List<string> livingList = new List<string>();
+        foreach (KeyValuePair<int, PlayerInfo> kvp in playerList)
+        {
+            if (kvp.Value.GetLives() > 0 && !livingList.Contains(kvp.Value.GetTeam()))
+            {
+                livingList.Add(kvp.Value.GetTeam());
+            }
+        }
+        return livingList.Count > 1 ? false : true;
     }
 }

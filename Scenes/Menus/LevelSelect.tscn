@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://blw0ui48abkvp"]
+[gd_scene load_steps=16 format=3 uid="uid://blw0ui48abkvp"]
 
 [ext_resource type="Script" uid="uid://cu403e0robv8c" path="res://Scripts/MenuScripts/LevelSelect.cs" id="1_u784j"]
 [ext_resource type="PackedScene" uid="uid://bsfsot0yn27p4" path="res://Scenes/Menus/LevelChoice.tscn" id="1_ul5m5"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cuke107wgkwoy" path="res://Scenes/Levels/level_05.tscn" id="10_yjrob"]
 [ext_resource type="Texture2D" uid="uid://qsmhm35tqvmb" path="res://Sprites/LevelImgs/Level_05.png" id="11_ovdcf"]
 [ext_resource type="PackedScene" uid="uid://cgh3ncgr73oxy" path="res://Scenes/Levels/level_06.tscn" id="12_qo8rb"]
+[ext_resource type="PackedScene" uid="uid://cfxp2mcitrepj" path="res://Scenes/Levels/level_07.tscn" id="14_qf3mo"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jun4b"]
 font_size = 35
@@ -78,4 +79,9 @@ LevelImg = ExtResource("11_ovdcf")
 [node name="Level_06" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
 layout_mode = 2
 Level = ExtResource("12_qo8rb")
+LevelImg = ExtResource("11_ovdcf")
+
+[node name="Level_07" parent="CanvasLayer/MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("1_ul5m5")]
+layout_mode = 2
+Level = ExtResource("14_qf3mo")
 LevelImg = ExtResource("11_ovdcf")

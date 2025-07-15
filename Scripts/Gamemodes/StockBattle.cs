@@ -11,7 +11,7 @@ public partial class StockBattle : GameMode
 	}
 	public override bool IsGameOver()
 	{
-		if (playerManager.playersAlive <= 1)
+		if (playerManager.IsOneTeamRemaining())
 		{
 			return true;
 		}

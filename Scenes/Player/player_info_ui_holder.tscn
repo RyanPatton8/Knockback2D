@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://be436skp13tha" path="res://Scenes/Player/player_card.tscn" id="2_vawyp"]
 
 [node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("hBox")]
-visible = false
 script = ExtResource("1_8oghx")
 playerCard = ExtResource("2_vawyp")
 hBox = NodePath("Control/HBoxContainer")
@@ -19,12 +18,9 @@ grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.722
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 0.143951
-grow_horizontal = 2
-grow_vertical = 0
+grow_horizontal = 0
 theme_override_constants/separation = 25
 alignment = 1

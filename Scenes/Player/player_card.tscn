@@ -3,14 +3,14 @@
 [ext_resource type="Script" uid="uid://cfj0pf23n3ujl" path="res://Scripts/PlayerScripts/PlayerCard.cs" id="1_1wihs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0gwmf"]
-font_size = 60
+font_size = 40
 
 [node name="PlayerCard" type="MarginContainer" node_paths=PackedStringArray("OuterBackground", "ArrowCount", "HookCount", "LivesCount", "Health")]
-custom_minimum_size = Vector2(200, 145)
+custom_minimum_size = Vector2(130, 120)
 offset_left = 6.0
 offset_top = 8.0
-offset_right = 206.0
-offset_bottom = 153.0
+offset_right = 140.0
+offset_bottom = 128.0
 size_flags_vertical = 10
 script = ExtResource("1_1wihs")
 OuterBackground = NodePath("OuterBackdrop")
