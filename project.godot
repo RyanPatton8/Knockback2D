@@ -21,10 +21,6 @@ AudioManager="*res://General/AudioManager.cs"
 PlayerManager="*res://General/PlayerManager.cs"
 GameManager="*res://General/GameManager.cs"
 
-[display]
-
-window/size/mode=3
-
 [dotnet]
 
 project/assembly_name="Knockback2D"

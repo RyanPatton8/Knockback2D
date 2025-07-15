@@ -312,6 +312,7 @@ libraries = {
 }
 
 [node name="WeaponAudio" type="AudioStreamPlayer2D" parent="."]
+volume_db = -2.0
 
 [node name="HookAudio" type="AudioStreamPlayer2D" parent="."]
 
