@@ -3,16 +3,19 @@ using System;
 
 public partial class StockBattle : GameMode
 {
-	public StockBattle(PlayerManager playerManager, GameManager gameManager, bool teamsOn)
+	public StockBattle(bool teamsOn)
 	{
-		this.playerManager = playerManager;
-		this.gameManager = gameManager;
+		playerManager = PlayerManager.Instance;
+		gameManager = GameManager.Instance;
+		audioManager = AudioManager.Instance;
 		this.teamsOn = teamsOn;
 	}
 	public override bool IsGameOver()
 	{
 		if (playerManager.IsOneTeamRemaining())
 		{
+			gameManager.isInMenu = true;
+			audioManager.PlayNextSong();
 			return true;
 		}
 		return false;

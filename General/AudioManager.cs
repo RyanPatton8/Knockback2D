@@ -7,7 +7,7 @@ public partial class AudioManager : Node
 {
     public AudioStreamPlayer2D Music = new AudioStreamPlayer2D();
     public Dictionary<string, List<AudioStream>> musicStreams = new();
-
+    GameManager gameManager;
     private static AudioManager _instance;
     public static AudioManager Instance
     {
@@ -30,8 +30,9 @@ public partial class AudioManager : Node
     }
     public override void _Ready()
     {
+        gameManager = GameManager.Instance;
         AddChild(Music);
-        Music.Finished += () => PlayNextSong("Fight"); // Correct
+        Music.Finished += PlayNextSong; // Correct
         LoadMusic("res://Audio/Music/FightMusic", "Fight");
         LoadMusic("res://Audio/Music/MenuMusic", "Menu");
         Music.Stream = GetSong("Menu");
@@ -89,8 +90,9 @@ public partial class AudioManager : Node
     }
 
     
-    public void PlayNextSong(string category)
+    public void PlayNextSong()
     {
+        string category = gameManager.isInMenu ? "Menu" : "Fight";
         AudioStream next = GetSong(category);
         if (next != null)
         {

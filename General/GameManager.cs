@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 public partial class GameManager : Node
 {
@@ -12,6 +13,8 @@ public partial class GameManager : Node
 	PlayerManager playerManager;
 	AudioManager audioManager;
 	PackedScene currentLevel;
+
+	public bool isInMenu = true;
 	public static GameManager Instance
 	{
 		get
@@ -41,7 +44,8 @@ public partial class GameManager : Node
 
 	public void StartGame(PackedScene Level)
 	{
-		audioManager.PlayNextSong("Fight");
+		isInMenu = false;
+		audioManager.PlayNextSong();
 		playerManager.playerGUIHolder.Visible = true;
 		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
 		{

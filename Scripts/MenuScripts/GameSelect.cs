@@ -21,13 +21,13 @@ public partial class GameSelect : Control
         switch (GameMode.Selected)
         {
             case 0:
-                chosenGameMode = new StockBattle(playerManager, gameManager, TeamsOn.ButtonPressed);
+                chosenGameMode = new StockBattle(TeamsOn.ButtonPressed);
                 break;
             case 1:
-                chosenGameMode = new Elimination(playerManager, gameManager, TeamsOn.ButtonPressed);
+                chosenGameMode = new Elimination(TeamsOn.ButtonPressed);
                 break;
             default:
-                chosenGameMode = new StockBattle(playerManager, gameManager, TeamsOn.ButtonPressed);
+                chosenGameMode = new StockBattle(TeamsOn.ButtonPressed);
                 GD.Print("Something went wrong with gamemode switchcase");
                 break;
         }

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 public partial class Elimination : GameMode
 {
-	public Elimination(PlayerManager playerManager, GameManager gameManager, bool teamsOn)
+	public Elimination(bool teamsOn)
 	{
-		this.playerManager = playerManager;
-		this.gameManager = gameManager;
+		playerManager = PlayerManager.Instance;
+		gameManager = GameManager.Instance;
+		audioManager = AudioManager.Instance;
 		this.teamsOn = teamsOn;
 	}
 	public override bool IsGameOver()
@@ -17,6 +18,8 @@ public partial class Elimination : GameMode
 
 		if (highestKills >= 10)
 		{
+			gameManager.isInMenu = true;
+			audioManager.PlayNextSong();
 			return true;
 		}
 		else if (playerManager.playersAlive <= 1)
