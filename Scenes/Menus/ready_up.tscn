@@ -1087,7 +1087,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1146,7 +1145,7 @@ horizontal_alignment = 1
 [node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-text = "Is to use grappling hook"
+text = "Is to use grappling hook, removing stun, stopping knockback and replenishing jump"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -1171,51 +1170,6 @@ size_flags_vertical = 4
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-
-[node name="Tip5" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
-layout_mode = 2
-text = "Slashing"
-horizontal_alignment = 1
-
-[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "reflects projectiles"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-
-[node name="Tip6" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
-layout_mode = 2
-text = "Shooting"
-horizontal_alignment = 1
-
-[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "does more damage than, slashing. does not do damage to player who owns bullet only knockback and combo count"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-
-[node name="Tip7" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer3"]
-layout_mode = 2
-text = "Grappling"
-horizontal_alignment = 1
-
-[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer3"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "removes stun, replenishes jump and increases enemy combo count by 2"
-horizontal_alignment = 1
-autowrap_mode = 2
-
 [node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
@@ -1231,35 +1185,30 @@ text = "Jump Button followed by immediate slash upwards"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
-[node name="Tip8" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer"]
+[node name="Tip8" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 text = "Combo Count"
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer"]
+[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Knockback is multiplied for every hit received while stunned or in air"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
-[node name="Tip9" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="Tip9" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
 layout_mode = 2
 text = "Bullets, Health and Hooks"
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="Label3" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "all regenerate overtime. Hooks and health one by one bullets all at once"
