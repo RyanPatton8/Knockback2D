@@ -45,6 +45,7 @@ public partial class FishingRod : Node
         playerNode.HookAudio.Stream = HookAudio;
         playerNode.HookAudio.Play();
         playerManager.playerList[playerNode.playerIndex].SetHookCount(playerNode.hookCount);
+        playerNode.bulletAndHookCountUi.UpdateHookCount();
         //Set the aim direction based on current aim direction relative to player
         Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
         //Instantiate the hook at placement of hitbox with the set throwforce in the aim direction

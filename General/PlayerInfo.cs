@@ -7,7 +7,7 @@ public partial class PlayerInfo : Node
 	private int lives = 3;
 	private int kills;
 	private Color playerColor = new Color();
-	private int arrowCount = 8;
+	private int arrowCount = 6;
 	private int hookCount = 4;
 	private float startingDamage = 0;
 	private float damageTaken = 0;
@@ -48,14 +48,12 @@ public partial class PlayerInfo : Node
 	}
 	public void SetArrowCount(int arrowCount){
 		this.arrowCount = arrowCount;
-		playerManager.playerGUIHolder.playerCards[playerIndex].SetArrowCount(arrowCount.ToString());
 	}
 	public int GetHookCount(){
 		return hookCount;
 	}
 	public void SetHookCount(int hookCount){
 		this.hookCount = hookCount;
-		playerManager.playerGUIHolder.playerCards[playerIndex].SetHookCount(hookCount.ToString());
 	}
 	public float GetDamageTaken(){
 		return damageTaken;
@@ -95,7 +93,7 @@ public partial class PlayerInfo : Node
 	{
 		lives = 3;
 		kills = 0;
-		arrowCount = 8;
+		arrowCount = 6;
 		hookCount = 4;
 		startingDamage = 0;
 		damageTaken = 0;

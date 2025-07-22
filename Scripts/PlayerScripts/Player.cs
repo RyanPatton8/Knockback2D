@@ -17,8 +17,8 @@ public partial class Player : RigidBody2D
     [Export] public AudioStreamPlayer2D WeaponAudio { get; private set; }
     [Export] public AudioStreamPlayer2D HookAudio { get; private set; }
     [Export] public AudioStreamPlayer2D PlayerAudio { get; private set; }
-
     [Export] public float normalFriction = 0.7f;
+    [Export] public BulletAndHookCountUi bulletAndHookCountUi;
     
     // How far from player should hitbox rotate
     private float offsetAmount = 27;
@@ -83,6 +83,10 @@ public partial class Player : RigidBody2D
         HitBox.BodyExited += GroundClashExit;
         Anim.Play("Idle");
         PlayerAudio.Stream = Running;
+        bulletAndHookCountUi.playerIndex = playerIndex;
+        bulletAndHookCountUi.BulletSprite.Modulate = playerColor;
+        bulletAndHookCountUi.UpdateArrowCount();
+        bulletAndHookCountUi.UpdateHookCount();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -304,6 +308,7 @@ public partial class Player : RigidBody2D
         {
             arrowCount += 6;
             playerManager.playerList[playerIndex].SetArrowCount(arrowCount);
+            bulletAndHookCountUi.UpdateArrowCount();
             regeneratingArrow = false;
             return;
         }

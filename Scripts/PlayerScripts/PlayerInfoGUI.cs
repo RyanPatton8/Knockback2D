@@ -18,8 +18,6 @@ public partial class PlayerInfoGUI : CanvasLayer
 		hBox.MoveChild(currentPlayer, playerIndex);
 		playerCards.Add(playerIndex, currentPlayer);
 		playerCards[playerIndex].SetAll(
-                playerManager.playerList[playerIndex].GetArrowCount().ToString(),
-                playerManager.playerList[playerIndex].GetHookCount().ToString(),
                 playerManager.playerList[playerIndex].GetLives().ToString(),
                 playerManager.playerList[playerIndex].GetDamageTaken().ToString(),
 				playerManager.playerList[playerIndex].GetColor()
@@ -27,8 +25,6 @@ public partial class PlayerInfoGUI : CanvasLayer
 	}
 	public void ResetCardInfo(int playerIndex){
 		playerCards[playerIndex].SetAll(
-                playerManager.playerList[playerIndex].GetArrowCount().ToString(),
-                playerManager.playerList[playerIndex].GetHookCount().ToString(),
                 playerManager.playerList[playerIndex].GetLives().ToString(),
                 playerManager.playerList[playerIndex].GetDamageTaken().ToString(),
 				playerManager.playerList[playerIndex].GetColor()

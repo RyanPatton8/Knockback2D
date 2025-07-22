@@ -45,6 +45,7 @@ public partial class Range : Node
             canAttack = false;
             playerNode.arrowCount--;
             playerManager.playerList[playerNode.playerIndex].SetArrowCount(playerNode.arrowCount);
+            playerNode.bulletAndHookCountUi.UpdateArrowCount();
             Vector2 aimDirection = playerNode.HitBox.GlobalPosition - playerNode.GlobalPosition;
             playerNode.WeaponAudio.Stream = GunShotAudio;
             playerNode.WeaponAudio.Play();

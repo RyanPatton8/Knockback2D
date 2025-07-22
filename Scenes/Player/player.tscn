@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=50 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" uid="uid://chnfgtuts1po8" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
@@ -32,6 +32,10 @@
 [ext_resource type="Texture2D" uid="uid://rlqd4q2j3gmu" path="res://Sprites/Player/Stunned/Stars-0002.svg" id="30_vf0gu"]
 [ext_resource type="Texture2D" uid="uid://c1abo8krvwojw" path="res://Sprites/Player/Stunned/Stars-0003.svg" id="31_cft8v"]
 [ext_resource type="Texture2D" uid="uid://dmp6fdbpl6xpb" path="res://Sprites/Player/Stunned/Stars-0004.svg" id="32_f7gt6"]
+[ext_resource type="Script" uid="uid://bx6xy6ln2icfx" path="res://Scripts/PlayerScripts/BulletAndHookCountUi.cs" id="33_enij7"]
+[ext_resource type="Texture2D" uid="uid://dvjqhipr81jfn" path="res://Sprites/Weapons/Bullet/BulletBorder.svg" id="34_2aanf"]
+[ext_resource type="Texture2D" uid="uid://cgh3ftjgi5of8" path="res://Sprites/Weapons/Bullet/BulletInterior.svg" id="34_mwii3"]
+[ext_resource type="Texture2D" uid="uid://bv4jq88iktnpl" path="res://Sprites/FishingHook.svg" id="35_2aanf"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcp6b"]
 load_path = "res://.godot/imported/PlayerTest2.svg-3ef46a88e1b866685aeb47dc6024c129.ctex"
@@ -200,7 +204,12 @@ _data = {
 outline_size = 6
 outline_color = Color(0.054902, 0.054902, 0.054902, 1)
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio", "ComboLabel") groups=["player"]]
+[sub_resource type="LabelSettings" id="LabelSettings_m6ahd"]
+font_size = 10
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("GroundCheck", "KnockBackDuration", "HurtBox", "HitBox", "WeaponHolder", "PlayerSprite", "Anim", "WeaponAudio", "HookAudio", "PlayerAudio", "bulletAndHookCountUi", "ComboLabel") groups=["player"]]
 z_index = 2
 mass = 10.0
 physics_material_override = ExtResource("1_wxact")
@@ -220,6 +229,7 @@ Anim = NodePath("AnimationPlayer")
 WeaponAudio = NodePath("WeaponAudio")
 HookAudio = NodePath("HookAudio")
 PlayerAudio = NodePath("PlayerAudio")
+bulletAndHookCountUi = NodePath("BulletAndHookCount")
 Running = ExtResource("3_ltoaf")
 ComboLabel = NodePath("ComboCountLabel")
 
@@ -328,5 +338,46 @@ offset_right = 20.0
 offset_bottom = -18.0
 text = "x0"
 label_settings = SubResource("LabelSettings_bpw5t")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BulletAndHookCount" type="Node2D" parent="." node_paths=PackedStringArray("BulletSprite", "ArrowCount", "HookCount")]
+script = ExtResource("33_enij7")
+BulletSprite = NodePath("BulletCountSprite")
+ArrowCount = NodePath("BulletCountLabel")
+HookCount = NodePath("HookCountLabel")
+
+[node name="BulletCountSprite" type="Sprite2D" parent="BulletAndHookCount"]
+position = Vector2(-29, -17)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("34_mwii3")
+
+[node name="BulletOutlineSprite" type="Sprite2D" parent="BulletAndHookCount"]
+position = Vector2(-29, -17)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("34_2aanf")
+
+[node name="BulletCountLabel" type="Label" parent="BulletAndHookCount"]
+offset_left = -38.0
+offset_top = -28.0
+offset_right = 2.0
+offset_bottom = -5.0
+text = "x0"
+label_settings = SubResource("LabelSettings_m6ahd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HookCountSprite" type="Sprite2D" parent="BulletAndHookCount"]
+position = Vector2(16, -17)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("35_2aanf")
+
+[node name="HookCountLabel" type="Label" parent="BulletAndHookCount"]
+offset_left = 7.0
+offset_top = -28.0
+offset_right = 47.0
+offset_bottom = -5.0
+text = "x0"
+label_settings = SubResource("LabelSettings_m6ahd")
 horizontal_alignment = 1
 vertical_alignment = 1

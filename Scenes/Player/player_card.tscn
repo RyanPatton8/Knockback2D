@@ -5,7 +5,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_0gwmf"]
 font_size = 40
 
-[node name="PlayerCard" type="MarginContainer" node_paths=PackedStringArray("OuterBackground", "ArrowCount", "HookCount", "LivesCount", "Health")]
+[node name="PlayerCard" type="MarginContainer" node_paths=PackedStringArray("OuterBackground", "LivesCount", "Health")]
 custom_minimum_size = Vector2(130, 120)
 offset_left = 6.0
 offset_top = 8.0
@@ -14,8 +14,6 @@ offset_bottom = 128.0
 size_flags_vertical = 10
 script = ExtResource("1_1wihs")
 OuterBackground = NodePath("OuterBackdrop")
-ArrowCount = NodePath("Content/UpperContent/VBoxContainer/Label")
-HookCount = NodePath("Content/UpperContent/VBoxContainer/Label2")
 LivesCount = NodePath("Content/UpperContent/VBoxContainer2/Label")
 Health = NodePath("Content/Label")
 
@@ -38,11 +36,6 @@ size_flags_horizontal = 2
 
 [node name="Label" type="Label" parent="Content/UpperContent/VBoxContainer"]
 layout_mode = 2
-text = "Arrows: 4"
-
-[node name="Label2" type="Label" parent="Content/UpperContent/VBoxContainer"]
-layout_mode = 2
-text = "hooks:   4"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Content/UpperContent"]
 layout_mode = 2
