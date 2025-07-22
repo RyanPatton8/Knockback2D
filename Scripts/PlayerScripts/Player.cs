@@ -529,6 +529,7 @@ public partial class Player : RigidBody2D
             jumpCount = maxJumpCount;
             attacker = playerIndex;
             Anim.Play("Idle");
+            GD.Print("GROUNDED");
         }
     }
     private void UnGrounded(Node2D body)

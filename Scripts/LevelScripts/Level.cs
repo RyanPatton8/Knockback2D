@@ -27,6 +27,7 @@ public partial class Level : Node2D
 		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
 		{
 			Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;
+			kvp.Value.outOfGame = false;
 			playerManager.SpawnPlayer(kvp.Key, spawnPoint);
 		}
 	}
