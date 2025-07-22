@@ -16,7 +16,14 @@ public partial class Level : Node2D
 		playerManager = PlayerManager.Instance;
 		spawns = PlayerSpawn.GetChildren().OfType<Marker2D>().ToList();
 		playerManager.spawnPoints = spawns;
-
+		foreach (Node child in GetTree().Root.GetChildren())
+		{
+			if (child is Player player)
+			{
+				playerManager.playerList.Remove(player.playerIndex);
+				player.QueueFree();
+			}
+		}
 		foreach (KeyValuePair<int, PlayerInfo> kvp in playerManager.playerList)
 		{
 			Vector2 spawnPoint = spawns[rnd.Next(0, spawns.Count())].GlobalPosition;

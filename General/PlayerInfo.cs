@@ -15,6 +15,7 @@ public partial class PlayerInfo : Node
 	private float startingComboCount = 1;
 	private float comboCount = 1;
 	private string team;
+	public bool outOfGame = false;
 	PlayerManager playerManager;
 	public PlayerInfo() {}
 	public PlayerInfo(int playerIndex, int lives, Color playerColor, string team){
@@ -27,9 +28,9 @@ public partial class PlayerInfo : Node
 	public int GetLives(){
 		return lives;
 	}
-	public void SetLives(int liveLost){
+	public void SetLives(int liveLost)
+	{
 		lives += liveLost;
-		playerManager.playerGUIHolder.playerCards[playerIndex].SetLivesCount(lives.ToString());
 	}
 	public int GetKills(){
 		return kills;

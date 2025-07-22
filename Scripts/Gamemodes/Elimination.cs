@@ -22,10 +22,11 @@ public partial class Elimination : GameMode
 			audioManager.PlayNextSong();
 			return true;
 		}
-		else if (playerManager.playersAlive <= 1)
+		else if (playerManager.IsOneTeamRemaining())
 		{
 			gameManager.LoadRandomLevel();
 		}
+		GD.Print($"Players ALive: {playerManager.IsOneTeamRemaining()}");
 		return false;
 	}
 
