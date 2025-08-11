@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=4 uid="uid://crrq68l26abkl"]
+[gd_scene load_steps=7 format=4 uid="uid://crrq68l26abkl"]
 
 [ext_resource type="Script" uid="uid://5ncflcpbaqxe" path="res://Scripts/LevelScripts/Level.cs" id="1_ts46e"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="2_rmaub"]
 [ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/LevelComponents/world_border.tscn" id="3_8ok3c"]
+[ext_resource type="Texture2D" uid="uid://b5ghbcijct17k" path="res://Sprites/LevelBackgrounds/4.png" id="4_g54kh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c71t6"]
 texture = ExtResource("2_rmaub")
@@ -583,3 +584,12 @@ position = Vector2(973, -98)
 [node name="WorldBorder" parent="." instance=ExtResource("3_8ok3c")]
 position = Vector2(576, 324)
 scale = Vector2(115, 80.5)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -572.0
+offset_top = -356.0
+offset_right = 1732.0
+offset_bottom = 940.0
+size_flags_vertical = 4
+texture = ExtResource("4_g54kh")
+metadata/_edit_use_anchors_ = true

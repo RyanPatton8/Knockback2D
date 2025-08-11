@@ -23,7 +23,7 @@ public partial class GameButton : StaticBody2D
         }
         else
         {
-            instructions.Visible = true;
+            instructions.Visible = !instructions.Visible;
         }
     }
 
@@ -36,7 +36,7 @@ public partial class GameButton : StaticBody2D
         }
         else
         {
-            instructions.Visible = false;
+            // instructions.Visible = false;
         }
     }
 }

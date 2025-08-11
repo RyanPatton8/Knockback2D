@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://bydxg22epymla"]
+[gd_scene load_steps=14 format=4 uid="uid://bydxg22epymla"]
 
 [ext_resource type="Script" uid="uid://5ncflcpbaqxe" path="res://Scripts/LevelScripts/Level.cs" id="1_fa37x"]
 [ext_resource type="Texture2D" uid="uid://fc64eg35dxhd" path="res://Sprites/TileSets/Snow platform tileset.png" id="2_odjxf"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d2wu2ujqp66g" path="res://Sprites/TileSets/Textures-16.png" id="4_d8k2d"]
 [ext_resource type="Texture2D" uid="uid://b8jreibiskduw" path="res://Sprites/TileSets/Tilesetv3.png" id="5_1cgju"]
 [ext_resource type="PackedScene" uid="uid://cdl64eqkhv64e" path="res://Scenes/LevelComponents/world_border.tscn" id="6_xdcaw"]
+[ext_resource type="Texture2D" uid="uid://cnvhfudtpgq5c" path="res://Sprites/LevelBackgrounds/5.png" id="7_odjxf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tpwue"]
 friction = 0.1
@@ -1843,3 +1844,12 @@ position = Vector2(57, 492)
 
 [node name="Marker2D6" type="Marker2D" parent="PlayerSpawner"]
 position = Vector2(350, 485)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -572.0
+offset_top = -356.0
+offset_right = 1732.0
+offset_bottom = 940.0
+size_flags_vertical = 4
+texture = ExtResource("7_odjxf")
+metadata/_edit_use_anchors_ = true

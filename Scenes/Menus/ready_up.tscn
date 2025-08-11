@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://fv1f5dui6yk5"]
+[gd_scene load_steps=11 format=4 uid="uid://fv1f5dui6yk5"]
 
 [ext_resource type="Script" uid="uid://bir7sktdj052x" path="res://Scripts/MenuScripts/ReadyUp.cs" id="1_1tg8q"]
 [ext_resource type="Texture2D" uid="uid://b316mv3dw6nhl" path="res://Sprites/TileSets/FullTileSet_1.png" id="1_qh7jn"]
 [ext_resource type="PackedScene" uid="uid://8ts5w2ywiwe6" path="res://Scenes/LevelComponents/physical_button.tscn" id="3_r1kvl"]
 [ext_resource type="Texture2D" uid="uid://d2wu2ujqp66g" path="res://Sprites/TileSets/Textures-16.png" id="3_xdf0r"]
+[ext_resource type="Texture2D" uid="uid://cqslw1e5q7l0g" path="res://Sprites/LevelBackgrounds/bgBamboo.png" id="5_avv6o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7tamx"]
 texture = ExtResource("1_qh7jn")
@@ -1231,3 +1232,12 @@ offset_right = 628.0
 offset_bottom = 658.0
 text = "Controls"
 horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -572.0
+offset_top = -356.0
+offset_right = 1732.0
+offset_bottom = 940.0
+size_flags_vertical = 4
+texture = ExtResource("5_avv6o")
+metadata/_edit_use_anchors_ = true

@@ -321,6 +321,7 @@ public partial class Player : RigidBody2D
         {
             hookCount++;
             playerManager.playerList[playerIndex].SetHookCount(hookCount);
+            bulletAndHookCountUi.UpdateHookCount();
             regeneratingHook = false;
             return;
         }
@@ -473,7 +474,7 @@ public partial class Player : RigidBody2D
         {
             float knockBackMultiplier = 10000;
             ApplyImpulse(hitDirection * knockBackMultiplier * comboCount);
-            comboCount++;
+            // comboCount++;
         }
     }
 

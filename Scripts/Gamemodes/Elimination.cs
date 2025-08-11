@@ -16,7 +16,7 @@ public partial class Elimination : GameMode
 		(int highestKills, bool tie) = playerManager.GetHighestKills();
 		if(tie){ return false; }
 
-		if (highestKills >= 10)
+		if (highestKills >= 5)
 		{
 			gameManager.isInMenu = true;
 			audioManager.PlayNextSong();

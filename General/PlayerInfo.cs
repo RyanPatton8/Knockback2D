@@ -36,7 +36,10 @@ public partial class PlayerInfo : Node
 		return kills;
 	}
 	public void SetKills(int newKill){
-		kills += newKill;
+		if (kills > 0)
+		{
+			kills += newKill;
+		}
 	}
 	public Color GetColor(){
 		return playerColor;
