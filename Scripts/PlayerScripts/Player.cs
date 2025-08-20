@@ -61,6 +61,7 @@ public partial class Player : RigidBody2D
     public Color playerColor;
     public int indexOfFinalAttacker = -1;
     public double slashIndexDuration = 1;
+    private bool isSpawning = true;
     private List<string> attacksTaken = new List<string>();
     [Export] public AudioStream Running { get; private set; }
     [Export] public Label ComboLabel { get; private set; }
@@ -81,52 +82,69 @@ public partial class Player : RigidBody2D
         HitBox.GlobalPosition = GlobalPosition + new Vector2(1, 0) * offsetAmount;
         HitBox.BodyEntered += GroundClashEntered;
         HitBox.BodyExited += GroundClashExit;
-        Anim.Play("Idle");
         PlayerAudio.Stream = Running;
         bulletAndHookCountUi.playerIndex = playerIndex;
         bulletAndHookCountUi.BulletSprite.Modulate = playerColor;
         bulletAndHookCountUi.UpdateArrowCount();
         bulletAndHookCountUi.UpdateHookCount();
+        Anim.Play("Spawn");
+        Anim.AnimationFinished += StopSpawning;
     }
 
+    private void StopSpawning(StringName animName)
+    {
+        if (animName == "Spawn")
+        {
+            isSpawning = false;
+            Anim.Play("Idle");
+            ResetGroundCheck();
+        }
+    }
+    private void ResetGroundCheck()
+    {
+        GroundCheck.Monitoring = false;
+        GroundCheck.Monitoring = true;
+    }
     public override void _PhysicsProcess(double delta)
     {
-        if (!isAttacking)
-        {   //Ensure the player isn't attacking and currently expiriencing the end lag from that attack
-            if (!knockedBack)
-            {// Only allow them to move if they also aren't stunned from being hit
-                Move(delta);
+        if (!isSpawning)
+        {
+            if (!isAttacking)
+            {   //Ensure the player isn't attacking and currently expiriencing the end lag from that attack
+                if (!knockedBack)
+                {// Only allow them to move if they also aren't stunned from being hit
+                    Move(delta);
+                }
+                Aim();
             }
-            Aim();
-        }
-        else
-        {
-            AttackEndLag(delta);
-        }
-        // Mitigate weird glitch where jumping and grappling would cancel each other
-        if (!isGrappling)
-        {
-            HandleJump(delta);
-        }
-        else
-        {
-            grappleTime -= delta;
-            if (grappleTime <= Mathf.Epsilon)
+            else
             {
-                isGrappling = false;
-                grappleTime = .2;
+                AttackEndLag(delta);
             }
-        }
-        Regen(delta);
-        ChangeWeapon();
-
-        if (comboCount > 1)
-        {
-            ComboLabel.Text = $"x{comboCount - 1}";
-        }
-        else
-        {
-            ComboLabel.Text = "";
+            // Mitigate weird glitch where jumping and grappling would cancel each other
+            if (!isGrappling)
+            {
+                HandleJump(delta);
+            }
+            else
+            {
+                grappleTime -= delta;
+                if (grappleTime <= Mathf.Epsilon)
+                {
+                    isGrappling = false;
+                    grappleTime = .2;
+                }
+            }
+            Regen(delta);
+            ChangeWeapon();
+            if (comboCount > 1)
+            {
+                ComboLabel.Text = $"x{comboCount - 1}";
+            }
+            else
+            {
+                ComboLabel.Text = "";
+            }
         }
     }
     private void Regen(double delta)
@@ -375,41 +393,44 @@ public partial class Player : RigidBody2D
     // Handle all kinds of attacks and pass info to methods to do stuff
     private void RecieveHit(Area2D area)
     {
-        Vector2 info;
-        int attackOwner;
-        string slashUuid;
-        HitBox hb;
+        if (!isSpawning)
+        {
+            Vector2 info;
+            int attackOwner;
+            string slashUuid;
+            HitBox hb;
 
-        if (area is Slash slash)
-        {
-            (info, attackOwner, slashUuid, hb) = slash.GiveInfo();
-            if (attackOwner != playerIndex && !attacksTaken.Contains(slashUuid))
+            if (area is Slash slash)
             {
-                attacksTaken.Add(slashUuid);
-                hb.Hit();
-                DamageFromMelee(info);
-                indexOfFinalAttacker = attackOwner;
+                (info, attackOwner, slashUuid, hb) = slash.GiveInfo();
+                if (attackOwner != playerIndex && !attacksTaken.Contains(slashUuid))
+                {
+                    attacksTaken.Add(slashUuid);
+                    hb.Hit();
+                    DamageFromMelee(info);
+                    indexOfFinalAttacker = attackOwner;
+                }
             }
-        }
-        else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
-        {
-            info = hookHitBox.GiveInfo() - GlobalPosition;
-            indexOfFinalAttacker = hookHitBox.GiveIndexInfo();
-            DamageFromHook(info);
-        }
-        else if (area is Explosion explosion)
-        {
-            Vector2 explosionPos = explosion.GiveInfo();
-            (int explosionOwner, string explosionId) = explosion.GiveIndexInfo();
-            if (attacksTaken.Contains(explosionId))
-                return;
-            attacksTaken.Add(explosionId);
-            if (explosionOwner != playerIndex)
+            else if (area is HookHitbox hookHitBox && hookHitBox.GiveIndexInfo() != playerIndex)
             {
-                indexOfFinalAttacker = explosionOwner;
+                info = hookHitBox.GiveInfo() - GlobalPosition;
+                indexOfFinalAttacker = hookHitBox.GiveIndexInfo();
+                DamageFromHook(info);
             }
-            info = GlobalPosition - explosionPos;
-            DamageFromExplosion(info, explosionOwner);
+            else if (area is Explosion explosion)
+            {
+                Vector2 explosionPos = explosion.GiveInfo();
+                (int explosionOwner, string explosionId) = explosion.GiveIndexInfo();
+                if (attacksTaken.Contains(explosionId))
+                    return;
+                attacksTaken.Add(explosionId);
+                if (explosionOwner != playerIndex)
+                {
+                    indexOfFinalAttacker = explosionOwner;
+                }
+                info = GlobalPosition - explosionPos;
+                DamageFromExplosion(info, explosionOwner);
+            }
         }
     }
     public void Clashed(Vector2 redirect, int otherSlashOwner, bool fromSlash)
@@ -520,7 +541,7 @@ public partial class Player : RigidBody2D
     private void Grounded(Node body)
     {
         //checking the y linear velocity to not allow passing through one way platform as grounding
-        if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10)
+        if (body.IsInGroup("Environment") && LinearVelocity.Y >= -10 && !isSpawning)
         {
             indexOfFinalAttacker = -1;
             isGrounded = true;

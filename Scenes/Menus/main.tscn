@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://rv6o7djxuani"]
 
 [ext_resource type="Script" uid="uid://sm1sirn1iq4p" path="res://Scripts/MenuScripts/GameSelect.cs" id="1_nardx"]
-[ext_resource type="Texture2D" uid="uid://c43m18bsv1re" path="res://Sprites/c0a6d1e2-dd1d-4452-958d-a7c5a63d90ef-processed(lightpdf.com).jpg" id="2_nardx"]
+[ext_resource type="Texture2D" uid="uid://dcesj1mgju20l" path="res://Sprites/LevelBackgrounds/standard.png" id="2_nardx"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_nardx"]
 

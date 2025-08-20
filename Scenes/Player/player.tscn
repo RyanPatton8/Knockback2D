@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://duyhsvlnmlums"]
+[gd_scene load_steps=64 format=3 uid="uid://duyhsvlnmlums"]
 
 [ext_resource type="Script" uid="uid://chnfgtuts1po8" path="res://Scripts/PlayerScripts/Player.cs" id="1_64cvm"]
 [ext_resource type="PhysicsMaterial" uid="uid://v17tscx4dahc" path="res://Resources/Player/PlayerPhysics.tres" id="1_wxact"]
@@ -33,12 +33,23 @@
 [ext_resource type="Texture2D" uid="uid://c1abo8krvwojw" path="res://Sprites/Player/Stunned/Stars-0003.svg" id="31_cft8v"]
 [ext_resource type="Texture2D" uid="uid://dmp6fdbpl6xpb" path="res://Sprites/Player/Stunned/Stars-0004.svg" id="32_f7gt6"]
 [ext_resource type="Script" uid="uid://bx6xy6ln2icfx" path="res://Scripts/PlayerScripts/BulletAndHookCountUi.cs" id="33_enij7"]
+[ext_resource type="Texture2D" uid="uid://rraoyan4e77y" path="res://Sprites/Player/Spawn/Sprite-0001.svg" id="33_qflxp"]
+[ext_resource type="Texture2D" uid="uid://x4a0s8bt7iyp" path="res://Sprites/Player/Spawn/Sprite-0002.svg" id="34_0pk7v"]
 [ext_resource type="Texture2D" uid="uid://dvjqhipr81jfn" path="res://Sprites/Weapons/Bullet/BulletBorder.svg" id="34_2aanf"]
 [ext_resource type="Texture2D" uid="uid://cgh3ftjgi5of8" path="res://Sprites/Weapons/Bullet/BulletInterior.svg" id="34_mwii3"]
 [ext_resource type="Texture2D" uid="uid://bv4jq88iktnpl" path="res://Sprites/FishingHook.svg" id="35_2aanf"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcp6b"]
-load_path = "res://.godot/imported/PlayerTest2.svg-3ef46a88e1b866685aeb47dc6024c129.ctex"
+[ext_resource type="Texture2D" uid="uid://c15wg8itvxapl" path="res://Sprites/Player/Spawn/Sprite-0003.svg" id="35_rblve"]
+[ext_resource type="Texture2D" uid="uid://bf5w2ds5ui8qh" path="res://Sprites/Player/Spawn/Sprite-0004.svg" id="36_fn4qh"]
+[ext_resource type="Texture2D" uid="uid://drd2x4h8xsted" path="res://Sprites/Player/Spawn/Sprite-0005.svg" id="37_5omc3"]
+[ext_resource type="Texture2D" uid="uid://dapo6mosey7ig" path="res://Sprites/Player/Nothin.svg" id="38_0pk7v"]
+[ext_resource type="Texture2D" uid="uid://d4d0hy6pnyas6" path="res://Sprites/Player/Spawn/Sprite-0006.svg" id="38_pcwjh"]
+[ext_resource type="Texture2D" uid="uid://bmorrh384dme8" path="res://Sprites/Player/Spawn/Sprite-0007.svg" id="39_ejxfg"]
+[ext_resource type="Texture2D" uid="uid://c5gfsp53yjtpc" path="res://Sprites/Player/Spawn/Sprite-0008.svg" id="40_huyyu"]
+[ext_resource type="Texture2D" uid="uid://44wamdeb5ygk" path="res://Sprites/Player/Spawn/Sprite-0009.svg" id="41_m5eiq"]
+[ext_resource type="Texture2D" uid="uid://dua46rrre8qr0" path="res://Sprites/Player/Spawn/Sprite-0010.svg" id="42_8g0gh"]
+[ext_resource type="Texture2D" uid="uid://nx6vq4j3fr61" path="res://Sprites/Player/Spawn/Sprite-0011.svg" id="43_0a2xn"]
+[ext_resource type="Texture2D" uid="uid://bs81xfetrw7j1" path="res://Sprites/Player/Spawn/Sprite-0012.svg" id="44_grehw"]
+[ext_resource type="Texture2D" uid="uid://ddladygwybm1y" path="res://Sprites/Player/Spawn/Sprite-0013.svg" id="45_vn8q6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yh4tg"]
 
@@ -50,16 +61,17 @@ load_path = "res://.godot/imported/PlayerTest2.svg-3ef46a88e1b866685aeb47dc6024c
 
 [sub_resource type="Animation" id="Animation_6b6dq"]
 resource_name = "Idle"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:texture")
+tracks/0/path = NodePath("PlayerSprites/CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0.0333333),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [ExtResource("13_b8ck5")]
 }
 tracks/1/type = "value"
@@ -82,41 +94,14 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:texture")
+tracks/0/path = NodePath("PlayerSprites/CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [ExtResource("24_0vmdk")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("StarsSprite:texture")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [null]
-}
-
-[sub_resource type="Animation" id="Animation_kvpmg"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("CompressedTexture2D_pcp6b")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -139,13 +124,13 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:texture")
+tracks/0/path = NodePath("PlayerSprites/CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.15, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
+"update": 0,
 "values": [ExtResource("15_60ine"), ExtResource("16_nmr8y"), ExtResource("14_qpcah")]
 }
 tracks/1/type = "value"
@@ -161,6 +146,35 @@ tracks/1/keys = {
 "values": [null]
 }
 
+[sub_resource type="Animation" id="Animation_8vj0r"]
+resource_name = "Spawn"
+length = 0.500004
+step = 0.0384615
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprites/SpawnSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0365549, 0.0769231, 0.115385, 0.153846, 0.192308, 0.230769, 0.269231, 0.307692, 0.346154, 0.384615, 0.423077, 0.461538, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("33_qflxp"), ExtResource("34_0pk7v"), ExtResource("35_rblve"), ExtResource("36_fn4qh"), ExtResource("37_5omc3"), ExtResource("38_pcwjh"), ExtResource("39_ejxfg"), ExtResource("40_huyyu"), ExtResource("41_m5eiq"), ExtResource("42_8g0gh"), ExtResource("43_0a2xn"), ExtResource("44_grehw"), ExtResource("45_vn8q6"), null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprites/CharacterSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [ExtResource("38_0pk7v"), ExtResource("38_0pk7v")]
+}
+
 [sub_resource type="Animation" id="Animation_nxwq0"]
 resource_name = "Stunned"
 length = 0.400005
@@ -169,13 +183,13 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:texture")
+tracks/0/path = NodePath("PlayerSprites/CharacterSprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0.05, 0.15, 0.25, 0.35),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
+"update": 0,
 "values": [ExtResource("25_2ctjr"), ExtResource("26_l88jj"), ExtResource("27_mn0al"), ExtResource("28_0h5fx")]
 }
 tracks/1/type = "value"
@@ -191,12 +205,52 @@ tracks/1/keys = {
 "values": [ExtResource("29_dq6rs"), ExtResource("30_vf0gu"), ExtResource("31_cft8v"), ExtResource("32_f7gt6")]
 }
 
+[sub_resource type="Animation" id="Animation_kvpmg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprites/CharacterSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [ExtResource("13_b8ck5")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StarsSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprites/SpawnSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("33_qflxp")]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_efy3q"]
 _data = {
 &"Idle": SubResource("Animation_6b6dq"),
 &"Jump": SubResource("Animation_o8jrp"),
 &"RESET": SubResource("Animation_kvpmg"),
 &"Run": SubResource("Animation_ijwwk"),
+&"Spawn": SubResource("Animation_8vj0r"),
 &"Stunned": SubResource("Animation_nxwq0")
 }
 
@@ -219,12 +273,12 @@ contact_monitor = true
 max_contacts_reported = 5
 script = ExtResource("1_64cvm")
 GroundCheck = NodePath("GroundCheck")
-maxMoveSpeed = 300.0
+maxMoveSpeed = 450.0
 KnockBackDuration = NodePath("HurtBox/KnockBackTimer")
 HurtBox = NodePath("HurtBox")
 HitBox = NodePath("HitBox")
 WeaponHolder = NodePath("WeaponHolder")
-PlayerSprite = NodePath("CharacterSprite")
+PlayerSprite = NodePath("PlayerSprites/CharacterSprite")
 Anim = NodePath("AnimationPlayer")
 WeaponAudio = NodePath("WeaponAudio")
 HookAudio = NodePath("HookAudio")
@@ -233,10 +287,17 @@ bulletAndHookCountUi = NodePath("BulletAndHookCount")
 Running = ExtResource("3_ltoaf")
 ComboLabel = NodePath("ComboCountLabel")
 
-[node name="CharacterSprite" type="Sprite2D" parent="."]
+[node name="PlayerSprites" type="Node2D" parent="."]
+
+[node name="CharacterSprite" type="Sprite2D" parent="PlayerSprites"]
 position = Vector2(0, -1)
 scale = Vector2(1.1, 1.1)
-texture = SubResource("CompressedTexture2D_pcp6b")
+texture = ExtResource("13_b8ck5")
+
+[node name="SpawnSprite" type="Sprite2D" parent="PlayerSprites"]
+position = Vector2(0, -27)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("33_qflxp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_yh4tg")
